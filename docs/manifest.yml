@@ -1,0 +1,35 @@
+# manifest.yml
+# Tutor inventory — lightweight index. Details in docs/scenarios/*/
+# Companion files:
+#   docs/scenarios/<id>/brief.md
+#   docs/scenarios/<id>/design.md
+#   docs/scenarios/<id>/outcome.md
+#   docs/scenarios/<id>/roadmap.md
+
+scenarios:
+  - id: SystemA
+    decision_type:
+      - hierarchical
+      - binary
+    status: plan
+
+  - id: SystemB
+    decision_type:
+      - pipeline
+      - multi_outcome
+      - rule_based
+    status: plan
+
+decision_categories:
+  - id: Binary
+    path: project/Decisions/Binary/
+  - id: MultiOutcome
+    path: project/Decisions/MultiOutcome/
+  - id: RuleBased
+    path: project/Decisions/RuleBased/
+  - id: TableDriven
+    path: project/Decisions/TableDriven/
+  - id: Hierarchical
+    path: project/Decisions/Hierarchical/
+  - id: StateMachine
+    path: project/Decisions/StateMachine/

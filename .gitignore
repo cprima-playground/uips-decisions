@@ -1,0 +1,58 @@
+# UiPath Studio
+# Ignore .local files without ignoring DataService object .dlls
+.local/
+!.local/**/*.dll
+
+# Ignore Debug and Design-Time Settings, Don't Ignore Release Settings
+.settings/Debug/
+.settings/Design/
+
+# UiPath generated metadata
+.tmh/
+.project/
+.entities/
+.templates/
+
+# Object Repository: ignore generated hashes, reduce diff size
+.objects/**/.attributes/SearchHash
+.objects/**/.hash
+
+# Prevent scratch and rnd workflows from being committed
+**/*[Ss]cratch*.xaml
+*[Ss]cratch*.xaml
+**/*[Rr]n[dD]*.xaml
+*[Rr]n[dD]*.xaml
+
+# Temporary files from unsaved .xaml files
+~*
+project/**/~*
+
+# Exception screenshots
+Exceptions_Screenshots/
+
+# .NET standalone build artifacts
+_standalone/bin/
+_standalone/obj/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+
+# Editors / IDEs
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Nikola output and cache
+dist/
+cache/
+.doit.db*
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini

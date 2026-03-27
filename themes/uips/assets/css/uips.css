@@ -1,0 +1,64 @@
+/* Solarized Light — https://ethanschoonover.com/solarized/ */
+:root {
+  --sol-base03:  #002b36;
+  --sol-base02:  #073642;
+  --sol-base01:  #586e75;
+  --sol-base00:  #657b83;
+  --sol-base0:   #839496;
+  --sol-base1:   #93a1a1;
+  --sol-base2:   #eee8d5;
+  --sol-base3:   #fdf6e3;
+  --sol-yellow:  #b58900;
+  --sol-orange:  #cb4b16;
+  --sol-red:     #dc322f;
+  --sol-magenta: #d33682;
+  --sol-violet:  #6c71c4;
+  --sol-blue:    #268bd2;
+  --sol-cyan:    #2aa198;
+  --sol-green:   #859900;
+}
+
+body {
+  background-color: var(--sol-base3);
+  color: var(--sol-base00);
+  font-family: Georgia, serif;
+  line-height: 1.6;
+}
+
+a { color: var(--sol-blue); }
+a:visited { color: var(--sol-violet); }
+a:hover { color: var(--sol-cyan); }
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--sol-base01);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+code, pre {
+  background-color: var(--sol-base2);
+  color: var(--sol-base01);
+  font-family: "SFMono-Regular", Consolas, monospace;
+  border-radius: 3px;
+}
+
+pre { padding: 1em; overflow-x: auto; }
+code { padding: 0.15em 0.3em; }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th {
+  background-color: var(--sol-base2);
+  color: var(--sol-base01);
+  padding: 0.5em 1em;
+  text-align: left;
+}
+td { padding: 0.4em 1em; border-bottom: 1px solid var(--sol-base2); }
+
+blockquote {
+  border-left: 4px solid var(--sol-cyan);
+  margin-left: 0;
+  padding-left: 1em;
+  color: var(--sol-base1);
+}

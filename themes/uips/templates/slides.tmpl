@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="${lang}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${title} — ${blog_title}</title>
+  <link rel="stylesheet" href="${REVEALJS_SOURCE}/dist/reset.css">
+  <link rel="stylesheet" href="${REVEALJS_SOURCE}/dist/reveal.css">
+  <link rel="stylesheet" href="/assets/revealjs/theme/uips.css">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      ${post.text()}
+    </div>
+  </div>
+  <script src="${REVEALJS_SOURCE}/dist/reveal.js"></script>
+  <script src="${REVEALJS_SOURCE}/plugin/highlight/highlight.js"></script>
+  <script src="${REVEALJS_SOURCE}/plugin/notes/notes.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      plugins: [ RevealHighlight, RevealNotes ]
+    });
+  </script>
+</body>
+</html>

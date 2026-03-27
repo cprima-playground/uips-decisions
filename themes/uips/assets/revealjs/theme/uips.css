@@ -1,0 +1,47 @@
+/* reveal.js theme — Solarized Light / uips */
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+3&family=Source+Code+Pro&display=swap");
+
+:root {
+  --sol-base3:  #fdf6e3;
+  --sol-base2:  #eee8d5;
+  --sol-base01: #586e75;
+  --sol-base00: #657b83;
+  --sol-blue:   #268bd2;
+  --sol-cyan:   #2aa198;
+  --sol-yellow: #b58900;
+}
+
+.reveal {
+  font-family: "Source Sans 3", sans-serif;
+  font-size: 2rem;
+  color: var(--sol-base01);
+}
+
+.reveal .slides { background-color: var(--sol-base3); }
+
+.reveal h1, .reveal h2, .reveal h3 {
+  color: var(--sol-base01);
+  font-family: "Source Sans 3", sans-serif;
+  text-transform: none;
+  letter-spacing: -0.02em;
+}
+
+.reveal a { color: var(--sol-blue); }
+
+.reveal code {
+  background: var(--sol-base2);
+  color: var(--sol-base01);
+  font-family: "Source Code Pro", monospace;
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+
+.reveal pre code {
+  padding: 0.5em;
+  max-height: 500px;
+}
+
+.reveal section img {
+  border: none;
+  box-shadow: none;
+}
