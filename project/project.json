@@ -1,5 +1,5 @@
 {
-  "name": "ConFormMold_REF_v24_template",
+  "name": "EligibilityDecision_IfElse",
   "projectId": "9b64a900-c1dd-46f3-abe4-52575d8a6bfd",
   "description": "ConFormMold test baseline — pristine REFramework v24.10.0 template",
   "main": "Main.xaml",
@@ -46,10 +46,11 @@
     "fileInfoCollection": [
       {
         "editingStatus": "InProgress",
-        "testCaseId": "8ce68f12-30cb-4c2e-b293-1dbb7060ec66",
+        "testCaseId": "97c275b3-0470-432a-a745-dd96da497e85",
+        "dataVariationFilePath": ".variations\\E2E_EligibilityDecision.json",
         "testCaseType": "TestCase",
         "executionTemplateInvokeIsolated": false,
-        "fileName": "Tests\\TestCase_InitAllSettings.xaml"
+        "fileName": "Tests\\EligibilityDecision\\TestCase_EligibilityDecision_IfElse.xaml"
       }
     ],
     "modernBehavior": false,
