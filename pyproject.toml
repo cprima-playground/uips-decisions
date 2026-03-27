@@ -9,6 +9,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "ruff",
+    "openpyxl",
 ]
 
 [tool.ruff]

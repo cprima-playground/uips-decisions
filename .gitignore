@@ -4,18 +4,21 @@
 !.local/**/*.dll
 
 # Ignore Debug and Design-Time Settings, Don't Ignore Release Settings
-.settings/Debug/
-.settings/Design/
+**/.settings/Debug/
+**/.settings/Design/
 
 # UiPath generated metadata
-.tmh/
-.project/
-.entities/
-.templates/
+**/.tmh/
+**/.project/
+**/.entities/
+**/.templates/
 
 # Object Repository: ignore generated hashes, reduce diff size
-.objects/**/.attributes/SearchHash
-.objects/**/.hash
+**/.objects/**/.attributes/SearchHash
+**/.objects/**/.hash
+
+# UiPath entry points (auto-generated)
+**/entry-points.json
 
 # Prevent scratch and rnd workflows from being committed
 **/*[Ss]cratch*.xaml
