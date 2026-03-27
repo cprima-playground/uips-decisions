@@ -1,6 +1,6 @@
-# SystemA — Decision Requirements (Pseudonymized)
+# EligibilityDecision — Decision Requirements (Pseudonymized)
 
-## Decision: DecisionValue_SystemA
+## Decision: DecisionValue_EligibilityDecision
 
 ### Rule Group 1 — CaseCategory: Event_A or Event_B
 
@@ -23,8 +23,8 @@ AND (
     OR (ComplianceAssessment = empty)
     OR (SecondaryIndicator = true)
 )
-THEN DecisionValue_SystemA = Positive
-ELSE DecisionValue_SystemA = Negative
+THEN DecisionValue_EligibilityDecision = Positive
+ELSE DecisionValue_EligibilityDecision = Negative
 ```
 
 ### Rule Group 2 — CaseCategory: Event_C or Event_D
@@ -50,8 +50,8 @@ AND (
     OR (Indicator_X = N AND ComplianceAssessment = empty)
     OR (SecondaryIndicator = true)
 )
-THEN DecisionValue_SystemA = Positive
-ELSE DecisionValue_SystemA = Negative
+THEN DecisionValue_EligibilityDecision = Positive
+ELSE DecisionValue_EligibilityDecision = Negative
 ```
 
 ---

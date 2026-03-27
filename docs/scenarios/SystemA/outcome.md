@@ -1,1 +1,0 @@
-# SystemA — Acceptance Criteria

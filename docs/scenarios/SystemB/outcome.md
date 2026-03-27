@@ -1,1 +1,0 @@
-# SystemB — Acceptance Criteria

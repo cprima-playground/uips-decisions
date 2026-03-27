@@ -1,8 +1,8 @@
-# SystemB — Decision Pipeline Requirements (Pseudonymized)
+# RoutingPipeline — Decision Pipeline Requirements (Pseudonymized)
 
 ## Overview
 
-SystemB is a **decision pipeline**: a sequence of independent sub-decisions whose outputs feed into a final routing decision.
+RoutingPipeline is a **decision pipeline**: a sequence of independent sub-decisions whose outputs feed into a final routing decision.
 
 ---
 

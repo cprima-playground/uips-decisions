@@ -7,13 +7,13 @@
 #   docs/scenarios/<id>/roadmap.md
 
 scenarios:
-  - id: SystemA
+  - id: EligibilityDecision
     decision_type:
       - hierarchical
       - binary
     status: plan
 
-  - id: SystemB
+  - id: RoutingPipeline
     decision_type:
       - pipeline
       - multi_outcome

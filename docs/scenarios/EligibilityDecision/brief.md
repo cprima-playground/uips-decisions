@@ -1,4 +1,4 @@
-# SystemB — Brief
+# EligibilityDecision — Brief
 
 ## Learning Objectives
 
