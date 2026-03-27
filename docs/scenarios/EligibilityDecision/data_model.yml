@@ -1,0 +1,85 @@
+scenario: EligibilityDecision
+
+inputs:
+  CaseCategory:
+    type: String
+    note: Routes to Rule Group 1 (Event_A/B) or Rule Group 2 (Event_C/D)
+    values:
+      - Event_A
+      - Event_B
+      - Event_C
+      - Event_D
+
+  ComplianceAssessment:
+    type: String
+    note: >
+      "empty" is a sentinel for null/empty string, not an enum member.
+      Open question: are there other values besides Compliant and Non_Compliant?
+    values:
+      - Compliant
+      - Non_Compliant
+      - ""          # empty sentinel
+
+  Attribute_A:
+    type: String
+    note: >
+      Only relevant when ComplianceAssessment = Non_Compliant.
+      Open question: are there other values not referenced in the rules?
+    values:
+      - Verification_not_available
+      - Special_case_without_certified_component
+
+  Attribute_B:
+    type: String
+    note: >
+      Only one value appears in conditions. Likely has other values (e.g. High_impact)
+      that result in Negative. See open question on AND/OR with Attribute_C.
+    values:
+      - No_or_low_impact
+
+  Attribute_C:
+    type: String
+    note: >
+      Mirrors Attribute_B in all conditions. See open question on AND/OR with Attribute_B.
+    values:
+      - No_or_low_impact
+
+  Indicator_X:
+    type: String
+    note: Y/N flag, not a Boolean — appears as string literal in conditions.
+    values:
+      - "Y"
+      - "N"
+
+  Detail_X:
+    type: String
+    note: >
+      Only relevant when Indicator_X = Y.
+      "empty" is a sentinel for null/empty string.
+    values:
+      - Noticeable_irregularity
+      - ""          # empty sentinel
+
+  SecondaryIndicator:
+    type: Boolean
+    note: >
+      Override flag. When true, result is always Positive regardless of other inputs.
+      Only the true branch appears in the rules; false is the absence of override.
+    values:
+      - true
+      - false
+
+output:
+  DecisionValue_EligibilityDecision:
+    type: String
+    values:
+      - Positive
+      - Negative
+
+open_questions:
+  - id: 1
+    field: Attribute_B / Attribute_C
+    question: >
+      Are Attribute_B and Attribute_C joined by OR (at least one = No_or_low_impact)
+      or AND (both must = No_or_low_impact)?
+    status: Unresolved
