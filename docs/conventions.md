@@ -28,8 +28,9 @@ project/
 ## Workflow Files
 
 - One implementation approach per `.xaml` file.
-- Named `<ScenarioName>_<Approach>.xaml`, e.g. `EligibilityDecision_IfElse.xaml`.
+- Named `<Approach>.xaml` inside the scenario folder, e.g. `EligibilityDecision/IfElse.xaml`.
 - Approach names: `IfElse`, `DecisionTable`, `RuleBased`, `StateMachine`, …
+- Test cases named `TestCase_<ScenarioName>_<Approach>.xaml` inside `Tests/<ScenarioName>/`.
 
 ---
 
@@ -46,30 +47,28 @@ project/
 | Argument | Direction | Type | Notes |
 |----------|-----------|------|-------|
 | `in_Config` | In | `Dictionary(Of String, Object)` | Standard REFramework config dictionary |
-| `in_TransactionItem` | In | `DataRow` | One row from the in-memory queue |
+| `in_TransactionItem` | In | `UiPath.Core.QueueItem` | Transaction item with inputs in `SpecificContent` |
 | `out_DecisionValue` | Out | `String` | Decision result, e.g. `Positive` / `Negative` |
 
 ---
 
-## TransactionItem: DataRow, not QueueItem
+## TransactionItem: QueueItem
 
-`UiPath.Core.QueueItem` cannot be instantiated in-memory — it is an Orchestrator-managed object.
-For in-memory testing and local execution, `DataRow` is used as the TransactionItem equivalent.
-This maps naturally to reading rows from Excel and is the REFramework's built-in non-queue mode.
+`UiPath.Core.QueueItem` is used as `in_TransactionItem` in decision workflows.
+Input fields are read from `in_TransactionItem.SpecificContent("in_FieldName")`.
 
----
+For testing, the `QueueItem` is instantiated in the test case's `... Given` block:
 
-## In-Memory Queue Helper
+```vb
+New UiPath.Core.QueueItem With {
+    .SpecificContent = New Dictionary(Of String, Object) From {
+        {"in_FieldName", in_FieldName},
+        ...
+    }
+}
+```
 
-`Framework/GetInMemoryQueue.xaml` reads a sheet from `Data/TestData/E2E.xlsx` and returns a `DataTable`.
-Test cases iterate the rows and invoke the decision workflow once per row.
-
-| Argument | Direction | Type |
-|----------|-----------|------|
-| `in_Config` | In | `Dictionary(Of String, Object)` |
-| `in_FilePath` | In | `String` |
-| `in_SheetName` | In | `String` |
-| `out_QueueDataTable` | Out | `DataTable` |
+No queue object or Orchestrator connection is needed.
 
 ---
 
@@ -79,10 +78,26 @@ Visual Basic .NET (`VisualBasic`), as set in `project.json`.
 
 ---
 
+## Test Cases
+
+Test cases follow the **Given / When / Then** structure:
+
+- `... Given` — initialise `Config` via `InitAllSettings`, instantiate `TransactionItem` as a `QueueItem`
+- `... When` — invoke the decision workflow
+- `... Then` — assert `out_DecisionValue` against `Expected_DecisionValue`
+
+Variables declared at test case level: `Config As Dictionary(Of String, Object)`, `TransactionItem As QueueItem`.
+
+Test case arguments mirror the E2E.xlsx column names exactly (e.g. `in_CaseCategory`, `Expected_DecisionValue`).
+All input arguments are typed `String`; the decision workflow is responsible for type conversion where needed.
+
+---
+
 ## Test Data
 
 - Test data is loaded manually into Studio from `Data/TestData/E2E.xlsx`.
 - Each scenario has its own sheet, named after the scenario.
+- Input columns are prefixed `in_` to match `SpecificContent` key names.
 - The `Expected_DecisionValue` column holds the expected output for assertion.
 - Rows prefixed `[OPEN]` depend on unresolved open questions and must not be used for assertions until resolved.
 
