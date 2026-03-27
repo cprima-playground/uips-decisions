@@ -28,29 +28,38 @@
 /* ── Layout ───────────────────────────────────────────────────────────── */
 html { font-size: 16px; }
 
-body {
+html, body, #container {
   background-color: var(--sol-base3);
   color: var(--sol-base00);
+}
+
+body {
   font-family: Georgia, "Times New Roman", serif;
   line-height: 1.65;
   margin: 0;
   padding: 0;
 }
 
-.container, #content, .postbox {
+#container, .container, #content, main, .postbox {
   max-width: 860px;
   margin: 0 auto;
   padding: 1.5rem 1rem;
 }
 
-/* ── Navigation ───────────────────────────────────────────────────────── */
-nav, #navbar, .navbar {
+/* ── Header / Navigation ──────────────────────────────────────────────── */
+header#header, #header {
   background-color: var(--sol-base2);
   border-bottom: 1px solid var(--sol-base1);
   padding: 0.5rem 1rem;
+  max-width: 100%;
 }
 
-nav a, #navbar a {
+nav, nav#menu, #navbar, .navbar {
+  background-color: var(--sol-base2);
+  padding: 0.25rem 0;
+}
+
+nav a, nav#menu a, #navbar a {
   color: var(--sol-base01);
   text-decoration: none;
   margin-right: 1.2rem;
@@ -58,7 +67,7 @@ nav a, #navbar a {
   font-size: 0.9rem;
 }
 
-nav a:hover { color: var(--sol-blue); }
+nav a:hover, nav#menu a:hover { color: var(--sol-blue); }
 
 /* ── Typography ───────────────────────────────────────────────────────── */
 h1, h2, h3, h4, h5, h6 {
