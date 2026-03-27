@@ -6,21 +6,33 @@
   <title>${title} — ${blog_title}</title>
   <link rel="stylesheet" href="${REVEALJS_SOURCE}/dist/reset.css">
   <link rel="stylesheet" href="${REVEALJS_SOURCE}/dist/reveal.css">
-  <link rel="stylesheet" href="/assets/revealjs/theme/uips.css">
+  <link rel="stylesheet" href="${url_replacer(permalink, '/assets/revealjs/theme/uips.css', lang)}">
 </head>
 <body>
   <div class="reveal">
     <div class="slides">
-      ${post.text()}
+      <section data-markdown>
+        <textarea data-template>
+<%
+import re
+with open(post.source_path, 'r', encoding='utf-8') as _f:
+    _raw = _f.read()
+# Strip YAML frontmatter (--- ... ---)
+_raw = re.sub(r'\A---.*?---\s*', '', _raw, flags=re.DOTALL)
+%>
+${_raw}
+        </textarea>
+      </section>
     </div>
   </div>
   <script src="${REVEALJS_SOURCE}/dist/reveal.js"></script>
+  <script src="${REVEALJS_SOURCE}/plugin/markdown/markdown.js"></script>
   <script src="${REVEALJS_SOURCE}/plugin/highlight/highlight.js"></script>
   <script src="${REVEALJS_SOURCE}/plugin/notes/notes.js"></script>
   <script>
     Reveal.initialize({
       hash: true,
-      plugins: [ RevealHighlight, RevealNotes ]
+      plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
     });
   </script>
 </body>
