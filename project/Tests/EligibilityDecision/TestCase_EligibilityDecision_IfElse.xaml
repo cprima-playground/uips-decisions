@@ -152,7 +152,7 @@
                 <OutArgument x:TypeArguments="ui:QueueItem">[TransactionItem]</OutArgument>
               </ui:AssignOperation.To>
               <ui:AssignOperation.Value>
-                <InArgument x:TypeArguments="ui:QueueItem">[New UiPath.Core.QueueItem With {.SpecificContent = New Dictionary(Of String, Object) From {{"in_CaseCategory", in_CaseCategory}, {"in_ComplianceAssessment", in_ComplianceAssessment}, {"in_Attribute_A", in_Attribute_A}, {"in_Attribute_B", in_Attribute_B}, {"in_Attribute_C", in_Attribute_C}, {"in_Indicator_X", in_Indicator_X}, {"in_Detail_X", in_Detail_X}, {"in_SecondaryIndicator", in_SecondaryIndicator}}}]</InArgument>
+                <InArgument x:TypeArguments="ui:QueueItem">[New UiPath.Core.QueueItem With {.SpecificContent = New Dictionary(Of String, Object) From {{"in_CaseCategory", in_CaseCategory}, {"in_ComplianceAssessment", in_ComplianceAssessment}, {"in_Attribute_A", in_Attribute_A}, {"in_Attribute_B", in_Attribute_B}, {"in_Attribute_C", in_Attribute_C}, {"in_Indicator_X", in_Indicator_X}, {"in_Detail_X", in_Detail_X}, {"in_SecondaryIndicator", Boolean.Parse(in_SecondaryIndicator)}}}]</InArgument>
               </ui:AssignOperation.Value>
             </ui:AssignOperation>
           </scg:List>
