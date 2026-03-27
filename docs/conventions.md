@@ -89,7 +89,19 @@ Test cases follow the **Given / When / Then** structure:
 Variables declared at test case level: `Config As Dictionary(Of String, Object)`, `TransactionItem As QueueItem`.
 
 Test case arguments mirror the E2E.xlsx column names exactly (e.g. `in_CaseCategory`, `Expected_DecisionValue`).
-All input arguments are typed `String`; the decision workflow is responsible for type conversion where needed.
+All input arguments are typed `String` (Excel source).
+
+**The test case is responsible for casting to the correct type** before placing values into `SpecificContent`.
+The decision workflow receives already-typed values and must not perform its own parsing.
+
+Common casts in VB.NET:
+
+| Target type | Expression |
+|---|---|
+| `Boolean` | `Boolean.Parse(in_SecondaryIndicator)` |
+| `Integer` | `Integer.Parse(in_SomeNumber)` |
+| `String` | no cast needed |
+| empty sentinel | `If(String.IsNullOrEmpty(in_Field), Nothing, in_Field)` |
 
 ---
 
