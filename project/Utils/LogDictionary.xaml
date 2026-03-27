@@ -1,6 +1,6 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="LogSpecificContent" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="LogDictionary" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
-    <x:Property Name="in_TransactionItem" Type="InArgument(ui:QueueItem)" />
+    <x:Property Name="in_Dictionary" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
   </x:Members>
   <VisualBasic.Settings>
     <x:Null />
@@ -60,7 +60,7 @@
       <AssemblyReference>UiPath.Studio.Constants</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="LogSpecificContent" sap:VirtualizedContainerService.HintSize="572,600" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="LogDictionary" sap:VirtualizedContainerService.HintSize="572,600" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="logMessage" />
     </Sequence.Variables>
@@ -69,8 +69,8 @@
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:LogMessage DisplayName="Log begin" Level="Trace" Message="[&quot;LogSpecificContent: begin (&quot; &amp; in_TransactionItem.SpecificContent.Count.ToString() &amp; &quot; entries)&quot;]" sap:VirtualizedContainerService.HintSize="510,60" sap2010:WorkflowViewState.IdRef="LogMessage_1" />
-    <ui:ForEach x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" CurrentIndex="{x:Null}" DisplayName="For Each kvp In SpecificContent" sap:VirtualizedContainerService.HintSize="510,400" sap2010:WorkflowViewState.IdRef="ForEach_1" Values="[in_TransactionItem.SpecificContent]">
+    <ui:LogMessage DisplayName="Log begin" Level="Trace" Message="[&quot;LogDictionary: begin (&quot; &amp; in_Dictionary.Count.ToString() &amp; &quot; entries)&quot;]" sap:VirtualizedContainerService.HintSize="510,60" sap2010:WorkflowViewState.IdRef="LogMessage_1" />
+    <ui:ForEach x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" CurrentIndex="{x:Null}" DisplayName="For Each kvp In Dictionary" sap:VirtualizedContainerService.HintSize="510,400" sap2010:WorkflowViewState.IdRef="ForEach_1" Values="[in_Dictionary]">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="scg:KeyValuePair(x:String, x:Object)">
           <ActivityAction.Argument>
@@ -95,6 +95,6 @@
         </ActivityAction>
       </ui:ForEach.Body>
     </ui:ForEach>
-    <ui:LogMessage DisplayName="Log end" Level="Trace" Message="[&quot;LogSpecificContent: end&quot;]" sap:VirtualizedContainerService.HintSize="510,60" sap2010:WorkflowViewState.IdRef="LogMessage_3" />
+    <ui:LogMessage DisplayName="Log end" Level="Trace" Message="[&quot;LogDictionary: end&quot;]" sap:VirtualizedContainerService.HintSize="510,60" sap2010:WorkflowViewState.IdRef="LogMessage_3" />
   </Sequence>
 </Activity>
