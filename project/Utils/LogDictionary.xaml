@@ -1,11 +1,12 @@
 <Activity mc:Ignorable="sap sap2010" x:Class="LogDictionary" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Dictionary" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
+    <x:Property Name="in_Label" Type="InArgument(x:String)" />
   </x:Members>
   <VisualBasic.Settings>
     <x:Null />
   </VisualBasic.Settings>
-  <sap2010:WorkflowViewState.IdRef>LogSpecificContent_1</sap2010:WorkflowViewState.IdRef>
+  <sap2010:WorkflowViewState.IdRef>LogDictionary_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
       <x:String>System.Activities</x:String>
@@ -60,41 +61,12 @@
       <AssemblyReference>UiPath.Studio.Constants</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="LogDictionary" sap:VirtualizedContainerService.HintSize="572,600" sap2010:WorkflowViewState.IdRef="Sequence_1">
-    <Sequence.Variables>
-      <Variable x:TypeArguments="x:String" Name="logMessage" />
-    </Sequence.Variables>
+  <Sequence DisplayName="LogDictionary" sap:VirtualizedContainerService.HintSize="572,200" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:LogMessage DisplayName="Log begin" Level="Trace" Message="[&quot;LogDictionary: begin (&quot; &amp; in_Dictionary.Count.ToString() &amp; &quot; entries)&quot;]" sap:VirtualizedContainerService.HintSize="510,60" sap2010:WorkflowViewState.IdRef="LogMessage_1" />
-    <ui:ForEach x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" CurrentIndex="{x:Null}" DisplayName="For Each kvp In Dictionary" sap:VirtualizedContainerService.HintSize="510,400" sap2010:WorkflowViewState.IdRef="ForEach_1" Values="[in_Dictionary]">
-      <ui:ForEach.Body>
-        <ActivityAction x:TypeArguments="scg:KeyValuePair(x:String, x:Object)">
-          <ActivityAction.Argument>
-            <DelegateInArgument x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Name="kvp" />
-          </ActivityAction.Argument>
-          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="476,300" sap2010:WorkflowViewState.IdRef="Sequence_2">
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-            <Assign DisplayName="Build log message" sap:VirtualizedContainerService.HintSize="434,82" sap2010:WorkflowViewState.IdRef="Assign_1">
-              <Assign.To>
-                <OutArgument x:TypeArguments="x:String">[logMessage]</OutArgument>
-              </Assign.To>
-              <Assign.Value>
-                <InArgument x:TypeArguments="x:String">["  [SpecificContent] " &amp; kvp.Key &amp; " (" &amp; If(kvp.Value Is Nothing, "Nothing", kvp.Value.GetType().Name) &amp; ") = " &amp; If(kvp.Value Is Nothing, "(Nothing)", kvp.Value.ToString())]</InArgument>
-              </Assign.Value>
-            </Assign>
-            <ui:LogMessage DisplayName="Log entry" Level="Trace" Message="[logMessage]" sap:VirtualizedContainerService.HintSize="434,60" sap2010:WorkflowViewState.IdRef="LogMessage_2" />
-          </Sequence>
-        </ActivityAction>
-      </ui:ForEach.Body>
-    </ui:ForEach>
-    <ui:LogMessage DisplayName="Log end" Level="Trace" Message="[&quot;LogDictionary: end&quot;]" sap:VirtualizedContainerService.HintSize="510,60" sap2010:WorkflowViewState.IdRef="LogMessage_3" />
+    <ui:LogMessage DisplayName="Log Dictionary" Level="Trace" sap:VirtualizedContainerService.HintSize="510,92" sap2010:WorkflowViewState.IdRef="LogMessage_1" Message="[If(String.IsNullOrEmpty(in_Label), &quot;Dictionary&quot;, in_Label) &amp; &quot; (&quot; &amp; in_Dictionary.Count.ToString() &amp; &quot; entries):&quot; &amp; Environment.NewLine &amp; String.Join(Environment.NewLine, in_Dictionary.[Select](Function(kvp) &quot;  &quot; &amp; kvp.Key &amp; &quot; (&quot; &amp; If(kvp.Value Is Nothing, &quot;Nothing&quot;, kvp.Value.GetType().Name) &amp; &quot;) = &quot; &amp; If(kvp.Value Is Nothing, &quot;(Nothing)&quot;, If(TypeOf kvp.Value Is Dictionary(Of String, Object), &quot;{&quot; &amp; String.Join(&quot;, &quot;, CType(kvp.Value, Dictionary(Of String, Object)).[Select](Function(y) y.Key &amp; &quot;: &quot; &amp; Convert.ToString(y.Value).Replace(Environment.NewLine, &quot; &quot;))) &amp; &quot;}&quot;, If(TypeOf kvp.Value Is DataTable, &quot;&lt;DataTable&gt;&quot;, Convert.ToString(kvp.Value).Replace(Environment.NewLine, &quot; &quot;))))))]" />
   </Sequence>
 </Activity>
