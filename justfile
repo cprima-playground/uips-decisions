@@ -36,3 +36,7 @@ run-eligibility pattern="IfElse":
 # Example: just run "Tests\EligibilityDecision\Workflow_EligibilityDecision_StateMachine.xaml"
 run entry:
     pwsh -NonInteractive -File {{_script}} -EntryPoint "{{entry}}"
+
+# Walk all implementation XAML files and emit the activity tree to workflow_tree_output.txt
+tree:
+    dotnet run --file scripts/workflow_tree.cs
