@@ -66,15 +66,25 @@ var projectRoot  = Path.GetDirectoryName(projectJsonPath)!;
 using var jsonDoc = JsonDocument.Parse(File.ReadAllText(projectJsonPath));
 var projectJson = jsonDoc.RootElement;
 
-// ── Collect implementation XAML files ────────────────────────────────────────
-var implFiles = Directory
-    .EnumerateFiles(projectRoot, "*.xaml", SearchOption.AllDirectories)
-    .Where(f => !f.Contains($"{Path.DirectorySeparatorChar}."))
-    .Where(f => !f.Contains($"{Path.DirectorySeparatorChar}Tests{Path.DirectorySeparatorChar}")
-             && !f.Contains($"{Path.DirectorySeparatorChar}Framework{Path.DirectorySeparatorChar}")
-             && !Path.GetFileName(f).Equals("README.xaml", StringComparison.OrdinalIgnoreCase))
-    .OrderBy(f => f)
-    .ToList();
+// ── Parse project.json metadata ──────────────────────────────────────────────
+var projectName = projectJson.GetProperty("name").GetString() ?? "";
+var mainPath    = projectJson.TryGetProperty("main", out var mainEl)
+                  ? NormalizeRelPath(mainEl.GetString() ?? "") : "";
+
+List<string> entryPoints;
+if (projectJson.TryGetProperty("entryPoints", out var epsEl))
+{
+    entryPoints = epsEl.EnumerateArray()
+        .Select(ep => NormalizeRelPath(ep.GetProperty("filePath").GetString()!))
+        .ToList();
+}
+else
+{
+    entryPoints = new List<string>();
+}
+// Fallback: seed from main if entryPoints absent or empty
+if (entryPoints.Count == 0 && !string.IsNullOrEmpty(mainPath))
+    entryPoints.Add(mainPath);
 
 
 // ── Expression extractor — argument properties not exposed by GetActivities() ─
@@ -177,6 +187,13 @@ static string? GetArgExpr(object? argValue)
     if (argValue is ITextExpression te2
         && !string.IsNullOrWhiteSpace(te2.ExpressionText))
         return te2.ExpressionText;
+    // Literal<T> — a constant value, not a VB expression string.
+    // InvokeWorkflowFile.WorkflowFileName is stored as Literal<string>.
+    if (argValue.GetType().Name == "Literal`1")
+    {
+        var valProp = argValue.GetType().GetProperty("Value");
+        return valProp?.GetValue(argValue)?.ToString();
+    }
     // Try .Expression property (InArgument<T> / OutArgument<T> / Argument).
     // Use GetProperties() to avoid AmbiguousMatchException when a type has
     // multiple overloads of a property (e.g. AssignOperation inherits Activity
@@ -187,9 +204,9 @@ static string? GetArgExpr(object? argValue)
                              && p.GetIndexParameters().Length == 0);
     try
     {
-        if (exprProp?.GetValue(argValue) is ITextExpression te
-            && !string.IsNullOrWhiteSpace(te.ExpressionText))
-            return te.ExpressionText;
+        var inner = exprProp?.GetValue(argValue);
+        if (inner is not null && !ReferenceEquals(inner, argValue))
+            return GetArgExpr(inner);   // recurse — handles Literal<T> unwrap
     }
     catch { }
     return null;
@@ -270,7 +287,7 @@ static WfNode? Build(
     // ── Step 7: build node-local named Expressions ───────────────────────────
     var expressions = new List<WfExpression>();
     var actType = activity.GetType();
-    foreach (var propName in new[] { "Condition", "Value", "To", "Message" })
+    foreach (var propName in new[] { "Condition", "Value", "To", "Message", "WorkflowFileName" })
     {
         var prop = actType.GetProperty(propName, BindingFlags.Public | BindingFlags.Instance);
         if (prop is null) continue;
@@ -305,6 +322,10 @@ static WfNode? Build(
         try { rawChildren = WorkflowInspectionServices.GetActivities(activity).ToList(); }
         catch { rawChildren = Enumerable.Empty<Activity>(); }
     }
+    catch   // e.g. XamlObjectWriterException for unknown generic UiPath types
+    {
+        rawChildren = Enumerable.Empty<Activity>();
+    }
 
     var children = new List<WfNode>();
     foreach (var child in rawChildren)
@@ -327,6 +348,29 @@ static void CollectStats(WfNode node, Dictionary<string, int> freq)
         CollectStats(child, freq);
 }
 
+
+// ── Path normalization ────────────────────────────────────────────────────────
+// Centralised: used for main, entryPoints[].filePath, and WorkflowFileName values.
+static string NormalizeRelPath(string path) =>
+    path.Replace('/', Path.DirectorySeparatorChar)
+        .Replace('\\', Path.DirectorySeparatorChar)
+        .TrimStart(Path.DirectorySeparatorChar);
+
+// ── Invoke edge scanner ───────────────────────────────────────────────────────
+// Yields (nodeId, rawFileName) for every InvokeWorkflowFile node in the tree.
+// Resolution is the caller's responsibility — rawFileName is the as-stored value.
+static IEnumerable<(string NodeId, string RawFileName)> FindInvokeEdges(WfNode node)
+{
+    if (node.Type == "InvokeWorkflowFile")
+    {
+        var expr = node.Expressions.FirstOrDefault(e => e.Name == "WorkflowFileName");
+        if (expr is not null)
+            yield return (node.Id, expr.Value);
+    }
+    foreach (var child in node.Children)
+        foreach (var edge in FindInvokeEdges(child))
+            yield return edge;
+}
 
 // ── Text renderer (IR) ────────────────────────────────────────────────────────
 // Walks the IR-normalized WfNode tree and writes an indented text representation.
@@ -358,9 +402,9 @@ static void Render(WfNode node, int depth, TextWriter output)
 // Serializes all WfNode trees to a single JSON object keyed by relative XAML path.
 // No DTOs — WfNode serializes directly.  Writes to the supplied TextWriter
 // (Console.Out for --json, a StreamWriter for --json-out <path>).
-static void RenderJson(Dictionary<string, WfNode> nodes, TextWriter output)
+static void RenderJson(WfProject project, TextWriter output)
 {
-    var json = JsonSerializer.Serialize(nodes, new JsonSerializerOptions { WriteIndented = true });
+    var json = JsonSerializer.Serialize(project, new JsonSerializerOptions { WriteIndented = true });
     output.WriteLine(json);
 }
 
@@ -410,21 +454,33 @@ StreamWriter? treeWriter = textOutArg is not null
 if (!jsonToStdout)
 {
     Console.WriteLine($"project.json  : {projectJsonPath}");
-    Console.WriteLine($"name          : {projectJson.GetProperty("name").GetString()}");
-    Console.WriteLine($"files         : {implFiles.Count}");
+    Console.WriteLine($"name          : {projectName}");
+    Console.WriteLine($"entrypoints   : {entryPoints.Count}");
     Console.WriteLine();
 }
 
-var allNodes = new Dictionary<string, WfNode>();   // populated only when emitJson
+// ── BFS graph traversal from entrypoints ─────────────────────────────────────
+var workflows     = new Dictionary<string, WfWorkflow>(StringComparer.OrdinalIgnoreCase);
+var invokeEdges   = new List<InvokeEdge>();
+var queuedOrBuilt = new HashSet<string>(entryPoints, StringComparer.OrdinalIgnoreCase);
+var queue         = new Queue<string>(entryPoints);
 
-foreach (var xamlPath in implFiles)
+while (queue.Count > 0)
 {
-    var relPath = Path.GetRelativePath(projectRoot, xamlPath);
+    var relPath  = queue.Dequeue();
+    if (workflows.ContainsKey(relPath)) continue;
+
+    var fullPath = Path.GetFullPath(Path.Combine(projectRoot, relPath));
+    if (!File.Exists(fullPath))
+    {
+        Console.Error.WriteLine($"MISSING {relPath}");
+        continue;
+    }
 
     Activity root;
     try
     {
-        using var stream = File.OpenRead(xamlPath);
+        using var stream = File.OpenRead(fullPath);
         using var reader = new XamlXmlReader(stream, schemaContext);
         root = ActivityXamlServices.Load(reader,
             new ActivityXamlServicesSettings { CompileExpressions = false });
@@ -435,35 +491,54 @@ foreach (var xamlPath in implFiles)
         continue;
     }
 
-    var annotations    = ExtractAnnotations(xamlPath);
+    var annotations    = ExtractAnnotations(fullPath);
     var allExpressions = new List<string>();
     int idCounter      = 0;
     var wfNode         = Build(root, annotations, ref idCounter, allExpressions);
-    var irNode         = wfNode is not null ? NormalizeTree(wfNode) : null;
+    if (wfNode is null) continue;
 
-    // ── One-line summary (human modes) ────────────────────────────────────────
+    workflows[relPath] = new WfWorkflow(
+        relPath, wfNode,
+        annotations.Count,
+        allExpressions.Distinct().Count(),
+        allExpressions.Count);
+
+    // Resolve invoked workflows relative to project root (UiPath WorkflowFileName is project-relative)
+    foreach (var (nodeId, rawFileName) in FindInvokeEdges(wfNode))
+    {
+        var targetRel  = NormalizeRelPath(rawFileName);
+        var targetFull = Path.GetFullPath(Path.Combine(projectRoot, targetRel));
+        var resolved   = File.Exists(targetFull);
+        invokeEdges.Add(new InvokeEdge(relPath, nodeId, targetRel, resolved));
+        if (resolved && queuedOrBuilt.Add(targetRel))
+            queue.Enqueue(targetRel);
+    }
+
     if (!jsonToStdout)
     {
-        var freq         = new Dictionary<string, int>();
-        if (irNode is not null) CollectStats(irNode, freq);
-        var actCount     = freq.Values.Sum();
-        var exprCount    = allExpressions.Distinct().Count();
-        Console.WriteLine($"  {relPath,-52}  {actCount,4} activities  {annotations.Count,3} annotations  {exprCount,3} expressions");
+        var freq     = new Dictionary<string, int>();
+        CollectStats(wfNode, freq);
+        var actCount = freq.Values.Sum();
+        Console.WriteLine($"  {relPath,-52}  {actCount,4} activities  " +
+                          $"{annotations.Count,3} annotations  " +
+                          $"{allExpressions.Distinct().Count(),3} expressions");
     }
-
-    // ── Text tree output (IR) ─────────────────────────────────────────────────
-    if (treeWriter is not null && irNode is not null)
-    {
-        treeWriter.WriteLine();
-        treeWriter.WriteLine($"  {relPath}");
-        treeWriter.WriteLine($"  {new string('─', relPath.Length)}");
-        Render(irNode, 2, treeWriter);
-    }
-
-    if (emitJson && wfNode is not null)
-        allNodes[relPath] = wfNode;
 }
 
+var wfProject = new WfProject(projectName, mainPath, entryPoints, workflows, invokeEdges);
+
+// ── Text tree output (IR) ─────────────────────────────────────────────────────
+if (treeWriter is not null)
+{
+    foreach (var wf in wfProject.Workflows.Values)
+    {
+        var irNode = NormalizeTree(wf.Root);
+        treeWriter.WriteLine();
+        treeWriter.WriteLine($"  {wf.Path}");
+        treeWriter.WriteLine($"  {new string('─', wf.Path.Length)}");
+        Render(irNode, 2, treeWriter);
+    }
+}
 treeWriter?.Dispose();
 if (treeWriter is not null)
     Console.WriteLine($"tree written to: {resolvedTextOut}");
@@ -475,12 +550,12 @@ if (emitJson)
     {
         using var jsonWriter = new StreamWriter(jsonOutArg, false,
             new System.Text.UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
-        RenderJson(allNodes, jsonWriter);
+        RenderJson(wfProject, jsonWriter);
         Console.WriteLine($"JSON written to: {jsonOutArg}");
     }
     else
     {
-        RenderJson(allNodes, Console.Out);
+        RenderJson(wfProject, Console.Out);
     }
 }
 
@@ -544,6 +619,31 @@ record WfNode(
     List<WfVariable> Variables,
     List<WfExpression> Expressions,       // node-local named: Condition / Value / To / Message
     List<WfNode> Children
+);
+
+// ── Project-level model ───────────────────────────────────────────────────────
+
+record WfWorkflow(
+    string Path,                     // project-relative, OS separator
+    WfNode Root,                     // raw WfNode — IR applied on render, not stored
+    int AnnotationCount,
+    int ExpressionDistinctCount,
+    int ExpressionTotalCount
+);
+
+record InvokeEdge(
+    string FromWorkflowPath,         // project-relative path of caller
+    string FromNodeId,               // WfNode.Id of the InvokeWorkflowFile node
+    string ToWorkflowPath,           // project-relative canonical path of callee
+    bool Resolved                    // true if the target file exists on disk
+);
+
+record WfProject(
+    string Name,                     // project.json "name"
+    string MainPath,                 // project.json "main" (empty string if absent)
+    List<string> EntryPoints,        // project.json "entryPoints[].filePath"
+    Dictionary<string, WfWorkflow> Workflows,   // key = project-relative path
+    List<InvokeEdge> InvokeEdges
 );
 
 // ── Scaffolding filter ────────────────────────────────────────────────────────
