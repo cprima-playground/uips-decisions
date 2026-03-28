@@ -58,19 +58,24 @@
     <x:Property Name="in_DocumentTypesAccepted" Type="InArgument(x:Boolean)" />
     <x:Property Name="out_Channel" Type="OutArgument(x:String)" />
   </x:Members>
-  <Sequence DisplayName="DetermineChannel" sap2010:WorkflowViewState.IdRef="Sequence_1">
-    <If DisplayName="Channel_A if all conditions met else Channel_B" sap2010:WorkflowViewState.IdRef="If_1">
+  <Sequence DisplayName="DetermineChannel" sap2010:Annotation.AnnotationText="Sub-decision 1 of 7&#xD;&#xA;Pattern: IfElse&#xD;&#xA;Input:  in_HasRegistryId (Boolean)&#xD;&#xA;        in_RegistryParticipantExists (Boolean)&#xD;&#xA;        in_DocumentTypesAccepted (Boolean)&#xD;&#xA;Output: out_Channel — Channel_A | Channel_B" sap2010:WorkflowViewState.IdRef="Sequence_1">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    <If DisplayName="Channel_A if all conditions met else Channel_B" sap2010:Annotation.AnnotationText="[NEEDLE]&#xD;&#xA;Rule: all three conditions must be True for Channel_A.&#xD;&#xA;Any single False → Channel_B.&#xD;&#xA;Short-circuits on first False (AndAlso).&#xD;&#xA;&#xD;&#xA;#cb39fe" sap2010:WorkflowViewState.IdRef="If_1">
       <If.Condition>
         <InArgument x:TypeArguments="x:Boolean">[in_HasRegistryId AndAlso in_RegistryParticipantExists AndAlso in_DocumentTypesAccepted]</InArgument>
       </If.Condition>
       <If.Then>
-        <Assign DisplayName="Assign Channel_A" sap2010:WorkflowViewState.IdRef="Assign_A">
+        <Assign DisplayName="Assign Channel_A" sap2010:Annotation.AnnotationText="Channel_A: preferred channel when registry entry is valid&#xD;&#xA;and all document types are accepted." sap2010:WorkflowViewState.IdRef="Assign_A">
           <Assign.To><OutArgument x:TypeArguments="x:String">[out_Channel]</OutArgument></Assign.To>
           <Assign.Value><InArgument x:TypeArguments="x:String">["Channel_A"]</InArgument></Assign.Value>
         </Assign>
       </If.Then>
       <If.Else>
-        <Assign DisplayName="Assign Channel_B" sap2010:WorkflowViewState.IdRef="Assign_B">
+        <Assign DisplayName="Assign Channel_B" sap2010:Annotation.AnnotationText="Channel_B: fallback channel for all other cases." sap2010:WorkflowViewState.IdRef="Assign_B">
           <Assign.To><OutArgument x:TypeArguments="x:String">[out_Channel]</OutArgument></Assign.To>
           <Assign.Value><InArgument x:TypeArguments="x:String">["Channel_B"]</InArgument></Assign.Value>
         </Assign>

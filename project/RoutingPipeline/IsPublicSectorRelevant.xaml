@@ -56,8 +56,13 @@
     <x:Property Name="in_RegistryId" Type="InArgument(x:String)" />
     <x:Property Name="out_IsPublicSector" Type="OutArgument(x:Boolean)" />
   </x:Members>
-  <Sequence DisplayName="IsPublicSectorRelevant" sap2010:WorkflowViewState.IdRef="Sequence_1">
-    <Assign DisplayName="IsPublicSector = RegistryId starts with PS-" sap2010:WorkflowViewState.IdRef="Assign_1">
+  <Sequence DisplayName="IsPublicSectorRelevant" sap2010:Annotation.AnnotationText="Sub-decision 2 of 7&#xD;&#xA;Pattern: Expression&#xD;&#xA;Input:  in_RegistryId (String)&#xD;&#xA;Output: out_IsPublicSector (Boolean)" sap2010:WorkflowViewState.IdRef="Sequence_1">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    <Assign DisplayName="IsPublicSector = RegistryId starts with PS-" sap2010:Annotation.AnnotationText="[NEEDLE]&#xD;&#xA;Expression: in_RegistryId.StartsWith(&quot;PS-&quot;)&#xD;&#xA;Convention: public sector registry IDs are prefixed &quot;PS-&quot;.&#xD;&#xA;Returns True if the registry entry belongs to a public sector entity.&#xD;&#xA;&#xD;&#xA;#cb39fe" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To><OutArgument x:TypeArguments="x:Boolean">[out_IsPublicSector]</OutArgument></Assign.To>
       <Assign.Value><InArgument x:TypeArguments="x:Boolean">[in_RegistryId.StartsWith("PS-")]</InArgument></Assign.Value>
     </Assign>

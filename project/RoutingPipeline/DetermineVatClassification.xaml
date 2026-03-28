@@ -56,8 +56,13 @@
     <x:Property Name="in_VatId" Type="InArgument(x:String)" />
     <x:Property Name="out_VatClassification" Type="OutArgument(x:String)" />
   </x:Members>
-  <Sequence DisplayName="DetermineVatClassification" sap2010:WorkflowViewState.IdRef="Sequence_1">
-    <Assign DisplayName="NATIONAL if VatId starts with DOM- else INTERNATIONAL" sap2010:WorkflowViewState.IdRef="Assign_1">
+  <Sequence DisplayName="DetermineVatClassification" sap2010:Annotation.AnnotationText="Sub-decision 3 of 7&#xD;&#xA;Pattern: Expression&#xD;&#xA;Input:  in_VatId (String)&#xD;&#xA;Output: out_VatClassification — NATIONAL | INTERNATIONAL" sap2010:WorkflowViewState.IdRef="Sequence_1">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    <Assign DisplayName="NATIONAL if VatId starts with DOM- else INTERNATIONAL" sap2010:Annotation.AnnotationText="[NEEDLE]&#xD;&#xA;Expression: If(in_VatId.StartsWith(&quot;DOM-&quot;), &quot;NATIONAL&quot;, &quot;INTERNATIONAL&quot;)&#xD;&#xA;Convention: domestic VAT IDs are prefixed &quot;DOM-&quot;.&#xD;&#xA;NATIONAL  → domestic transaction&#xD;&#xA;INTERNATIONAL → cross-border transaction&#xD;&#xA;&#xD;&#xA;#cb39fe" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To><OutArgument x:TypeArguments="x:String">[out_VatClassification]</OutArgument></Assign.To>
       <Assign.Value><InArgument x:TypeArguments="x:String">[If(in_VatId.StartsWith("DOM-"), "NATIONAL", "INTERNATIONAL")]</InArgument></Assign.Value>
     </Assign>

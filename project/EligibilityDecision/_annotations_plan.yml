@@ -1,0 +1,697 @@
+# Annotation Plan — EligibilityDecision
+#
+# Axes:
+#   structure : workflow-level or section/step-level metadata (I/O, pattern, purpose)
+#   rule      : business rule in plain language
+#   expression: plain-language translation of a VB.NET expression
+#   sentinel  : meaning of a special value ("*", "?", "OPEN", empty string)
+#   pattern   : why this implementation pattern was chosen for this step
+#
+# needle: true  → mark activity with color #cb39fe
+#         The needle marks the ONE activity per workflow where the
+#         consequential decision is encoded — the activity a reader
+#         should find first when scanning the canvas.
+#
+# docked: true → annotation panel shown docked (visible without hover)
+#
+# Shared business rules (referenced by multiple workflows):
+#
+#   SecondaryIndicator = True → always Positive (universal override)
+#
+#   Rule Group 1 (CaseCategory = Event_A or Event_B):
+#     Positive if:
+#       ComplianceAssessment = Compliant
+#       OR ComplianceAssessment = empty
+#       OR (Non_Compliant AND Attribute_A ∈ {Verification_not_available,
+#           Special_case_without_certified_component}
+#           AND (Attribute_B = No_or_low_impact OR Attribute_C = No_or_low_impact))
+#     Otherwise: Negative
+#
+#   Rule Group 2 (CaseCategory = Event_C or Event_D):
+#     Positive if:
+#       (Indicator_X = Y AND (Detail_X = Noticeable_irregularity OR empty))
+#       OR (Indicator_X = N AND ComplianceAssessment = Compliant)
+#       OR (Indicator_X = N AND ComplianceAssessment = empty)
+#       OR (Indicator_X = N AND Non_Compliant AND Attribute_A ∈ {Verif_NA, Special_case}
+#           AND (Attribute_B = No_or_low_impact OR Attribute_C = No_or_low_impact))
+#     Otherwise: Negative
+#
+#   Open question #1: Attribute_B / Attribute_C — OR or AND? (unresolved)
+# ---------------------------------------------------------------------------
+
+IfElse.xaml:
+  Sequence_1:
+    annotation_type: structure
+    docked: true
+    needle: false
+    text: |
+      Pattern: IfElse
+      Each branch tests one predicate; the matched leaf assigns the output.
+      Inputs  (from in_TransactionItem.SpecificContent):
+        in_CaseCategory, in_ComplianceAssessment
+        in_Attribute_A, in_Attribute_B, in_Attribute_C
+        in_Indicator_X, in_Detail_X, in_SecondaryIndicator (Boolean)
+      Output: out_DecisionValue — Positive | Negative
+
+  MultipleAssign_1:
+    annotation_type: structure
+    docked: false
+    needle: false
+    text: |
+      Extracts all typed inputs from SpecificContent into local variables.
+      SecondaryIndicator is stored as Boolean; all others as String.
+
+  If_Secondary:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      Universal override: SecondaryIndicator = True → always Positive,
+      regardless of CaseCategory or any other field.
+      Evaluated first so it short-circuits both rule groups.
+
+  Assign_Secondary_Pos:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      SecondaryIndicator override fires → Positive.
+
+  If_RG1:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      Dispatch: CaseCategory ∈ {Event_A, Event_B} → Rule Group 1 branch.
+
+  If_RG1_CA_Pos:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG1 positive path: ComplianceAssessment = Compliant OR empty.
+      Empty string is a sentinel meaning "assessment not yet available" — treated as Positive.
+
+  Assign_RG1_CA_Pos:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG1: Compliant or empty ComplianceAssessment → Positive.
+
+  If_RG1_NonCompliant:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG1: ComplianceAssessment = Non_Compliant — enter attribute evaluation.
+
+  If_RG1_AttrA:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG1 Non_Compliant: Attribute_A must be one of two special values
+      that indicate mitigating circumstances:
+        Verification_not_available
+        Special_case_without_certified_component
+
+  If_RG1_AttrBC:
+    annotation_type: rule
+    docked: false
+    needle: true
+    text: |
+      [NEEDLE — deepest decision point in RG1]
+      RG1 Non_Compliant + special Attribute_A:
+        Positive if Attribute_B = No_or_low_impact
+                 OR Attribute_C = No_or_low_impact
+      Open question #1: is this OR or AND? Currently implemented as OR.
+
+  Assign_RG1_AttrBC_Pos:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG1 Non_Compliant + special Attribute_A + low-impact Attribute_BC → Positive.
+
+  Assign_RG1_AttrBC_Neg:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG1 Non_Compliant + special Attribute_A + NO low-impact Attribute_BC → Negative.
+
+  Assign_RG1_AttrA_Neg:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG1 Non_Compliant + Attribute_A NOT in special values → Negative.
+
+  Assign_RG1_CA_Neg:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG1: ComplianceAssessment is not Compliant, empty, or Non_Compliant
+      (unexpected value) → Negative.
+
+  If_RG2:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      Dispatch: CaseCategory ∈ {Event_C, Event_D} → Rule Group 2 branch.
+
+  If_RG2_IX_Y:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG2: Indicator_X = Y → evaluate Detail_X.
+
+  If_RG2_DX:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG2 Indicator_X=Y: Positive if Detail_X = Noticeable_irregularity OR empty.
+      Empty Detail_X is a sentinel meaning "irregularity present but not yet classified".
+
+  Assign_RG2_DX_Pos:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG2 Indicator_X=Y + acceptable Detail_X → Positive.
+
+  Assign_RG2_DX_Neg:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG2 Indicator_X=Y + unrecognised Detail_X → Negative.
+
+  If_RG2_IX_N:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG2: Indicator_X = N → apply same compliance logic as Rule Group 1.
+
+  If_RG2_CA_Pos:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG2 Indicator_X=N: ComplianceAssessment = Compliant or empty → Positive.
+
+  Assign_RG2_CA_Pos:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG2 Indicator_X=N + Compliant or empty → Positive.
+
+  If_RG2_NonCompliant:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG2 Indicator_X=N: Non_Compliant — enter attribute evaluation (mirrors RG1).
+
+  If_RG2_AttrA:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG2 Non_Compliant: Attribute_A must be one of the two special values
+      (same condition as RG1).
+
+  If_RG2_AttrBC:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG2 Non_Compliant + special Attribute_A:
+        Positive if Attribute_B = No_or_low_impact OR Attribute_C = No_or_low_impact.
+      Open question #1: OR or AND? Currently implemented as OR.
+
+  Assign_RG2_AttrBC_Pos:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG2 Non_Compliant + special Attribute_A + low-impact Attribute_BC → Positive.
+
+  Assign_RG2_AttrBC_Neg:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG2 Non_Compliant + special Attribute_A + NO low-impact Attribute_BC → Negative.
+
+  Assign_RG2_AttrA_Neg:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG2 Non_Compliant + Attribute_A NOT in special values → Negative.
+
+  Assign_RG2_CA_Neg:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG2 Indicator_X=N + unexpected ComplianceAssessment value → Negative.
+
+  Assign_RG2_IX_Neg:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG2: Indicator_X is neither Y nor N (unexpected value) → Negative.
+
+  Assign_UnknownCategory:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      CaseCategory is not Event_A, B, C, or D (unexpected value) → Negative.
+      Default-deny: unrecognised categories do not produce Positive.
+
+# ---------------------------------------------------------------------------
+
+Expression.xaml:
+  Sequence_1:
+    annotation_type: structure
+    docked: true
+    needle: false
+    text: |
+      Pattern: Expression
+      The entire decision for each rule group is encoded as one compound
+      VB.NET boolean expression inside a single If.Condition.
+      No intermediate variables — logic is evaluated atomically.
+      Inputs / Output: same as IfElse.xaml.
+
+  MultipleAssign_1:
+    annotation_type: structure
+    docked: false
+    needle: false
+    text: |
+      Extracts all typed inputs from SpecificContent into local variables.
+      All subsequent logic references local variables only.
+
+  Assign_1:
+    annotation_type: pattern
+    docked: false
+    needle: false
+    text: |
+      Default-deny: out_DecisionValue = "Negative" before any rule is tested.
+      Either rule group If below may overwrite this to "Positive".
+      If neither fires, "Negative" stands.
+
+  If_RG1:
+    annotation_type: expression
+    docked: false
+    needle: true
+    text: |
+      [NEEDLE — RG1 compound expression]
+      Condition encodes the full Rule Group 1 logic in one expression:
+        (CaseCategory ∈ RG1)
+        AND (SecondaryIndicator
+             OR ComplianceAssessment = Compliant
+             OR ComplianceAssessment = empty
+             OR (Non_Compliant AND special Attribute_A
+                 AND (Attribute_B OR Attribute_C = No_or_low_impact)))
+      Open question #1 applies to the Attribute_BC sub-expression (OR vs AND).
+
+  Assign_RG1_Positive:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG1 compound condition matched → Positive.
+
+  If_RG2:
+    annotation_type: expression
+    docked: false
+    needle: false
+    text: |
+      Condition encodes the full Rule Group 2 logic in one expression:
+        (CaseCategory ∈ RG2)
+        AND (SecondaryIndicator
+             OR (Indicator_X=Y AND (Detail_X = Noticeable_irregularity OR empty))
+             OR (Indicator_X=N AND (Compliant OR empty
+                 OR (Non_Compliant AND special Attribute_A
+                     AND (Attribute_B OR Attribute_C = No_or_low_impact)))))
+      Mirrors RG1 compliance sub-logic for Indicator_X=N branch.
+
+  Assign_RG2_Positive:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG2 compound condition matched → Positive.
+
+# ---------------------------------------------------------------------------
+
+DecisionTable.xaml:
+  Sequence_1:
+    annotation_type: structure
+    docked: true
+    needle: false
+    text: |
+      Pattern: DecisionTable
+      Rules encoded as rows in an inline List(Of String()) with wildcard "*" cells.
+      LINQ .Any() scans rows top-to-bottom; first match wins → Positive.
+      No match → Negative.
+      Inputs / Output: same as IfElse.xaml.
+
+      Column index mapping:
+        [0] SecondaryIndicator  ("True" / "*")
+        [1] CaseGroup           ("RG1" / "RG2" / "*")
+        [2] ComplianceAssessment
+        [3] Attribute_A
+        [4] Attribute_BC        ("Yes" = Attribute_B OR Attribute_C = No_or_low_impact)
+        [5] Indicator_X
+        [6] Detail_X
+
+  MultipleAssign_1:
+    annotation_type: structure
+    docked: false
+    needle: false
+    text: |
+      Extracts all typed inputs from SpecificContent into local variables.
+
+  Assign_Match:
+    annotation_type: expression
+    docked: false
+    needle: true
+    text: |
+      [NEEDLE]
+      Inline table + LINQ .Any() match in one expression.
+      Each row is a String array; "*" in a cell means "don't care" for that column.
+      Match predicate per column:
+        r(n) = "*"  → always matches
+        r(n) = val  → must equal the corresponding input variable
+      Column [4] (Attribute_BC): r(4)="Yes" matches when
+        Attribute_B = No_or_low_impact OR Attribute_C = No_or_low_impact.
+      Open question #1: OR vs AND — currently OR.
+
+      Implementation note: the entire List(Of String()) must be inline
+      (cannot be stored in a typed XAML variable — scg:List(x:String())
+      is not valid as a XAML type argument).
+
+  Assign_Output:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      Converts Boolean match result to String output:
+        True  → "Positive"
+        False → "Negative"
+
+# ---------------------------------------------------------------------------
+
+RuleBased.xaml:
+  Sequence_1:
+    annotation_type: structure
+    docked: true
+    needle: false
+    text: |
+      Pattern: RuleBased
+      Each business rule is evaluated into a named Boolean variable.
+      A final combine step fires if any rule flag is True.
+      Inputs / Output: same as IfElse.xaml.
+
+      Named rule flags:
+        b_Rule_Override           — SecondaryIndicator override
+        b_Rule_RG1_Compliant      — RG1: Compliant or empty
+        b_Rule_RG1_NonCompliant   — RG1: Non_Compliant + special Attribute_A + low-impact BC
+        b_Rule_RG2_IX_Y           — RG2: Indicator_X=Y + acceptable Detail_X
+        b_Rule_RG2_IX_N_Compliant — RG2: Indicator_X=N + Compliant or empty
+        b_Rule_RG2_IX_N_NonCompliant — RG2: Indicator_X=N + Non_Compliant + attrs
+
+  MultipleAssign_1:
+    annotation_type: structure
+    docked: false
+    needle: false
+    text: |
+      Step 1: Extracts all typed inputs from SpecificContent into local variables.
+
+  MultipleAssign_2:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      Step 2: Evaluates all six named rule flags independently.
+      All rules are always evaluated — no short-circuiting between rules.
+      Each flag name encodes the rule group and condition it represents.
+      Useful for audit: inspect individual flags in the Locals panel during debug.
+
+  Assign_Combine:
+    annotation_type: expression
+    docked: true
+    needle: true
+    text: |
+      [NEEDLE]
+      Combine step: any rule flag True → Positive, all False → Negative.
+      Expression: If(b_Rule_Override OrElse b_Rule_RG1_Compliant OrElse
+                     b_Rule_RG1_NonCompliant OrElse b_Rule_RG2_IX_Y OrElse
+                     b_Rule_RG2_IX_N_Compliant OrElse b_Rule_RG2_IX_N_NonCompliant,
+                     "Positive", "Negative")
+      Pattern note: OrElse is the combinator here. Replace with AndAlso,
+      majority vote, or weighted sum to change the combination logic
+      without touching the rule evaluation step above.
+
+# ---------------------------------------------------------------------------
+
+StateMachine.xaml:
+  Sequence_1:
+    annotation_type: structure
+    docked: true
+    needle: false
+    text: |
+      Pattern: StateMachine
+      WF4 StateMachine models the decision as an explicit state graph.
+      Variables are declared on the outer Sequence (not inside StateMachine)
+      so they are accessible across all states.
+      Inputs / Output: same as IfElse.xaml.
+
+      State graph:
+        Extract → Route → RG1 ──→ Positive → Final
+                       → RG2 ──→ Negative → Final
+                       → Positive (SecondaryIndicator override)
+                       → Negative (unknown CaseCategory)
+
+  StateMachine_SM:
+    annotation_type: pattern
+    docked: false
+    needle: false
+    text: |
+      WF4 StateMachine constraints observed here:
+        • Transition.Condition is Activity<Boolean>, not InArgument<Boolean>.
+          Use text-content form: <Transition.Condition>[expr]</Transition.Condition>
+        • States with multiple trigger-less transitions must have explicit
+          conditions on ALL transitions (including catch-all → [True]).
+        • At most one unconditional (no condition) transition per state is allowed.
+
+  State_Extract:
+    annotation_type: structure
+    docked: false
+    needle: false
+    text: |
+      Entry state: extracts all typed inputs from SpecificContent.
+      Single outgoing transition → Route (always taken).
+
+  MultipleAssign_Extract:
+    annotation_type: structure
+    docked: false
+    needle: false
+    text: |
+      Extracts all typed inputs from SpecificContent into outer-Sequence variables.
+
+  Transition_Extract_Route:
+    annotation_type: structure
+    docked: false
+    needle: false
+    text: |
+      Unconditional transition — always proceeds to Route after extraction.
+
+  State_Route:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      Routing state: dispatches to the correct rule group based on
+      SecondaryIndicator (override) and CaseCategory.
+      Four outgoing transitions evaluated in order:
+        1. SecondaryIndicator = True → Positive (override)
+        2. CaseCategory ∈ {Event_A, Event_B} → RG1
+        3. CaseCategory ∈ {Event_C, Event_D} → RG2
+        4. [True] catch-all → Negative (unknown category)
+
+  Transition_Route_Secondary:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      SecondaryIndicator override: bypasses rule groups entirely → Positive.
+
+  Transition_Route_RG1:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      CaseCategory = Event_A or Event_B → enter Rule Group 1 evaluation.
+
+  Transition_Route_RG2:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      CaseCategory = Event_C or Event_D → enter Rule Group 2 evaluation.
+
+  Transition_Route_UnknownNeg:
+    annotation_type: sentinel
+    docked: false
+    needle: false
+    text: |
+      Catch-all [True]: CaseCategory is not in any known group → Negative.
+      Default-deny for unrecognised values.
+
+  State_RG1:
+    annotation_type: rule
+    docked: false
+    needle: true
+    text: |
+      [NEEDLE — RG1 decision state]
+      Rule Group 1 evaluation (CaseCategory = Event_A or Event_B).
+      Three outgoing transitions:
+        1. Compliant or empty ComplianceAssessment → Positive
+        2. Non_Compliant + special Attribute_A + low-impact Attribute_BC → Positive
+        3. [True] catch-all → Negative
+      Open question #1 applies to transition 2 (Attribute_BC: OR vs AND).
+
+  Transition_RG1_Compliant:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG1: ComplianceAssessment = Compliant OR empty → Positive.
+      Empty is a sentinel for "not yet assessed" — treated as Positive.
+
+  Transition_RG1_NonCompliant:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG1: Non_Compliant AND Attribute_A ∈ {Verification_not_available,
+      Special_case_without_certified_component}
+      AND (Attribute_B OR Attribute_C = No_or_low_impact) → Positive.
+      Open question #1: Attribute_BC condition is currently OR.
+
+  Transition_RG1_Neg:
+    annotation_type: sentinel
+    docked: false
+    needle: false
+    text: |
+      Catch-all [True]: no RG1 positive condition matched → Negative.
+
+  State_RG2:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      Rule Group 2 evaluation (CaseCategory = Event_C or Event_D).
+      Four outgoing transitions:
+        1. Indicator_X=Y + Detail_X OK → Positive
+        2. Indicator_X=N + Compliant or empty → Positive
+        3. Indicator_X=N + Non_Compliant + attrs → Positive
+        4. [True] catch-all → Negative
+
+  Transition_RG2_IX_Y:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG2: Indicator_X=Y AND (Detail_X = Noticeable_irregularity OR empty) → Positive.
+      Empty Detail_X sentinel: irregularity present, classification pending.
+
+  Transition_RG2_IX_N_Compliant:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG2: Indicator_X=N AND (ComplianceAssessment = Compliant OR empty) → Positive.
+
+  Transition_RG2_IX_N_NonCompliant:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      RG2: Indicator_X=N AND Non_Compliant AND special Attribute_A
+      AND (Attribute_B OR Attribute_C = No_or_low_impact) → Positive.
+      Open question #1: Attribute_BC condition is currently OR.
+
+  Transition_RG2_Neg:
+    annotation_type: sentinel
+    docked: false
+    needle: false
+    text: |
+      Catch-all [True]: no RG2 positive condition matched → Negative.
+
+  State_Positive:
+    annotation_type: structure
+    docked: false
+    needle: false
+    text: |
+      Terminal assignment state: sets out_DecisionValue = "Positive".
+      Single outgoing transition → Final.
+
+  Assign_Positive:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      Sets output to "Positive". Reached from SecondaryIndicator override,
+      RG1 positive transitions, or RG2 positive transitions.
+
+  Transition_Positive_Final:
+    annotation_type: structure
+    docked: false
+    needle: false
+    text: |
+      Unconditional transition → Final (IsFinal=True state). Workflow ends.
+
+  State_Negative:
+    annotation_type: structure
+    docked: false
+    needle: false
+    text: |
+      Terminal assignment state: sets out_DecisionValue = "Negative".
+      Single outgoing transition → Final.
+
+  Assign_Negative:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      Sets output to "Negative". Reached from catch-all transitions in
+      Route, RG1, and RG2 states.
+
+  Transition_Negative_Final:
+    annotation_type: structure
+    docked: false
+    needle: false
+    text: |
+      Unconditional transition → Final (IsFinal=True state). Workflow ends.
+
+  State_Final:
+    annotation_type: structure
+    docked: false
+    needle: false
+    text: |
+      IsFinal=True state. No outgoing transitions. Workflow execution ends here.
+      out_DecisionValue is set before reaching this state.

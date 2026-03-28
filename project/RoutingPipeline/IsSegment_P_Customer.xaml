@@ -56,17 +56,22 @@
     <x:Property Name="in_IsSegmentP" Type="InArgument(x:Boolean)" />
     <x:Property Name="out_IsSegmentP" Type="OutArgument(x:Boolean)" />
   </x:Members>
-  <Sequence DisplayName="IsSegment_P_Customer" sap2010:WorkflowViewState.IdRef="Sequence_1">
-    <Assign DisplayName="Pass through IsSegmentP flag" sap2010:WorkflowViewState.IdRef="Assign_1">
+  <Sequence DisplayName="IsSegment_P_Customer" sap2010:Annotation.AnnotationText="Sub-decision 5 of 7&#xD;&#xA;Pattern: Expression + fire-and-continue side effect&#xD;&#xA;Input:  in_IsSegmentP (Boolean)&#xD;&#xA;Output: out_IsSegmentP (Boolean)&#xD;&#xA;Side effect: LogMessage when True (non-blocking)" sap2010:WorkflowViewState.IdRef="Sequence_1">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    <Assign DisplayName="Pass through IsSegmentP flag" sap2010:Annotation.AnnotationText="Passes through the IsSegmentP flag unchanged.&#xD;&#xA;In production: this would be a lookup against a Segment_P registry." sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To><OutArgument x:TypeArguments="x:Boolean">[out_IsSegmentP]</OutArgument></Assign.To>
       <Assign.Value><InArgument x:TypeArguments="x:Boolean">[in_IsSegmentP]</InArgument></Assign.Value>
     </Assign>
-    <If DisplayName="Fire-and-continue: notify if Segment_P" sap2010:WorkflowViewState.IdRef="If_1">
+    <If DisplayName="Fire-and-continue: notify if Segment_P" sap2010:Annotation.AnnotationText="Fire-and-continue pattern: notification is sent when IsSegmentP = True,&#xD;&#xA;but the If activity has no Else branch — execution always proceeds to&#xD;&#xA;the next step regardless of the flag value.&#xD;&#xA;The notification does not block or change the output." sap2010:WorkflowViewState.IdRef="If_1">
       <If.Condition>
         <InArgument x:TypeArguments="x:Boolean">[in_IsSegmentP]</InArgument>
       </If.Condition>
       <If.Then>
-        <ui:LogMessage DisplayName="NotifySegment_P_Case" Level="Info" sap2010:WorkflowViewState.IdRef="LogMessage_1">
+        <ui:LogMessage DisplayName="NotifySegment_P_Case" Level="Info" sap2010:Annotation.AnnotationText="[NEEDLE]&#xD;&#xA;Side effect: notifies downstream systems of a Segment_P case.&#xD;&#xA;In production: replace LogMessage with an actual notification call&#xD;&#xA;(e.g. queue message, webhook) without changing the surrounding If structure.&#xD;&#xA;&#xD;&#xA;#cb39fe" sap2010:WorkflowViewState.IdRef="LogMessage_1">
           <ui:LogMessage.Message>["Segment_P notification fired (fire-and-continue)"]</ui:LogMessage.Message>
         </ui:LogMessage>
       </If.Then>

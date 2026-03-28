@@ -58,8 +58,13 @@
     <x:Property Name="out_CustomerErrors" Type="OutArgument(x:Boolean)" />
     <x:Property Name="out_InternalErrors" Type="OutArgument(x:Boolean)" />
   </x:Members>
-  <Sequence DisplayName="AggregateErrors" sap2010:WorkflowViewState.IdRef="Sequence_1">
-    <ui:MultipleAssign DisplayName="Classify customer vs internal errors" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+  <Sequence DisplayName="AggregateErrors" sap2010:Annotation.AnnotationText="Sub-decision 6 of 7&#xD;&#xA;Pattern: MultipleAssign passthrough (extension point)&#xD;&#xA;Inputs:  in_HasCustomerErrors (Boolean)&#xD;&#xA;         in_HasInternalErrors (Boolean)&#xD;&#xA;Outputs: out_CustomerErrors (Boolean)&#xD;&#xA;         out_InternalErrors (Boolean)" sap2010:WorkflowViewState.IdRef="Sequence_1">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    <ui:MultipleAssign DisplayName="Classify customer vs internal errors" sap2010:Annotation.AnnotationText="[NEEDLE]&#xD;&#xA;Current implementation: direct passthrough — inputs equal outputs.&#xD;&#xA;Design intent: this activity is the extension point for real aggregation.&#xD;&#xA;Replace the expressions here to aggregate from a validation result list,&#xD;&#xA;an enrichment result set, or any other error source — without changing&#xD;&#xA;Pipeline.xaml or DetermineRouting.xaml.&#xD;&#xA;&#xD;&#xA;#cb39fe" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOp_1">

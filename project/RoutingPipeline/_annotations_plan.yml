@@ -1,0 +1,345 @@
+# Annotation Plan — RoutingPipeline
+#
+# Axes:
+#   structure : workflow-level or section/step-level metadata (I/O, pattern, purpose)
+#   rule      : business rule in plain language
+#   expression: plain-language translation of a VB.NET expression
+#   sentinel  : meaning of a special value ("*", "?", "OPEN", empty string)
+#   pattern   : why this implementation pattern was chosen for this step
+#
+# needle: true  → mark activity with color #cb39fe
+#         The needle marks the ONE activity per workflow where the
+#         consequential decision is encoded — the activity a reader
+#         should find first when scanning the canvas.
+#
+# docked: true → annotation panel shown docked (visible without hover)
+#
+# Note on XAML serialization (confirmed from Studio):
+#   sap2010:Annotation.AnnotationText="..." on the activity element
+#   ViewState key IsAnnotationDocked: true  (when docked=true)
+# ---------------------------------------------------------------------------
+
+Pipeline.xaml:
+  Sequence_1:
+    annotation_type: structure
+    docked: true
+    needle: false
+    text: |
+      Pattern: Pipeline
+      Sub-decisions execute in order; each result is a local variable
+      threaded into the next step that needs it.
+
+      Inputs  (from in_TransactionItem.SpecificContent):
+        in_HasRegistryId, in_RegistryParticipantExists, in_DocumentTypesAccepted
+        in_RegistryId, in_VatId
+        in_CustomerExists, in_IsSegmentP
+        in_HasCustomerErrors, in_HasInternalErrors
+
+      Output: out_RoutingDecision
+        HAPPY_PATH | ROUTE_TO_CUSTOMER | ROUTE_TO_INTERNAL | OPEN
+
+      Open question #1: precedence when both error types present → OPEN sentinel
+
+  MultipleAssign_Extract:
+    annotation_type: structure
+    docked: false
+    needle: false
+    text: |
+      Extracts all typed inputs from SpecificContent into local variables.
+      CBool() / CStr() cast Object → Boolean / String.
+      All subsequent steps use local variables, not SpecificContent directly.
+
+  IWF_DetermineChannel:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      Rule: HasRegistryId AND RegistryParticipantExists AND DocumentTypesAccepted
+            → Channel_A
+            otherwise → Channel_B
+      Result stored in v_Channel (not consumed by DetermineRouting).
+
+  IWF_IsPublicSector:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      Rule: RegistryId starts with "PS-" → IsPublicSector = True
+      Result stored in v_IsPublicSector (contextual, not consumed by DetermineRouting).
+
+  IWF_DetermineVat:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      Rule: VatId starts with "DOM-" → NATIONAL, otherwise INTERNATIONAL
+      Result stored in v_VatClassification (contextual, not consumed by DetermineRouting).
+
+  IWF_DetermineCustomer:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      Rule: CustomerExists = True → EXISTING, otherwise NEW
+      Result stored in v_CustomerStatus (contextual, not consumed by DetermineRouting).
+
+  IWF_IsSegmentP:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      Rule: IsSegmentP = True → fire-and-continue notification + return True
+      Side effect: LogMessage fires when True; execution continues regardless.
+      Result stored in v_IsSegmentP_out (not consumed by DetermineRouting).
+
+  IWF_AggregateErrors:
+    annotation_type: structure
+    docked: false
+    needle: false
+    text: |
+      Classifies errors into two buckets: customer-attributable vs internal.
+      In this implementation: direct passthrough of in_HasCustomerErrors / in_HasInternalErrors.
+      Extension point: replace with real aggregation logic without changing Pipeline.xaml.
+
+  IWF_DetermineRouting:
+    annotation_type: rule
+    docked: true
+    needle: true
+    text: |
+      [NEEDLE — consequential decision]
+      Rule:
+        no errors              → HAPPY_PATH
+        customer errors only   → ROUTE_TO_CUSTOMER
+        internal errors only   → ROUTE_TO_INTERNAL
+        both errors            → OPEN  (open question #1 — precedence unresolved)
+
+      Pattern: BitmaskLookup
+        CustomerErrors × 1 + InternalErrors × 2 → integer index 0–3
+        Each index maps to exactly one routing outcome.
+
+# ---------------------------------------------------------------------------
+
+DetermineChannel.xaml:
+  Sequence_1:
+    annotation_type: structure
+    docked: true
+    needle: false
+    text: |
+      Sub-decision 1 of 7
+      Pattern: IfElse
+      Input:  in_HasRegistryId (Boolean)
+              in_RegistryParticipantExists (Boolean)
+              in_DocumentTypesAccepted (Boolean)
+      Output: out_Channel — Channel_A | Channel_B
+
+  If_1:
+    annotation_type: rule
+    docked: false
+    needle: true
+    text: |
+      [NEEDLE]
+      Rule: all three conditions must be True for Channel_A.
+      Any single False → Channel_B.
+      Short-circuits on first False (AndAlso).
+
+  Assign_A:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      Channel_A: preferred channel when registry entry is valid
+      and all document types are accepted.
+
+  Assign_B:
+    annotation_type: rule
+    docked: false
+    needle: false
+    text: |
+      Channel_B: fallback channel for all other cases.
+
+# ---------------------------------------------------------------------------
+
+IsPublicSectorRelevant.xaml:
+  Sequence_1:
+    annotation_type: structure
+    docked: true
+    needle: false
+    text: |
+      Sub-decision 2 of 7
+      Pattern: Expression
+      Input:  in_RegistryId (String)
+      Output: out_IsPublicSector (Boolean)
+
+  Assign_1:
+    annotation_type: expression
+    docked: false
+    needle: true
+    text: |
+      [NEEDLE]
+      Expression: in_RegistryId.StartsWith("PS-")
+      Convention: public sector registry IDs are prefixed "PS-".
+      Returns True if the registry entry belongs to a public sector entity.
+
+# ---------------------------------------------------------------------------
+
+DetermineVatClassification.xaml:
+  Sequence_1:
+    annotation_type: structure
+    docked: true
+    needle: false
+    text: |
+      Sub-decision 3 of 7
+      Pattern: Expression
+      Input:  in_VatId (String)
+      Output: out_VatClassification — NATIONAL | INTERNATIONAL
+
+  Assign_1:
+    annotation_type: expression
+    docked: false
+    needle: true
+    text: |
+      [NEEDLE]
+      Expression: If(in_VatId.StartsWith("DOM-"), "NATIONAL", "INTERNATIONAL")
+      Convention: domestic VAT IDs are prefixed "DOM-".
+      NATIONAL  → domestic transaction
+      INTERNATIONAL → cross-border transaction
+
+# ---------------------------------------------------------------------------
+
+DetermineCustomerStatus.xaml:
+  Sequence_1:
+    annotation_type: structure
+    docked: true
+    needle: false
+    text: |
+      Sub-decision 4 of 7
+      Pattern: Expression
+      Input:  in_CustomerExists (Boolean)
+      Output: out_CustomerStatus — EXISTING | NEW
+
+  Assign_1:
+    annotation_type: expression
+    docked: false
+    needle: true
+    text: |
+      [NEEDLE]
+      Expression: If(in_CustomerExists, "EXISTING", "NEW")
+      In production: in_CustomerExists would be set by an ExternalRegistry_X lookup
+      upstream of this workflow. Here it is provided directly as an input.
+
+# ---------------------------------------------------------------------------
+
+IsSegment_P_Customer.xaml:
+  Sequence_1:
+    annotation_type: structure
+    docked: true
+    needle: false
+    text: |
+      Sub-decision 5 of 7
+      Pattern: Expression + fire-and-continue side effect
+      Input:  in_IsSegmentP (Boolean)
+      Output: out_IsSegmentP (Boolean)
+      Side effect: LogMessage when True (non-blocking)
+
+  Assign_1:
+    annotation_type: structure
+    docked: false
+    needle: false
+    text: |
+      Passes through the IsSegmentP flag unchanged.
+      In production: this would be a lookup against a Segment_P registry.
+
+  If_1:
+    annotation_type: pattern
+    docked: false
+    needle: false
+    text: |
+      Fire-and-continue pattern: notification is sent when IsSegmentP = True,
+      but the If activity has no Else branch — execution always proceeds to
+      the next step regardless of the flag value.
+      The notification does not block or change the output.
+
+  LogMessage_1:
+    annotation_type: rule
+    docked: false
+    needle: true
+    text: |
+      [NEEDLE]
+      Side effect: notifies downstream systems of a Segment_P case.
+      In production: replace LogMessage with an actual notification call
+      (e.g. queue message, webhook) without changing the surrounding If structure.
+
+# ---------------------------------------------------------------------------
+
+AggregateErrors.xaml:
+  Sequence_1:
+    annotation_type: structure
+    docked: true
+    needle: false
+    text: |
+      Sub-decision 6 of 7
+      Pattern: MultipleAssign passthrough (extension point)
+      Inputs:  in_HasCustomerErrors (Boolean)
+               in_HasInternalErrors (Boolean)
+      Outputs: out_CustomerErrors (Boolean)
+               out_InternalErrors (Boolean)
+
+  MultipleAssign_1:
+    annotation_type: pattern
+    docked: false
+    needle: true
+    text: |
+      [NEEDLE]
+      Current implementation: direct passthrough — inputs equal outputs.
+      Design intent: this activity is the extension point for real aggregation.
+      Replace the expressions here to aggregate from a validation result list,
+      an enrichment result set, or any other error source — without changing
+      Pipeline.xaml or DetermineRouting.xaml.
+
+# ---------------------------------------------------------------------------
+
+DetermineRouting.xaml:
+  Sequence_1:
+    annotation_type: structure
+    docked: true
+    needle: false
+    text: |
+      Sub-decision 7 of 7
+      Pattern: BitmaskLookup
+      Inputs:  in_CustomerErrors (Boolean)
+               in_InternalErrors (Boolean)
+      Output:  out_RoutingDecision — HAPPY_PATH | ROUTE_TO_CUSTOMER | ROUTE_TO_INTERNAL | OPEN
+
+      Two boolean inputs encode 4 mutually exclusive states via a 2-bit index.
+      Each index maps to one routing outcome in the lookup step.
+
+  Assign_Matrix:
+    annotation_type: expression
+    docked: false
+    needle: false
+    text: |
+      Expression: If(in_CustomerErrors,1,0) + If(in_InternalErrors,2,0)
+      Encodes two independent booleans as a single integer:
+        bit 0 (×1): CustomerErrors
+        bit 1 (×2): InternalErrors
+      Result range: 0 (neither) to 3 (both).
+      Each integer value is unique to one combination of inputs.
+
+  Assign_Lookup:
+    annotation_type: rule
+    docked: true
+    needle: true
+    text: |
+      [NEEDLE]
+      Lookup table (index → outcome):
+        0 → HAPPY_PATH          (no errors)
+        1 → ROUTE_TO_CUSTOMER   (customer errors only)
+        2 → ROUTE_TO_INTERNAL   (internal errors only)
+        3 → OPEN                (both — open question #1: precedence unresolved)
+
+      Sentinel: "OPEN" is a placeholder. Replace index 3 mapping once
+      open question #1 is resolved.
+
+      Pattern note: nested If() is the VB.NET equivalent of a dictionary
+      lookup. With 4 entries the depth is acceptable; for more outcomes
+      use a Dictionary(Of Integer, String) instead.

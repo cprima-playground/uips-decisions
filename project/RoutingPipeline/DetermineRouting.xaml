@@ -57,15 +57,25 @@
     <x:Property Name="in_InternalErrors" Type="InArgument(x:Boolean)" />
     <x:Property Name="out_RoutingDecision" Type="OutArgument(x:String)" />
   </x:Members>
-  <Sequence DisplayName="DetermineRouting" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="DetermineRouting" sap2010:Annotation.AnnotationText="Sub-decision 7 of 7&#xD;&#xA;Pattern: BitmaskLookup&#xD;&#xA;Inputs:  in_CustomerErrors (Boolean)&#xD;&#xA;         in_InternalErrors (Boolean)&#xD;&#xA;Output:  out_RoutingDecision — HAPPY_PATH | ROUTE_TO_CUSTOMER | ROUTE_TO_INTERNAL | OPEN&#xD;&#xA;&#xD;&#xA;Two boolean inputs encode 4 mutually exclusive states via a 2-bit index.&#xD;&#xA;Each index maps to one routing outcome in the lookup step." sap2010:WorkflowViewState.IdRef="Sequence_1">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
     <Sequence.Variables>
       <Variable x:TypeArguments="x:Int32" Name="v_Matrix" />
     </Sequence.Variables>
-    <Assign DisplayName="Compute bitmask: CustomerErrors x1 + InternalErrors x2" sap2010:WorkflowViewState.IdRef="Assign_Matrix">
+    <Assign DisplayName="Compute bitmask: CustomerErrors x1 + InternalErrors x2" sap2010:Annotation.AnnotationText="Expression: If(in_CustomerErrors,1,0) + If(in_InternalErrors,2,0)&#xD;&#xA;Encodes two independent booleans as a single integer:&#xD;&#xA;  bit 0 (×1): CustomerErrors&#xD;&#xA;  bit 1 (×2): InternalErrors&#xD;&#xA;Result range: 0 (neither) to 3 (both).&#xD;&#xA;Each integer value is unique to one combination of inputs." sap2010:WorkflowViewState.IdRef="Assign_Matrix">
       <Assign.To><OutArgument x:TypeArguments="x:Int32">[v_Matrix]</OutArgument></Assign.To>
       <Assign.Value><InArgument x:TypeArguments="x:Int32">[If(in_CustomerErrors,1,0) + If(in_InternalErrors,2,0)]</InArgument></Assign.Value>
     </Assign>
-    <Assign DisplayName="Lookup: 0=HAPPY_PATH 1=ROUTE_TO_CUSTOMER 2=ROUTE_TO_INTERNAL 3=OPEN" sap2010:WorkflowViewState.IdRef="Assign_Lookup">
+    <Assign DisplayName="Lookup: 0=HAPPY_PATH 1=ROUTE_TO_CUSTOMER 2=ROUTE_TO_INTERNAL 3=OPEN" sap2010:Annotation.AnnotationText="[NEEDLE]&#xD;&#xA;Lookup table (index → outcome):&#xD;&#xA;  0 → HAPPY_PATH          (no errors)&#xD;&#xA;  1 → ROUTE_TO_CUSTOMER   (customer errors only)&#xD;&#xA;  2 → ROUTE_TO_INTERNAL   (internal errors only)&#xD;&#xA;  3 → OPEN                (both — open question #1: precedence unresolved)&#xD;&#xA;&#xD;&#xA;Sentinel: &quot;OPEN&quot; is a placeholder. Replace index 3 mapping once&#xD;&#xA;open question #1 is resolved.&#xD;&#xA;&#xD;&#xA;Pattern note: nested If() is the VB.NET equivalent of a dictionary&#xD;&#xA;lookup. With 4 entries the depth is acceptable; for more outcomes&#xD;&#xA;use a Dictionary(Of Integer, String) instead.&#xD;&#xA;&#xD;&#xA;#cb39fe" sap2010:WorkflowViewState.IdRef="Assign_Lookup">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
       <Assign.To><OutArgument x:TypeArguments="x:String">[out_RoutingDecision]</OutArgument></Assign.To>
       <Assign.Value><InArgument x:TypeArguments="x:String">[If(v_Matrix=0,"HAPPY_PATH",If(v_Matrix=1,"ROUTE_TO_CUSTOMER",If(v_Matrix=2,"ROUTE_TO_INTERNAL","OPEN")))]</InArgument></Assign.Value>
     </Assign>

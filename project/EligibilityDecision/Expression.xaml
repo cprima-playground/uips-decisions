@@ -57,7 +57,7 @@
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Expression" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Expression" sap2010:Annotation.AnnotationText="Pattern: Expression&#xD;&#xA;The entire decision for each rule group is encoded as one compound&#xD;&#xA;VB.NET boolean expression inside a single If.Condition.&#xD;&#xA;No intermediate variables — logic is evaluated atomically.&#xD;&#xA;Inputs / Output: same as IfElse.xaml." sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="v_CaseCategory" />
       <Variable x:TypeArguments="x:String" Name="v_ComplianceAssessment" />
@@ -71,9 +71,10 @@
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:MultipleAssign DisplayName="Extract from SpecificContent" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+    <ui:MultipleAssign DisplayName="Extract from SpecificContent" sap2010:Annotation.AnnotationText="Extracts all typed inputs from SpecificContent into local variables.&#xD;&#xA;All subsequent logic references local variables only." sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="8">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -143,7 +144,7 @@
         </scg:List>
       </ui:MultipleAssign.AssignOperations>
     </ui:MultipleAssign>
-    <Assign DisplayName="Default: Negative" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <Assign DisplayName="Default: Negative" sap2010:Annotation.AnnotationText="Default-deny: out_DecisionValue = &quot;Negative&quot; before any rule is tested.&#xD;&#xA;Either rule group If below may overwrite this to &quot;Positive&quot;.&#xD;&#xA;If neither fires, &quot;Negative&quot; stands." sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
       </Assign.To>
@@ -151,12 +152,12 @@
         <InArgument x:TypeArguments="x:String">["Negative"]</InArgument>
       </Assign.Value>
     </Assign>
-    <If DisplayName="Rule Group 1: Event_A or Event_B" sap2010:WorkflowViewState.IdRef="If_RG1">
+    <If DisplayName="Rule Group 1: Event_A or Event_B" sap2010:Annotation.AnnotationText="[NEEDLE — RG1 compound expression]&#xD;&#xA;Condition encodes the full Rule Group 1 logic in one expression:&#xD;&#xA;  (CaseCategory ∈ RG1)&#xD;&#xA;  AND (SecondaryIndicator&#xD;&#xA;       OR ComplianceAssessment = Compliant&#xD;&#xA;       OR ComplianceAssessment = empty&#xD;&#xA;       OR (Non_Compliant AND special Attribute_A&#xD;&#xA;           AND (Attribute_B OR Attribute_C = No_or_low_impact)))&#xD;&#xA;Open question #1 applies to the Attribute_BC sub-expression (OR vs AND).&#xD;&#xA;&#xD;&#xA;#cb39fe" sap2010:WorkflowViewState.IdRef="If_RG1">
       <If.Condition>
         <InArgument x:TypeArguments="x:Boolean">[(v_CaseCategory = "Event_A" OrElse v_CaseCategory = "Event_B") AndAlso (v_SecondaryIndicator OrElse v_ComplianceAssessment = "Compliant" OrElse String.IsNullOrEmpty(v_ComplianceAssessment) OrElse (v_ComplianceAssessment = "Non_Compliant" AndAlso (v_Attribute_A = "Verification_not_available" OrElse v_Attribute_A = "Special_case_without_certified_component") AndAlso (v_Attribute_B = "No_or_low_impact" OrElse v_Attribute_C = "No_or_low_impact")))]</InArgument>
       </If.Condition>
       <If.Then>
-        <Assign DisplayName="Positive" sap2010:WorkflowViewState.IdRef="Assign_RG1_Positive">
+        <Assign DisplayName="Positive" sap2010:Annotation.AnnotationText="RG1 compound condition matched → Positive." sap2010:WorkflowViewState.IdRef="Assign_RG1_Positive">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
           </Assign.To>
@@ -166,12 +167,12 @@
         </Assign>
       </If.Then>
     </If>
-    <If DisplayName="Rule Group 2: Event_C or Event_D" sap2010:WorkflowViewState.IdRef="If_RG2">
+    <If DisplayName="Rule Group 2: Event_C or Event_D" sap2010:Annotation.AnnotationText="Condition encodes the full Rule Group 2 logic in one expression:&#xD;&#xA;  (CaseCategory ∈ RG2)&#xD;&#xA;  AND (SecondaryIndicator&#xD;&#xA;       OR (Indicator_X=Y AND (Detail_X = Noticeable_irregularity OR empty))&#xD;&#xA;       OR (Indicator_X=N AND (Compliant OR empty&#xD;&#xA;           OR (Non_Compliant AND special Attribute_A&#xD;&#xA;               AND (Attribute_B OR Attribute_C = No_or_low_impact)))))&#xD;&#xA;Mirrors RG1 compliance sub-logic for Indicator_X=N branch." sap2010:WorkflowViewState.IdRef="If_RG2">
       <If.Condition>
         <InArgument x:TypeArguments="x:Boolean">[(v_CaseCategory = "Event_C" OrElse v_CaseCategory = "Event_D") AndAlso (v_SecondaryIndicator OrElse (v_Indicator_X = "Y" AndAlso (v_Detail_X = "Noticeable_irregularity" OrElse String.IsNullOrEmpty(v_Detail_X))) OrElse (v_Indicator_X = "N" AndAlso (v_ComplianceAssessment = "Compliant" OrElse String.IsNullOrEmpty(v_ComplianceAssessment) OrElse (v_ComplianceAssessment = "Non_Compliant" AndAlso (v_Attribute_A = "Verification_not_available" OrElse v_Attribute_A = "Special_case_without_certified_component") AndAlso (v_Attribute_B = "No_or_low_impact" OrElse v_Attribute_C = "No_or_low_impact")))))]</InArgument>
       </If.Condition>
       <If.Then>
-        <Assign DisplayName="Positive" sap2010:WorkflowViewState.IdRef="Assign_RG2_Positive">
+        <Assign DisplayName="Positive" sap2010:Annotation.AnnotationText="RG2 compound condition matched → Positive." sap2010:WorkflowViewState.IdRef="Assign_RG2_Positive">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
           </Assign.To>
