@@ -2,6 +2,7 @@
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
     <x:Property Name="in_TransactionItem" Type="InArgument(ui:QueueItem)" />
+    <x:Property Name="out_DecisionValue" Type="OutArgument(x:String)" />
   </x:Members>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -57,10 +58,318 @@
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <Sequence DisplayName="IfElse" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="v_CaseCategory" />
+      <Variable x:TypeArguments="x:String" Name="v_ComplianceAssessment" />
+      <Variable x:TypeArguments="x:String" Name="v_Attribute_A" />
+      <Variable x:TypeArguments="x:String" Name="v_Attribute_B" />
+      <Variable x:TypeArguments="x:String" Name="v_Attribute_C" />
+      <Variable x:TypeArguments="x:String" Name="v_Indicator_X" />
+      <Variable x:TypeArguments="x:String" Name="v_Detail_X" />
+      <Variable x:TypeArguments="x:Boolean" Name="v_SecondaryIndicator" />
+    </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
+    <ui:MultipleAssign DisplayName="Extract from SpecificContent" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+      <ui:MultipleAssign.AssignOperations>
+        <scg:List x:TypeArguments="ui:AssignOperation" Capacity="8">
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:String">[v_CaseCategory]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_CaseCategory"))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:String">[v_ComplianceAssessment]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_ComplianceAssessment"))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:String">[v_Attribute_A]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_A"))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:String">[v_Attribute_B]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_B"))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_5">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:String">[v_Attribute_C]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_C"))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_6">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:String">[v_Indicator_X]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_Indicator_X"))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_7">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:String">[v_Detail_X]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_Detail_X"))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_8">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:Boolean">[v_SecondaryIndicator]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:Boolean">[CBool(in_TransactionItem.SpecificContent("in_SecondaryIndicator"))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+        </scg:List>
+      </ui:MultipleAssign.AssignOperations>
+    </ui:MultipleAssign>
+
+    <!-- SecondaryIndicator overrides everything -->
+    <If DisplayName="SecondaryIndicator = True?" sap2010:WorkflowViewState.IdRef="If_Secondary">
+      <If.Condition>
+        <InArgument x:TypeArguments="x:Boolean">[v_SecondaryIndicator]</InArgument>
+      </If.Condition>
+      <If.Then>
+        <Assign DisplayName="Positive" sap2010:WorkflowViewState.IdRef="Assign_Secondary_Pos">
+          <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
+          <Assign.Value><InArgument x:TypeArguments="x:String">["Positive"]</InArgument></Assign.Value>
+        </Assign>
+      </If.Then>
+      <If.Else>
+
+        <!-- Route by CaseCategory -->
+        <If DisplayName="CaseCategory = Event_A or Event_B?" sap2010:WorkflowViewState.IdRef="If_RG1">
+          <If.Condition>
+            <InArgument x:TypeArguments="x:Boolean">[v_CaseCategory = "Event_A" OrElse v_CaseCategory = "Event_B"]</InArgument>
+          </If.Condition>
+          <If.Then>
+
+            <!-- RG1: ComplianceAssessment = Compliant or empty? -->
+            <If DisplayName="ComplianceAssessment = Compliant or empty?" sap2010:WorkflowViewState.IdRef="If_RG1_CA_Pos">
+              <If.Condition>
+                <InArgument x:TypeArguments="x:Boolean">[v_ComplianceAssessment = "Compliant" OrElse String.IsNullOrEmpty(v_ComplianceAssessment)]</InArgument>
+              </If.Condition>
+              <If.Then>
+                <Assign DisplayName="Positive" sap2010:WorkflowViewState.IdRef="Assign_RG1_CA_Pos">
+                  <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
+                  <Assign.Value><InArgument x:TypeArguments="x:String">["Positive"]</InArgument></Assign.Value>
+                </Assign>
+              </If.Then>
+              <If.Else>
+
+                <!-- RG1: ComplianceAssessment = Non_Compliant? -->
+                <If DisplayName="ComplianceAssessment = Non_Compliant?" sap2010:WorkflowViewState.IdRef="If_RG1_NonCompliant">
+                  <If.Condition>
+                    <InArgument x:TypeArguments="x:Boolean">[v_ComplianceAssessment = "Non_Compliant"]</InArgument>
+                  </If.Condition>
+                  <If.Then>
+
+                    <!-- RG1: Attribute_A in allowed set? -->
+                    <If DisplayName="Attribute_A = Verif_NA or Special_case?" sap2010:WorkflowViewState.IdRef="If_RG1_AttrA">
+                      <If.Condition>
+                        <InArgument x:TypeArguments="x:Boolean">[v_Attribute_A = "Verification_not_available" OrElse v_Attribute_A = "Special_case_without_certified_component"]</InArgument>
+                      </If.Condition>
+                      <If.Then>
+
+                        <!-- RG1: Attribute_B or Attribute_C = No_or_low_impact? -->
+                        <If DisplayName="Attribute_B or Attribute_C = No_or_low_impact?" sap2010:WorkflowViewState.IdRef="If_RG1_AttrBC">
+                          <If.Condition>
+                            <InArgument x:TypeArguments="x:Boolean">[v_Attribute_B = "No_or_low_impact" OrElse v_Attribute_C = "No_or_low_impact"]</InArgument>
+                          </If.Condition>
+                          <If.Then>
+                            <Assign DisplayName="Positive" sap2010:WorkflowViewState.IdRef="Assign_RG1_AttrBC_Pos">
+                              <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
+                              <Assign.Value><InArgument x:TypeArguments="x:String">["Positive"]</InArgument></Assign.Value>
+                            </Assign>
+                          </If.Then>
+                          <If.Else>
+                            <Assign DisplayName="Negative" sap2010:WorkflowViewState.IdRef="Assign_RG1_AttrBC_Neg">
+                              <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
+                              <Assign.Value><InArgument x:TypeArguments="x:String">["Negative"]</InArgument></Assign.Value>
+                            </Assign>
+                          </If.Else>
+                        </If>
+
+                      </If.Then>
+                      <If.Else>
+                        <Assign DisplayName="Negative" sap2010:WorkflowViewState.IdRef="Assign_RG1_AttrA_Neg">
+                          <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
+                          <Assign.Value><InArgument x:TypeArguments="x:String">["Negative"]</InArgument></Assign.Value>
+                        </Assign>
+                      </If.Else>
+                    </If>
+
+                  </If.Then>
+                  <If.Else>
+                    <Assign DisplayName="Negative" sap2010:WorkflowViewState.IdRef="Assign_RG1_CA_Neg">
+                      <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
+                      <Assign.Value><InArgument x:TypeArguments="x:String">["Negative"]</InArgument></Assign.Value>
+                    </Assign>
+                  </If.Else>
+                </If>
+
+              </If.Else>
+            </If>
+
+          </If.Then>
+          <If.Else>
+
+            <!-- Route: Event_C or Event_D? -->
+            <If DisplayName="CaseCategory = Event_C or Event_D?" sap2010:WorkflowViewState.IdRef="If_RG2">
+              <If.Condition>
+                <InArgument x:TypeArguments="x:Boolean">[v_CaseCategory = "Event_C" OrElse v_CaseCategory = "Event_D"]</InArgument>
+              </If.Condition>
+              <If.Then>
+
+                <!-- RG2: Indicator_X = Y? -->
+                <If DisplayName="Indicator_X = Y?" sap2010:WorkflowViewState.IdRef="If_RG2_IX_Y">
+                  <If.Condition>
+                    <InArgument x:TypeArguments="x:Boolean">[v_Indicator_X = "Y"]</InArgument>
+                  </If.Condition>
+                  <If.Then>
+
+                    <!-- RG2: Detail_X = Noticeable_irregularity or empty? -->
+                    <If DisplayName="Detail_X = Noticeable_irregularity or empty?" sap2010:WorkflowViewState.IdRef="If_RG2_DX">
+                      <If.Condition>
+                        <InArgument x:TypeArguments="x:Boolean">[v_Detail_X = "Noticeable_irregularity" OrElse String.IsNullOrEmpty(v_Detail_X)]</InArgument>
+                      </If.Condition>
+                      <If.Then>
+                        <Assign DisplayName="Positive" sap2010:WorkflowViewState.IdRef="Assign_RG2_DX_Pos">
+                          <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
+                          <Assign.Value><InArgument x:TypeArguments="x:String">["Positive"]</InArgument></Assign.Value>
+                        </Assign>
+                      </If.Then>
+                      <If.Else>
+                        <Assign DisplayName="Negative" sap2010:WorkflowViewState.IdRef="Assign_RG2_DX_Neg">
+                          <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
+                          <Assign.Value><InArgument x:TypeArguments="x:String">["Negative"]</InArgument></Assign.Value>
+                        </Assign>
+                      </If.Else>
+                    </If>
+
+                  </If.Then>
+                  <If.Else>
+
+                    <!-- RG2: Indicator_X = N? -->
+                    <If DisplayName="Indicator_X = N?" sap2010:WorkflowViewState.IdRef="If_RG2_IX_N">
+                      <If.Condition>
+                        <InArgument x:TypeArguments="x:Boolean">[v_Indicator_X = "N"]</InArgument>
+                      </If.Condition>
+                      <If.Then>
+
+                        <!-- RG2/N: ComplianceAssessment = Compliant or empty? -->
+                        <If DisplayName="ComplianceAssessment = Compliant or empty?" sap2010:WorkflowViewState.IdRef="If_RG2_CA_Pos">
+                          <If.Condition>
+                            <InArgument x:TypeArguments="x:Boolean">[v_ComplianceAssessment = "Compliant" OrElse String.IsNullOrEmpty(v_ComplianceAssessment)]</InArgument>
+                          </If.Condition>
+                          <If.Then>
+                            <Assign DisplayName="Positive" sap2010:WorkflowViewState.IdRef="Assign_RG2_CA_Pos">
+                              <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
+                              <Assign.Value><InArgument x:TypeArguments="x:String">["Positive"]</InArgument></Assign.Value>
+                            </Assign>
+                          </If.Then>
+                          <If.Else>
+
+                            <!-- RG2/N: ComplianceAssessment = Non_Compliant? -->
+                            <If DisplayName="ComplianceAssessment = Non_Compliant?" sap2010:WorkflowViewState.IdRef="If_RG2_NonCompliant">
+                              <If.Condition>
+                                <InArgument x:TypeArguments="x:Boolean">[v_ComplianceAssessment = "Non_Compliant"]</InArgument>
+                              </If.Condition>
+                              <If.Then>
+
+                                <!-- RG2/N: Attribute_A in allowed set? -->
+                                <If DisplayName="Attribute_A = Verif_NA or Special_case?" sap2010:WorkflowViewState.IdRef="If_RG2_AttrA">
+                                  <If.Condition>
+                                    <InArgument x:TypeArguments="x:Boolean">[v_Attribute_A = "Verification_not_available" OrElse v_Attribute_A = "Special_case_without_certified_component"]</InArgument>
+                                  </If.Condition>
+                                  <If.Then>
+
+                                    <!-- RG2/N: Attribute_B or Attribute_C = No_or_low_impact? -->
+                                    <If DisplayName="Attribute_B or Attribute_C = No_or_low_impact?" sap2010:WorkflowViewState.IdRef="If_RG2_AttrBC">
+                                      <If.Condition>
+                                        <InArgument x:TypeArguments="x:Boolean">[v_Attribute_B = "No_or_low_impact" OrElse v_Attribute_C = "No_or_low_impact"]</InArgument>
+                                      </If.Condition>
+                                      <If.Then>
+                                        <Assign DisplayName="Positive" sap2010:WorkflowViewState.IdRef="Assign_RG2_AttrBC_Pos">
+                                          <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
+                                          <Assign.Value><InArgument x:TypeArguments="x:String">["Positive"]</InArgument></Assign.Value>
+                                        </Assign>
+                                      </If.Then>
+                                      <If.Else>
+                                        <Assign DisplayName="Negative" sap2010:WorkflowViewState.IdRef="Assign_RG2_AttrBC_Neg">
+                                          <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
+                                          <Assign.Value><InArgument x:TypeArguments="x:String">["Negative"]</InArgument></Assign.Value>
+                                        </Assign>
+                                      </If.Else>
+                                    </If>
+
+                                  </If.Then>
+                                  <If.Else>
+                                    <Assign DisplayName="Negative" sap2010:WorkflowViewState.IdRef="Assign_RG2_AttrA_Neg">
+                                      <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
+                                      <Assign.Value><InArgument x:TypeArguments="x:String">["Negative"]</InArgument></Assign.Value>
+                                    </Assign>
+                                  </If.Else>
+                                </If>
+
+                              </If.Then>
+                              <If.Else>
+                                <Assign DisplayName="Negative" sap2010:WorkflowViewState.IdRef="Assign_RG2_CA_Neg">
+                                  <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
+                                  <Assign.Value><InArgument x:TypeArguments="x:String">["Negative"]</InArgument></Assign.Value>
+                                </Assign>
+                              </If.Else>
+                            </If>
+
+                          </If.Else>
+                        </If>
+
+                      </If.Then>
+                      <If.Else>
+                        <Assign DisplayName="Negative" sap2010:WorkflowViewState.IdRef="Assign_RG2_IX_Neg">
+                          <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
+                          <Assign.Value><InArgument x:TypeArguments="x:String">["Negative"]</InArgument></Assign.Value>
+                        </Assign>
+                      </If.Else>
+                    </If>
+
+                  </If.Else>
+                </If>
+
+              </If.Then>
+              <If.Else>
+                <Assign DisplayName="Negative" sap2010:WorkflowViewState.IdRef="Assign_UnknownCategory">
+                  <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
+                  <Assign.Value><InArgument x:TypeArguments="x:String">["Negative"]</InArgument></Assign.Value>
+                </Assign>
+              </If.Else>
+            </If>
+
+          </If.Else>
+        </If>
+
+      </If.Else>
+    </If>
+
   </Sequence>
 </Activity>

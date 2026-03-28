@@ -1,8 +1,8 @@
 {
-  "name": "EligibilityDecision_IfElse",
+  "name": "Decisions",
   "projectId": "9b64a900-c1dd-46f3-abe4-52575d8a6bfd",
-  "description": "ConFormMold test baseline — pristine REFramework v24.10.0 template",
-  "main": "Main.xaml",
+  "description": "",
+  "main": "README.xaml",
   "dependencies": {
     "UiPath.Excel.Activities": "[2.24.3]",
     "UiPath.Mail.Activities": "[2.2.10]",
@@ -15,7 +15,7 @@
   "entitiesStores": [],
   "schemaVersion": "4.0",
   "studioVersion": "20.4.1.0",
-  "projectVersion": "1.0.12",
+  "projectVersion": "0.1.25",
   "runtimeOptions": {
     "autoDispose": false,
     "netFrameworkLazyLoading": false,
@@ -49,8 +49,40 @@
         "testCaseId": "97c275b3-0470-432a-a745-dd96da497e85",
         "dataVariationFilePath": ".variations\\E2E_EligibilityDecision.json",
         "testCaseType": "TestCase",
-        "executionTemplateInvokeIsolated": false,
+        "executionTemplateInvokeIsolated": true,
         "fileName": "Tests\\EligibilityDecision\\TestCase_EligibilityDecision_IfElse.xaml"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "a5b75c44-3f5f-4209-bc00-173a82a7448f",
+        "dataVariationFilePath": ".variations\\E2E_EligibilityDecision.json",
+        "testCaseType": "TestCase",
+        "executionTemplateInvokeIsolated": false,
+        "fileName": "Tests\\EligibilityDecision\\TestCase_EligibilityDecision_DecisionTable.xaml"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "802d3963-f2bd-4a91-9e96-9d8be100f572",
+        "dataVariationFilePath": ".variations\\E2E_EligibilityDecision.json",
+        "testCaseType": "TestCase",
+        "executionTemplateInvokeIsolated": false,
+        "fileName": "Tests\\EligibilityDecision\\TestCase_EligibilityDecision_Expression.xaml"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "4b063e41-52ff-4ead-82d8-d90d04543d7a",
+        "dataVariationFilePath": ".variations\\E2E_EligibilityDecision.json",
+        "testCaseType": "TestCase",
+        "executionTemplateInvokeIsolated": false,
+        "fileName": "Tests\\EligibilityDecision\\TestCase_EligibilityDecision_RuleBased.xaml"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "218de9a7-7cbb-4962-acf1-4d9b773034c1",
+        "dataVariationFilePath": ".variations\\E2E_EligibilityDecision.json",
+        "testCaseType": "TestCase",
+        "executionTemplateInvokeIsolated": false,
+        "fileName": "Tests\\EligibilityDecision\\TestCase_EligibilityDecision_StateMachine.xaml"
       }
     ],
     "modernBehavior": false,
@@ -59,13 +91,43 @@
   "expressionLanguage": "VisualBasic",
   "entryPoints": [
     {
-      "filePath": "Main.xaml",
-      "uniqueId": "933f6bf8-4bbe-4b8f-b155-dcbd5d39f5a6",
+      "filePath": "README.xaml",
+      "uniqueId": "d0c53b24-3fef-4d2d-80c1-6ee5f989d3ee",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_IfElse.xaml",
+      "uniqueId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_Expression.xaml",
+      "uniqueId": "e5f6a7b8-c9d0-1234-efab-345678901234",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_DecisionTable.xaml",
+      "uniqueId": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_RuleBased.xaml",
+      "uniqueId": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_StateMachine.xaml",
+      "uniqueId": "d4e5f6a7-b8c9-0123-defa-234567890123",
       "input": [],
       "output": []
     }
   ],
-  "isTemplate": true,
+  "isTemplate": false,
   "templateProjectData": {},
   "publishData": {},
   "targetFramework": "Windows"
