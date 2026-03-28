@@ -5,6 +5,7 @@
 //   dotnet run --file scripts/workflow_tree.cs -- path/to/project.json
 //   dotnet run --file scripts/workflow_tree.cs -- --json
 //   dotnet run --file scripts/workflow_tree.cs -- --json-out path/to/output.json
+//   dotnet run --file scripts/workflow_tree.cs -- --expr-json-out path/to/expr.json
 
 #:package UiPath.Workflow@6.0.3
 #:package UiPath.System.Activities@24.10.4
@@ -13,6 +14,7 @@
 #:package UiPath.MicrosoftOffice365.Activities@2.7.24
 #:package UiPath.Testing.Activities@24.10.4
 #:package UiPath.UIAutomation.Activities@25.10.12
+#:package Microsoft.CodeAnalysis.VisualBasic@4.5.0-2.22527.10
 #:property TargetFramework=net6.0-windows7.0
 #:property PublishAot=false
 
@@ -24,6 +26,9 @@ using System.Reflection;
 using System.Text.Json;
 using System.Xaml;
 using System.Xml.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.VisualBasic;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 // ── Resolve project.json (copied from read_xaml.cs) ──────────────────────────
 static string? FindProjectJson()
@@ -41,24 +46,29 @@ static string? FindProjectJson()
 }
 
 // ── Arg parsing ──────────────────────────────────────────────────────────────
-// positional:           optional project.json path
-// --text-out <path>     IR tree to file  (summary still to stdout)
-// --json                JSON to stdout — suppresses all human text
-// --json-out <path>     JSON to file     (summary still to stdout)
-// --trace-resolve       emit PROBE lines to stderr + post-run Studio assembly inventory
+// positional:               optional project.json path
+// --text-out <path>         IR tree to file  (summary still to stdout)
+// --json                    JSON to stdout — suppresses all human text
+// --json-out <path>         JSON to file     (summary still to stdout)
+// --trace-resolve           emit PROBE lines to stderr + post-run Studio assembly inventory
+// --expr-json-out <path>    Roslyn VB expression analysis to JSON file (Layer 2)
 string? projectJsonArg = null;
 bool    emitJson       = false;
 string? jsonOutArg     = null;
 string? textOutArg     = null;
 bool    traceResolve   = false;
+string? exprJsonOutArg  = null;
+string? exprTextOutArg  = null;
 
 for (int i = 0; i < args.Length; i++)
 {
-    if      (args[i] == "--text-out" && i + 1 < args.Length) { textOutArg = args[++i]; }
-    else if (args[i] == "--json")                             { emitJson = true; }
-    else if (args[i] == "--json-out" && i + 1 < args.Length) { emitJson = true; jsonOutArg = args[++i]; }
-    else if (args[i] == "--trace-resolve")                    { traceResolve = true; }
-    else if (!args[i].StartsWith("--"))                       { projectJsonArg = args[i]; }
+    if      (args[i] == "--text-out"      && i + 1 < args.Length) { textOutArg = args[++i]; }
+    else if (args[i] == "--json")                                   { emitJson = true; }
+    else if (args[i] == "--json-out"      && i + 1 < args.Length) { emitJson = true; jsonOutArg = args[++i]; }
+    else if (args[i] == "--trace-resolve")                          { traceResolve = true; }
+    else if (args[i] == "--expr-json-out"  && i + 1 < args.Length) { exprJsonOutArg  = args[++i]; }
+    else if (args[i] == "--expr-text-out"  && i + 1 < args.Length) { exprTextOutArg  = args[++i]; }
+    else if (!args[i].StartsWith("--"))                             { projectJsonArg = args[i]; }
 }
 
 var projectJsonPath = projectJsonArg ?? FindProjectJson();
@@ -896,6 +906,48 @@ if (emitJson)
     }
 }
 
+// ── Expression analysis (Layer 2) ────────────────────────────────────────────
+if (exprJsonOutArg is not null || exprTextOutArg is not null)
+{
+    var analyses = AnalyzeProject(wfProject);
+
+    if (exprJsonOutArg is not null)
+    {
+        var analysisJson = JsonSerializer.Serialize(analyses,
+            new JsonSerializerOptions { WriteIndented = true });
+        using var exprWriter = new StreamWriter(exprJsonOutArg, false,
+            new System.Text.UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+        exprWriter.Write(analysisJson);
+        Console.Error.WriteLine($"expr-analysis written to: {exprJsonOutArg}  ({analyses.Count} expressions)");
+    }
+
+    if (exprTextOutArg is not null)
+    {
+        // Build lookup: (workflowPath, exprName, sourceText) → analysis
+        // On collision (identical expression in same slot of same workflow) last writer wins — acceptable.
+        var lookup = analyses
+            .GroupBy(a => (a.WorkflowPath, a.ExpressionName, a.SourceText))
+            .ToDictionary(g => g.Key, g => g.Last());
+
+        using var exprTextWriter = exprTextOutArg == "-"
+            ? (TextWriter)new StreamWriter(Console.OpenStandardOutput(), System.Text.Encoding.UTF8, leaveOpen: true)
+            : new StreamWriter(exprTextOutArg, false, new System.Text.UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+
+        foreach (var wf in wfProject.Workflows.Values)
+        {
+            var irNode   = NormalizeTree(wf.Root);
+            var visiting = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { wf.Path };
+            exprTextWriter.WriteLine();
+            exprTextWriter.WriteLine($"  {wf.Path}");
+            exprTextWriter.WriteLine($"  {new string('─', wf.Path.Length)}");
+            RenderWithAnalysis(irNode, 2, exprTextWriter, wfProject, visiting, lookup, wf.Path);
+        }
+
+        if (exprTextOutArg != "-")
+            Console.Error.WriteLine($"expr-text written to: {exprTextOutArg}  ({analyses.Count} expressions)");
+    }
+}
+
 return 0;
 
 // ── IR normalization pipeline ─────────────────────────────────────────────────
@@ -935,6 +987,190 @@ static WfNode CollapseMultipleAssign(WfNode node)
 
     if (assignOps.Count == 0) return node;
     return node with { Children = assignOps };
+}
+
+// ── Layer 2: Roslyn VB expression analysis ────────────────────────────────────
+// Operates on the WfNode tree AFTER it is fully built (both RuntimeResolved and
+// XamlFallback nodes expose the same WfExpression strings).  No WF loading is
+// touched; no Studio DLLs are required.
+
+// Best-effort VB type inference.  Creates a minimal VisualBasicCompilation for
+// the expression, reads the SemanticModel, and returns the display string of the
+// inferred type.  Returns null on any failure — this path is never load-bearing.
+static string? TryInferType(string expressionText)
+{
+    try
+    {
+        var wrapped =
+            "Imports System\n" +
+            "Imports System.Data\n" +
+            "Module M\n" +
+            "  Sub S()\n" +
+            $"    Dim __ = {expressionText}\n" +
+            "  End Sub\n" +
+            "End Module";
+        var tree = VisualBasicSyntaxTree.ParseText(wrapped);
+        var compilation = VisualBasicCompilation.Create("ExprInference",
+            new[] { tree },
+            new[]
+            {
+                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(System.Data.DataTable).Assembly.Location),
+            },
+            new VisualBasicCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+        var model    = compilation.GetSemanticModel(tree);
+        var initExpr = tree.GetRoot()
+            .DescendantNodes().OfType<EqualsValueSyntax>()
+            .FirstOrDefault()?.Value;
+        if (initExpr is null) return null;
+        var t = model.GetTypeInfo(initExpr);
+        return (t.Type ?? t.ConvertedType)?.ToDisplayString();
+    }
+    catch { return null; }
+}
+
+static WfExpressionAnalysis AnalyzeExpression(
+    string workflowPath, WfNode wfNode, WfExpression expr)
+{
+    var sourceText = expr.Value;
+
+    // Parse as a VB script fragment.  SourceCodeKind.Script handles bare
+    // expressions without requiring a full module/class wrapper.
+    var tree = VisualBasicSyntaxTree.ParseText(
+        sourceText,
+        VisualBasicParseOptions.Default.WithKind(SourceCodeKind.Script));
+    var root = tree.GetRoot();
+
+    // Navigate to the first real expression node.
+    // Script root: CompilationUnitSyntax → first statement child → first expression child.
+    var firstExpr = root.DescendantNodes().OfType<ExpressionSyntax>().FirstOrDefault();
+    var syntaxKind = firstExpr?.Kind().ToString() ?? root.Kind().ToString();
+
+    var identifiers    = new List<string>();
+    var memberAccesses = new List<string>();
+    var invocations    = new List<string>();
+    var literals       = new List<string>();
+
+    foreach (var n in root.DescendantNodes())
+    {
+        switch (n)
+        {
+            case IdentifierNameSyntax id:
+                identifiers.Add(id.Identifier.ValueText); break;
+            case MemberAccessExpressionSyntax ma:
+                memberAccesses.Add(ma.ToString()); break;
+            case InvocationExpressionSyntax inv:
+                invocations.Add(inv.Expression.ToString()); break;
+            case LiteralExpressionSyntax lit:
+                literals.Add(lit.Token.ValueText); break;
+        }
+    }
+
+    var diagnostics = tree.GetDiagnostics()
+        .Select(d => $"{d.Id}: {d.GetMessage()}")
+        .ToList();
+
+    return new WfExpressionAnalysis(
+        workflowPath,
+        wfNode.Id,
+        wfNode.Type,
+        wfNode.DisplayName,
+        expr.Name,
+        sourceText,
+        syntaxKind,
+        identifiers.Distinct().ToList().AsReadOnly(),
+        memberAccesses.Distinct().ToList().AsReadOnly(),
+        invocations.Distinct().ToList().AsReadOnly(),
+        literals.ToList().AsReadOnly(),
+        diagnostics.AsReadOnly(),
+        TryInferType(sourceText));
+}
+
+static void CollectNodeExpressions(
+    WfNode node, string workflowPath, List<WfExpressionAnalysis> results)
+{
+    foreach (var expr in node.Expressions)
+    {
+        if (expr.Name == "WorkflowFileName") continue;     // file path, not VB
+        if (string.IsNullOrWhiteSpace(expr.Value)) continue;
+        results.Add(AnalyzeExpression(workflowPath, node, expr));
+    }
+    foreach (var child in node.Children)
+        CollectNodeExpressions(child, workflowPath, results);
+}
+
+// Mirrors Render() but augments each expression line with Roslyn analysis details.
+// Lookup key: (workflowPath, exprName, sourceText) — stable across NormalizeTree.
+static void RenderWithAnalysis(
+    WfNode node, int depth, TextWriter output,
+    WfProject project, HashSet<string> visiting,
+    IReadOnlyDictionary<(string, string, string), WfExpressionAnalysis> lookup,
+    string currentWfPath)
+{
+    var indent  = new string(' ', depth * 2);
+    var indentP = indent + "  ";
+    var indentA = indentP + "  ";
+
+    var typeLabel = node.Resolution == "XamlFallback" ? $"~{node.Type}" : node.Type;
+    output.WriteLine($"{indent}[{typeLabel}]  {node.DisplayName}");
+
+    if (!string.IsNullOrEmpty(node.Annotation))
+        output.WriteLine($"{indentP}// {node.Annotation.Replace("\r\n", " | ").Replace('\n', '|').Trim()}");
+
+    foreach (var arg in node.Arguments)
+        output.WriteLine($"{indentP}arg {arg.Direction} {arg.Name} : {arg.Type}");
+
+    foreach (var v in node.Variables)
+        output.WriteLine($"{indentP}var {v.Name} : {v.Type}");
+
+    foreach (var expr in node.Expressions)
+    {
+        if (lookup.TryGetValue((currentWfPath, expr.Name, expr.Value), out var a))
+        {
+            var type    = a.InferredType ?? "?";
+            var warn    = a.Diagnostics.Count > 0 ? " ⚠" : "";
+            var ids     = a.Identifiers.Count  > 0 ? $"  ids:{string.Join(",", a.Identifiers)}" : "";
+            var lits    = a.Literals.Count     > 0 ? $"  lit:{string.Join(",", a.Literals.Select(l => $"\"{l}\""))}" : "";
+            output.WriteLine($"{indentP}.{expr.Name} = {expr.Value}   ∷ {type}{warn}{ids}{lits}");
+        }
+        else
+        {
+            output.WriteLine($"{indentP}.{expr.Name} = {expr.Value}");
+        }
+    }
+
+    if (node.Type == "InvokeWorkflowFile")
+    {
+        var fileExpr = node.Expressions.FirstOrDefault(e => e.Name == "WorkflowFileName");
+        if (fileExpr is not null)
+        {
+            var targetPath = NormalizeRelPath(fileExpr.Value);
+            if (visiting.Contains(targetPath))
+            {
+                output.WriteLine($"{indentP}── [cycle: {targetPath}]");
+            }
+            else if (project.Workflows.TryGetValue(targetPath, out var callee))
+            {
+                visiting.Add(targetPath);
+                output.WriteLine($"{indentP}── {targetPath}");
+                RenderWithAnalysis(NormalizeTree(callee.Root), depth + 1, output,
+                    project, visiting, lookup, targetPath);
+                visiting.Remove(targetPath);
+            }
+        }
+        return;
+    }
+
+    foreach (var child in node.Children)
+        RenderWithAnalysis(child, depth + 1, output, project, visiting, lookup, currentWfPath);
+}
+
+static List<WfExpressionAnalysis> AnalyzeProject(WfProject project)
+{
+    var results = new List<WfExpressionAnalysis>();
+    foreach (var wf in project.Workflows.Values)
+        CollectNodeExpressions(wf.Root, wf.Path, results);
+    return results;
 }
 
 // ── Semantic model ────────────────────────────────────────────────────────────
@@ -982,6 +1218,24 @@ record WfProject(
     List<string> EntryPoints,        // project.json "entryPoints[].filePath"
     Dictionary<string, WfWorkflow> Workflows,   // key = project-relative path
     List<InvokeEdge> InvokeEdges
+);
+
+// ── Expression analysis model (Layer 2) ──────────────────────────────────────
+
+record WfExpressionAnalysis(
+    string WorkflowPath,
+    string NodeId,
+    string NodeType,
+    string NodeDisplayName,
+    string ExpressionName,
+    string SourceText,
+    string SyntaxKind,
+    IReadOnlyList<string> Identifiers,
+    IReadOnlyList<string> MemberAccesses,
+    IReadOnlyList<string> Invocations,
+    IReadOnlyList<string> Literals,
+    IReadOnlyList<string> Diagnostics,
+    string? InferredType
 );
 
 // ── Scaffolding filter ────────────────────────────────────────────────────────
