@@ -1,0 +1,215 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="RuleBased" VisualBasic.Settings="{x:Null}" sap2010:WorkflowViewState.IdRef="RuleBased_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
+    <x:Property Name="in_TransactionItem" Type="InArgument(ui:QueueItem)" />
+    <x:Property Name="out_DecisionValue" Type="OutArgument(x:String)" />
+  </x:Members>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>GlobalVariablesNamespace</x:String>
+      <x:String>GlobalConstantsNamespace</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.TypeConverter</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Common</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Drawing.Common</AssemblyReference>
+      <AssemblyReference>System.Drawing.Primitives</AssemblyReference>
+      <AssemblyReference>System.Linq</AssemblyReference>
+      <AssemblyReference>System.Net.Mail</AssemblyReference>
+      <AssemblyReference>System.ObjectModel</AssemblyReference>
+      <AssemblyReference>System.Private.CoreLib</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="RuleBased" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="v_CaseCategory" />
+      <Variable x:TypeArguments="x:String" Name="v_ComplianceAssessment" />
+      <Variable x:TypeArguments="x:String" Name="v_Attribute_A" />
+      <Variable x:TypeArguments="x:String" Name="v_Attribute_B" />
+      <Variable x:TypeArguments="x:String" Name="v_Attribute_C" />
+      <Variable x:TypeArguments="x:String" Name="v_Indicator_X" />
+      <Variable x:TypeArguments="x:String" Name="v_Detail_X" />
+      <Variable x:TypeArguments="x:Boolean" Name="v_SecondaryIndicator" />
+      <Variable x:TypeArguments="x:Boolean" Name="b_Rule_Override" />
+      <Variable x:TypeArguments="x:Boolean" Name="b_Rule_RG1_Compliant" />
+      <Variable x:TypeArguments="x:Boolean" Name="b_Rule_RG1_NonCompliant" />
+      <Variable x:TypeArguments="x:Boolean" Name="b_Rule_RG2_IX_Y" />
+      <Variable x:TypeArguments="x:Boolean" Name="b_Rule_RG2_IX_N_Compliant" />
+      <Variable x:TypeArguments="x:Boolean" Name="b_Rule_RG2_IX_N_NonCompliant" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:MultipleAssign DisplayName="Extract from SpecificContent" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+      <ui:MultipleAssign.AssignOperations>
+        <scg:List x:TypeArguments="ui:AssignOperation" Capacity="8">
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:String">[v_CaseCategory]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_CaseCategory"))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:String">[v_ComplianceAssessment]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_ComplianceAssessment"))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:String">[v_Attribute_A]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_A"))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:String">[v_Attribute_B]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_B"))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_5">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:String">[v_Attribute_C]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_C"))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_6">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:String">[v_Indicator_X]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_Indicator_X"))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_7">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:String">[v_Detail_X]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_Detail_X"))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_8">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:Boolean">[v_SecondaryIndicator]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:Boolean">[CBool(in_TransactionItem.SpecificContent("in_SecondaryIndicator"))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+        </scg:List>
+      </ui:MultipleAssign.AssignOperations>
+    </ui:MultipleAssign>
+    <ui:MultipleAssign DisplayName="Evaluate Named Rules" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
+      <ui:MultipleAssign.AssignOperations>
+        <scg:List x:TypeArguments="ui:AssignOperation" Capacity="6">
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_R1">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:Boolean">[b_Rule_Override]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:Boolean">[v_SecondaryIndicator]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_R2">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:Boolean">[b_Rule_RG1_Compliant]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:Boolean">[(v_CaseCategory = "Event_A" OrElse v_CaseCategory = "Event_B") AndAlso (v_ComplianceAssessment = "Compliant" OrElse String.IsNullOrEmpty(v_ComplianceAssessment))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_R3">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:Boolean">[b_Rule_RG1_NonCompliant]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:Boolean">[(v_CaseCategory = "Event_A" OrElse v_CaseCategory = "Event_B") AndAlso v_ComplianceAssessment = "Non_Compliant" AndAlso (v_Attribute_A = "Verification_not_available" OrElse v_Attribute_A = "Special_case_without_certified_component") AndAlso (v_Attribute_B = "No_or_low_impact" OrElse v_Attribute_C = "No_or_low_impact")]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_R4">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:Boolean">[b_Rule_RG2_IX_Y]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:Boolean">[(v_CaseCategory = "Event_C" OrElse v_CaseCategory = "Event_D") AndAlso v_Indicator_X = "Y" AndAlso (v_Detail_X = "Noticeable_irregularity" OrElse String.IsNullOrEmpty(v_Detail_X))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_R5">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:Boolean">[b_Rule_RG2_IX_N_Compliant]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:Boolean">[(v_CaseCategory = "Event_C" OrElse v_CaseCategory = "Event_D") AndAlso v_Indicator_X = "N" AndAlso (v_ComplianceAssessment = "Compliant" OrElse String.IsNullOrEmpty(v_ComplianceAssessment))]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_R6">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:Boolean">[b_Rule_RG2_IX_N_NonCompliant]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:Boolean">[(v_CaseCategory = "Event_C" OrElse v_CaseCategory = "Event_D") AndAlso v_Indicator_X = "N" AndAlso v_ComplianceAssessment = "Non_Compliant" AndAlso (v_Attribute_A = "Verification_not_available" OrElse v_Attribute_A = "Special_case_without_certified_component") AndAlso (v_Attribute_B = "No_or_low_impact" OrElse v_Attribute_C = "No_or_low_impact")]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+        </scg:List>
+      </ui:MultipleAssign.AssignOperations>
+    </ui:MultipleAssign>
+    <Assign DisplayName="Combine Rules: any Positive rule fires?" sap2010:WorkflowViewState.IdRef="Assign_Combine">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[If(b_Rule_Override OrElse b_Rule_RG1_Compliant OrElse b_Rule_RG1_NonCompliant OrElse b_Rule_RG2_IX_Y OrElse b_Rule_RG2_IX_N_Compliant OrElse b_Rule_RG2_IX_N_NonCompliant, "Positive", "Negative")]</InArgument>
+      </Assign.Value>
+    </Assign>
+  </Sequence>
+</Activity>
