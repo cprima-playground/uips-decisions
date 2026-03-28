@@ -1,6 +1,5 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="TestCase_EligibilityDecision_IfElse" this:TestCase_EligibilityDecision_IfElse.in_ConfigFile="Data/Config_Dev.xlsx" this:TestCase_EligibilityDecision_IfElse.TestCaseId="RG1-P-001" this:TestCase_EligibilityDecision_IfElse.Description="Compliant -&gt; Positive" this:TestCase_EligibilityDecision_IfElse.in_CaseCategory="Event_A" this:TestCase_EligibilityDecision_IfElse.in_ComplianceAssessment="Compliant" this:TestCase_EligibilityDecision_IfElse.in_SecondaryIndicator="False" this:TestCase_EligibilityDecision_IfElse.Expected_DecisionValue="Positive" this:TestCase_EligibilityDecision_IfElse.RuleGroup="1" this:TestCase_EligibilityDecision_IfElse.Notes="Happy path" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="TestCase_EligibilityDecision_StateMachine" this:TestCase_EligibilityDecision_StateMachine.TestCaseId="RG1-P-001" this:TestCase_EligibilityDecision_StateMachine.Description="Compliant -&gt; Positive" this:TestCase_EligibilityDecision_StateMachine.in_CaseCategory="Event_A" this:TestCase_EligibilityDecision_StateMachine.in_ComplianceAssessment="Compliant" this:TestCase_EligibilityDecision_StateMachine.in_SecondaryIndicator="False" this:TestCase_EligibilityDecision_StateMachine.Expected_DecisionValue="Positive" this:TestCase_EligibilityDecision_StateMachine.RuleGroup="1" this:TestCase_EligibilityDecision_StateMachine.Notes="Happy path" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
-    <x:Property Name="in_ConfigFile" Type="InArgument(x:String)" />
     <x:Property Name="TestCaseId" Type="InArgument(x:String)" />
     <x:Property Name="Description" Type="InArgument(x:String)" />
     <x:Property Name="in_CaseCategory" Type="InArgument(x:String)" />
@@ -15,35 +14,35 @@
     <x:Property Name="RuleGroup" Type="InArgument(x:String)" />
     <x:Property Name="Notes" Type="InArgument(x:String)" />
   </x:Members>
-  <this:TestCase_EligibilityDecision_IfElse.in_Attribute_A>
+  <this:TestCase_EligibilityDecision_StateMachine.in_Attribute_A>
     <InArgument x:TypeArguments="x:String">
       <Literal x:TypeArguments="x:String" Value="" />
     </InArgument>
-  </this:TestCase_EligibilityDecision_IfElse.in_Attribute_A>
-  <this:TestCase_EligibilityDecision_IfElse.in_Attribute_B>
+  </this:TestCase_EligibilityDecision_StateMachine.in_Attribute_A>
+  <this:TestCase_EligibilityDecision_StateMachine.in_Attribute_B>
     <InArgument x:TypeArguments="x:String">
       <Literal x:TypeArguments="x:String" Value="" />
     </InArgument>
-  </this:TestCase_EligibilityDecision_IfElse.in_Attribute_B>
-  <this:TestCase_EligibilityDecision_IfElse.in_Attribute_C>
+  </this:TestCase_EligibilityDecision_StateMachine.in_Attribute_B>
+  <this:TestCase_EligibilityDecision_StateMachine.in_Attribute_C>
     <InArgument x:TypeArguments="x:String">
       <Literal x:TypeArguments="x:String" Value="" />
     </InArgument>
-  </this:TestCase_EligibilityDecision_IfElse.in_Attribute_C>
-  <this:TestCase_EligibilityDecision_IfElse.in_Indicator_X>
+  </this:TestCase_EligibilityDecision_StateMachine.in_Attribute_C>
+  <this:TestCase_EligibilityDecision_StateMachine.in_Indicator_X>
     <InArgument x:TypeArguments="x:String">
       <Literal x:TypeArguments="x:String" Value="" />
     </InArgument>
-  </this:TestCase_EligibilityDecision_IfElse.in_Indicator_X>
-  <this:TestCase_EligibilityDecision_IfElse.in_Detail_X>
+  </this:TestCase_EligibilityDecision_StateMachine.in_Indicator_X>
+  <this:TestCase_EligibilityDecision_StateMachine.in_Detail_X>
     <InArgument x:TypeArguments="x:String">
       <Literal x:TypeArguments="x:String" Value="" />
     </InArgument>
-  </this:TestCase_EligibilityDecision_IfElse.in_Detail_X>
+  </this:TestCase_EligibilityDecision_StateMachine.in_Detail_X>
   <VisualBasic.Settings>
     <x:Null />
   </VisualBasic.Settings>
-  <sap2010:WorkflowViewState.IdRef>TestCase_EligibilityDecision_IfElse_1</sap2010:WorkflowViewState.IdRef>
+  <sap2010:WorkflowViewState.IdRef>TestCase_EligibilityDecision_StateMachine_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
       <x:String>System.Activities</x:String>
@@ -72,7 +71,6 @@
       <x:String>GlobalConstantsNamespace</x:String>
       <x:String>System.Runtime.Serialization</x:String>
       <x:String>System.Reflection</x:String>
-      <x:String>System.Linq.Expressions</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -106,48 +104,28 @@
       <AssemblyReference>System.Reflection.DispatchProxy</AssemblyReference>
       <AssemblyReference>System.Reflection.TypeExtensions</AssemblyReference>
       <AssemblyReference>System.Reflection.Metadata</AssemblyReference>
-      <AssemblyReference>System.Memory.Data</AssemblyReference>
-      <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
-      <AssemblyReference>System.Console</AssemblyReference>
-      <AssemblyReference>System.Security.Permissions</AssemblyReference>
-      <AssemblyReference>System.Configuration.ConfigurationManager</AssemblyReference>
-      <AssemblyReference>System.ComponentModel</AssemblyReference>
-      <AssemblyReference>System.Memory</AssemblyReference>
-      <AssemblyReference>System.Private.Uri</AssemblyReference>
-      <AssemblyReference>System.Linq.Async</AssemblyReference>
-      <AssemblyReference>System.Collections</AssemblyReference>
-      <AssemblyReference>System.Collections.NonGeneric</AssemblyReference>
-      <AssemblyReference>System.Linq.Expressions</AssemblyReference>
-      <AssemblyReference>UiPath.Workflow</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="TestCase_EligibilityDecision_IfElse" sap:VirtualizedContainerService.HintSize="742,1071.2" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="TestCase_EligibilityDecision_StateMachine" sap:VirtualizedContainerService.HintSize="568,768.0566666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
-      <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Name="Config" />
       <Variable x:TypeArguments="ui:QueueItem" Name="TransactionItem" />
+      <Variable x:TypeArguments="x:String" Name="v_DecisionValue" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Sequence DisplayName="... Given" sap:VirtualizedContainerService.HintSize="512,439.2" sap2010:WorkflowViewState.IdRef="Sequence_2">
+    <Sequence DisplayName="... Given" sap:VirtualizedContainerService.HintSize="568,121.6" sap2010:WorkflowViewState.IdRef="Sequence_2">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="InitAllSettings - Invoke Workflow File (Framework\InitAllSettings.xaml)" sap:VirtualizedContainerService.HintSize="478.4,206.4" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Framework\InitAllSettings.xaml">
-        <ui:InvokeWorkflowFile.Arguments>
-          <InArgument x:TypeArguments="x:String" x:Key="in_ConfigFile" />
-          <InArgument x:TypeArguments="s:String[]" x:Key="in_ConfigSheets" />
-          <OutArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="out_Config">[Config]</OutArgument>
-        </ui:InvokeWorkflowFile.Arguments>
-      </ui:InvokeWorkflowFile>
-      <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="478.4,140.8" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+      <ui:MultipleAssign DisplayName="Build TransactionItem" sap2010:WorkflowViewState.IdRef="MultipleAssign_G_SM">
         <ui:MultipleAssign.AssignOperations>
-          <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
-            <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
+          <scg:List x:TypeArguments="ui:AssignOperation" Capacity="1">
+            <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_G_SM">
               <ui:AssignOperation.To>
                 <OutArgument x:TypeArguments="ui:QueueItem">[TransactionItem]</OutArgument>
               </ui:AssignOperation.To>
@@ -159,31 +137,49 @@
         </ui:MultipleAssign.AssignOperations>
       </ui:MultipleAssign>
     </Sequence>
-    <Sequence DisplayName="... When" sap:VirtualizedContainerService.HintSize="512,496" sap2010:WorkflowViewState.IdRef="Sequence_3">
+    <Sequence DisplayName="... When" sap:VirtualizedContainerService.HintSize="568,289.6" sap2010:WorkflowViewState.IdRef="Sequence_3">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="LogDictionary - Invoke Workflow File (Utils\LogDictionary.xaml)" sap:VirtualizedContainerService.HintSize="416,206.4" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Utils\LogDictionary.xaml">
+      <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="LogDictionary - Invoke Workflow File (Utils\LogDictionary.xaml)" sap:VirtualizedContainerService.HintSize="416,206.4" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_LD_SM" UnSafe="False" WorkflowFileName="Utils\LogDictionary.xaml">
         <ui:InvokeWorkflowFile.Arguments>
           <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="in_Dictionary">[TransactionItem.SpecificContent]</InArgument>
           <InArgument x:TypeArguments="x:String" x:Key="in_Label" />
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
-      <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="IfElse - Invoke Workflow File (EligibilityDecision\IfElse.xaml)" sap:VirtualizedContainerService.HintSize="416,197.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="EligibilityDecision\IfElse.xaml">
+      <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="StateMachine - Invoke Workflow File (EligibilityDecision\StateMachine.xaml)" sap:VirtualizedContainerService.HintSize="534.4,197.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="EligibilityDecision\StateMachine.xaml">
         <ui:InvokeWorkflowFile.Arguments>
-          <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="in_Config">[Config]</InArgument>
+          <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="in_Config" />
           <InArgument x:TypeArguments="ui:QueueItem" x:Key="in_TransactionItem">[TransactionItem]</InArgument>
+          <OutArgument x:TypeArguments="x:String" x:Key="out_DecisionValue">[v_DecisionValue]</OutArgument>
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
     </Sequence>
-    <Sequence DisplayName="... Then" sap:VirtualizedContainerService.HintSize="512,112.8" sap2010:WorkflowViewState.IdRef="Sequence_4">
+    <Sequence DisplayName="... Then" sap:VirtualizedContainerService.HintSize="568,112.8" sap2010:WorkflowViewState.IdRef="Sequence_4">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
+      <If DisplayName="Verify (skip if Expected = '?')" sap2010:WorkflowViewState.IdRef="If_SkipOpen_SM">
+        <If.Condition>
+          <InArgument x:TypeArguments="x:Boolean">[Expected_DecisionValue &lt;&gt; "?"]</InArgument>
+        </If.Condition>
+        <If.Then>
+          <If DisplayName="Assert: v_DecisionValue = Expected_DecisionValue" sap2010:WorkflowViewState.IdRef="If_Assert_SM">
+            <If.Condition>
+              <InArgument x:TypeArguments="x:Boolean">[v_DecisionValue &lt;&gt; Expected_DecisionValue]</InArgument>
+            </If.Condition>
+            <If.Then>
+              <Throw DisplayName="Assertion Failed" sap2010:WorkflowViewState.IdRef="Throw_SM">
+                <Throw.Exception>[New Exception(String.Format("Expected '{0}' but got '{1}'", Expected_DecisionValue, v_DecisionValue))]</Throw.Exception>
+              </Throw>
+            </If.Then>
+          </If>
+        </If.Then>
+      </If>
     </Sequence>
   </Sequence>
 </Activity>
