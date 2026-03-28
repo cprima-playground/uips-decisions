@@ -221,6 +221,20 @@ static string? GetArgExpr(object? argValue)
 // Build traverses the WF activity graph and returns a WfNode tree.
 // It never prints; all rendering is deferred to Render().
 //
+// Format a WARN line for GetActivities() failures, walking the full InnerException chain.
+static string FormatGetActivitiesWarn(string relPath, string typeName, string displayName, Exception ex)
+{
+    var sb = new System.Text.StringBuilder();
+    sb.Append($"WARN  GetActivities [{relPath}] [{typeName}] [{displayName}]:");
+    var e = ex;
+    while (e is not null)
+    {
+        sb.Append($"\n        {e.GetType().Name}: {e.Message}");
+        e = e.InnerException;
+    }
+    return sb.ToString();
+}
+
 // allExpressions is a side accumulator: Build appends every expression text it
 // discovers (both node-local named ones and non-structural ones found by
 // ExtractExpressionsFromObject).  Duplicates are expected and preserved;
@@ -328,17 +342,13 @@ static WfNode? Build(
         try { rawChildren = WorkflowInspectionServices.GetActivities(activity).ToList(); }
         catch (Exception ex2)
         {
-            Console.Error.WriteLine(
-                $"WARN  GetActivities [{relPath}] [{typeName}] [{displayName}]: " +
-                $"{ex2.GetType().Name}: {ex2.Message}");
+            Console.Error.WriteLine(FormatGetActivitiesWarn(relPath, typeName, displayName, ex2));
             rawChildren = Enumerable.Empty<Activity>();
         }
     }
     catch (Exception ex)
     {
-        Console.Error.WriteLine(
-            $"WARN  GetActivities [{relPath}] [{typeName}] [{displayName}]: " +
-            $"{ex.GetType().Name}: {ex.Message}");
+        Console.Error.WriteLine(FormatGetActivitiesWarn(relPath, typeName, displayName, ex));
         rawChildren = Enumerable.Empty<Activity>();
     }
 
@@ -446,6 +456,48 @@ static void RenderJson(WfProject project, TextWriter output)
     var json = JsonSerializer.Serialize(project, new JsonSerializerOptions { WriteIndented = true });
     output.WriteLine(json);
 }
+
+// ── Assembly resolver — NuGet transitive deps + Studio-only assemblies ────────
+// UiPath activities like ForEachRow load UiPath.Activities.Contracts at
+// construction time (called from GetActivities()/CacheMetadata()).  That DLL is
+// not on NuGet — it ships with Studio only.
+//
+// Probe order:
+//   1. AppContext.BaseDirectory  — all NuGet transitive deps (NPOI, ClosedXML, …)
+//      copied here by the dotnet runfile build
+//   2. Latest Studio installation dir — Studio-only DLLs (UiPath.Activities.Contracts, …)
+var assemblyProbePaths = new List<string> { AppContext.BaseDirectory };
+var studioBase = Path.Combine(
+    Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
+    "UiPathPlatform", "Studio");
+if (Directory.Exists(studioBase))
+{
+    var latestStudio = Directory.GetDirectories(studioBase)
+                                .OrderByDescending(d => d)
+                                .FirstOrDefault();
+    if (latestStudio is not null)
+    {
+        // Prefer net472 folder: those DLLs target .NET Framework 4.x which loads
+        // cleanly in .NET 6 via the compat shim.  The Studio root contains .NET 8
+        // builds that pull in System.Runtime 8.0.0.0 — incompatible with net6.0.
+        var net472 = Path.Combine(latestStudio, "net472");
+        if (Directory.Exists(net472)) assemblyProbePaths.Add(net472);
+        assemblyProbePaths.Add(latestStudio);
+    }
+}
+
+AppDomain.CurrentDomain.AssemblyResolve += (_, args) =>
+{
+    var name = new AssemblyName(args.Name).Name;
+    if (name is null) return null;
+    foreach (var dir in assemblyProbePaths)
+    {
+        var path = Path.Combine(dir, $"{name}.dll");
+        if (File.Exists(path))
+            try { return Assembly.LoadFrom(path); } catch { }
+    }
+    return null;
+};
 
 // ── Load UiPath activity assemblies from project.json dependencies ────────────
 // Must happen BEFORE constructing UiPathXamlSchemaContext so that
@@ -724,6 +776,7 @@ class UiPathXamlSchemaContext : XamlSchemaContext
             typeof(Activity).Assembly,                       // System.Activities
             Assembly.Load("UiPath.Workflow"),                // VisualBasic.Settings etc.
             typeof(Dictionary<,>).Assembly,                  // System.Private.CoreLib — scg: namespace
+            typeof(System.Data.DataTable).Assembly,          // System.Data.Common — sd: namespace (Variable<DataTable> etc.)
         })
     {
         _typeCache = BuildTypeCache();
