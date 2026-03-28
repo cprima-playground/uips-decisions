@@ -61,7 +61,7 @@
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="here a top-level workflow annotation&#xD;&#xA;&#xD;&#xA;#cb39fe" DisplayName="Pipeline" sap:VirtualizedContainerService.HintSize="514.8000000000001,1919.2" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Pattern: Pipeline&#xD;&#xA;Sub-decisions execute in order; each result is a local variable&#xD;&#xA;threaded into the next step that needs it.&#xD;&#xA;&#xD;&#xA;Inputs  (from in_TransactionItem.SpecificContent):&#xD;&#xA;  in_HasRegistryId, in_RegistryParticipantExists, in_DocumentTypesAccepted&#xD;&#xA;  in_RegistryId, in_VatId&#xD;&#xA;  in_CustomerExists, in_IsSegmentP&#xD;&#xA;  in_HasCustomerErrors, in_HasInternalErrors&#xD;&#xA;&#xD;&#xA;Output: out_RoutingDecision&#xD;&#xA;  HAPPY_PATH | ROUTE_TO_CUSTOMER | ROUTE_TO_INTERNAL | OPEN&#xD;&#xA;&#xD;&#xA;Open question #1: precedence when both error types present &#x2192; OPEN sentinel" DisplayName="Pipeline" sap:VirtualizedContainerService.HintSize="514.8000000000001,1919.2" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:Boolean" Name="v_HasRegistryId" />
       <Variable x:TypeArguments="x:Boolean" Name="v_RegistryParticipantExists" />
