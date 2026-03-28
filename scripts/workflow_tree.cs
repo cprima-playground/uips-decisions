@@ -45,16 +45,19 @@ static string? FindProjectJson()
 // --text-out <path>     IR tree to file  (summary still to stdout)
 // --json                JSON to stdout — suppresses all human text
 // --json-out <path>     JSON to file     (summary still to stdout)
+// --trace-resolve       emit PROBE lines to stderr + post-run Studio assembly inventory
 string? projectJsonArg = null;
 bool    emitJson       = false;
 string? jsonOutArg     = null;
 string? textOutArg     = null;
+bool    traceResolve   = false;
 
 for (int i = 0; i < args.Length; i++)
 {
     if      (args[i] == "--text-out" && i + 1 < args.Length) { textOutArg = args[++i]; }
     else if (args[i] == "--json")                             { emitJson = true; }
     else if (args[i] == "--json-out" && i + 1 < args.Length) { emitJson = true; jsonOutArg = args[++i]; }
+    else if (args[i] == "--trace-resolve")                    { traceResolve = true; }
     else if (!args[i].StartsWith("--"))                       { projectJsonArg = args[i]; }
 }
 
@@ -244,7 +247,8 @@ static WfNode? Build(
     IReadOnlyDictionary<string, string> annotations,
     ref int idCounter,
     List<string> allExpressions,
-    string relPath = "")
+    string relPath,
+    ref int warnCount)
 {
     var typeName = activity.GetType().Name;
 
@@ -342,12 +346,14 @@ static WfNode? Build(
         try { rawChildren = WorkflowInspectionServices.GetActivities(activity).ToList(); }
         catch (Exception ex2)
         {
+            warnCount++;
             Console.Error.WriteLine(FormatGetActivitiesWarn(relPath, typeName, displayName, ex2));
             rawChildren = Enumerable.Empty<Activity>();
         }
     }
     catch (Exception ex)
     {
+        warnCount++;
         Console.Error.WriteLine(FormatGetActivitiesWarn(relPath, typeName, displayName, ex));
         rawChildren = Enumerable.Empty<Activity>();
     }
@@ -355,11 +361,146 @@ static WfNode? Build(
     var children = new List<WfNode>();
     foreach (var child in rawChildren)
     {
-        var childNode = Build(child, annotations, ref idCounter, allExpressions, relPath);
+        var childNode = Build(child, annotations, ref idCounter, allExpressions, relPath, ref warnCount);
         if (childNode is not null) children.Add(childNode);
     }
 
-    return new WfNode(id, typeName, displayName, annotation, arguments, variables, expressions, children);
+    return new WfNode(id, typeName, displayName, annotation, arguments, variables, expressions, children, "RuntimeResolved");
+}
+
+// ── XAML fallback builder ─────────────────────────────────────────────────────
+// Used when ActivityXamlServices.Load() fails (Level A).  Parses the raw XAML
+// element tree and emits WfNodes marked Resolution = "XamlFallback".
+//
+// Activity detection: any element with a 'DisplayName' attribute is an activity.
+// This covers all UiPath designer-placed activities reliably.
+//
+// Transparent wrappers: slot elements (dotted names like If.Then, ForEach.Body)
+// and delegate containers (ActivityAction, Catch) are looked through to reach
+// their activity children.
+
+static bool XamlIsActivity(XElement el) =>
+    el.Attribute("DisplayName") is not null;
+
+static bool XamlIsTransparentWrapper(XElement el)
+{
+    var ln = el.Name.LocalName;
+    return ln.Contains('.') || ln is "ActivityAction" or "Catch";
+}
+
+static IEnumerable<XElement> XamlActivityChildren(XElement el)
+{
+    foreach (var child in el.Elements())
+    {
+        if (XamlIsActivity(child))
+            yield return child;
+        else if (XamlIsTransparentWrapper(child))
+            foreach (var inner in XamlActivityChildren(child))
+                yield return inner;
+        // else: skip — metadata, view state, variable declarations, etc.
+    }
+}
+
+static List<WfVariable> XamlExtractVariables(XElement el)
+{
+    XNamespace xamlNs = "http://schemas.microsoft.com/winfx/2006/xaml";
+    return el.Elements()
+        .Where(c => c.Name.LocalName.EndsWith(".Variables"))
+        .SelectMany(sv => sv.Elements().Where(v => v.Name.LocalName == "Variable"))
+        .Select(v => new WfVariable(
+            v.Attribute("Name")?.Value ?? "?",
+            v.Attribute(xamlNs + "TypeArguments")?.Value ?? "?"))
+        .ToList();
+}
+
+static List<WfArgument> XamlExtractArguments(XElement el)
+{
+    XNamespace xamlNs = "http://schemas.microsoft.com/winfx/2006/xaml";
+    return el.Elements(xamlNs + "Members")
+        .SelectMany(m => m.Elements(xamlNs + "Property"))
+        .Select(p =>
+        {
+            var typeStr = p.Attribute("Type")?.Value ?? "?";
+            var dir = typeStr.StartsWith("InArgument")  ? "In"
+                    : typeStr.StartsWith("OutArgument") ? "Out"
+                    : "InOut";
+            return new WfArgument(p.Attribute("Name")?.Value ?? "?", dir, typeStr);
+        })
+        .ToList();
+}
+
+static List<WfExpression> XamlExtractExpressions(XElement el, List<string> allExpressions)
+{
+    var exprs = new List<WfExpression>();
+
+    // WorkflowFileName — plain string attribute (no [ ] wrapper)
+    var wfFileName = el.Attribute("WorkflowFileName")?.Value;
+    if (wfFileName is not null)
+        exprs.Add(new WfExpression("WorkflowFileName", wfFileName));
+
+    // Inline attribute expressions wrapped in [ ]
+    foreach (var (attrName, propName) in new[]
+    {
+        ("Condition", "Condition"), ("Message", "Message"),
+        ("Value", "Value"), ("To", "To"),
+    })
+    {
+        var raw = el.Attribute(attrName)?.Value?.Trim();
+        if (raw is null || !raw.StartsWith('[') || !raw.EndsWith(']') || raw.Length <= 2) continue;
+        var text = raw[1..^1];
+        exprs.Add(new WfExpression(propName, text));
+        allExpressions.Add(text);
+    }
+
+    // Slot child expressions — look for InArgument/OutArgument text in slot wrappers
+    foreach (var (slotSuffix, propName) in new[]
+    {
+        (".Condition", "Condition"), (".Value", "Value"),
+        (".To", "To"), (".Message", "Message"),
+    })
+    {
+        var slot = el.Elements().FirstOrDefault(c => c.Name.LocalName.EndsWith(slotSuffix));
+        if (slot is null) continue;
+        var argEl = slot.Elements().FirstOrDefault(c =>
+            c.Name.LocalName is "InArgument" or "OutArgument");
+        var raw = argEl?.Value?.Trim();
+        if (raw is null || !raw.StartsWith('[') || !raw.EndsWith(']') || raw.Length <= 2) continue;
+        var text = raw[1..^1];
+        if (exprs.Any(e => e.Name == propName && e.Value == text)) continue; // dedup with inline
+        exprs.Add(new WfExpression(propName, text));
+        allExpressions.Add(text);
+    }
+
+    return exprs;
+}
+
+static WfNode BuildFromXaml(
+    XElement el,
+    IReadOnlyDictionary<string, string> annotations,
+    ref int idCounter,
+    List<string> allExpressions,
+    string relPath)
+{
+    XNamespace xamlNs = "http://schemas.microsoft.com/winfx/2006/xaml";
+
+    var ln          = el.Name.LocalName;
+    var typeName    = ln == "Activity" ? "DynamicActivity" : ln;
+    var displayName = el.Attribute("DisplayName")?.Value
+                   ?? el.Attribute(xamlNs + "Class")?.Value
+                   ?? typeName;
+    var id = (++idCounter).ToString();
+
+    annotations.TryGetValue(displayName, out var annotation);
+
+    var arguments   = XamlExtractArguments(el);
+    var variables   = XamlExtractVariables(el);
+    var expressions = XamlExtractExpressions(el, allExpressions);
+
+    var children = new List<WfNode>();
+    foreach (var c in XamlActivityChildren(el))
+        children.Add(BuildFromXaml(c, annotations, ref idCounter, allExpressions, relPath));
+
+    return new WfNode(id, typeName, displayName, annotation, arguments, variables, expressions, children, "XamlFallback");
 }
 
 // ── Stats collector ───────────────────────────────────────────────────────────
@@ -407,7 +548,8 @@ static void Render(WfNode node, int depth, TextWriter output,
     var indent  = new string(' ', depth * 2);
     var indentP = indent + "  ";
 
-    output.WriteLine($"{indent}[{node.Type}]  {node.DisplayName}");
+    var typeLabel = node.Resolution == "XamlFallback" ? $"~{node.Type}" : node.Type;
+    output.WriteLine($"{indent}[{typeLabel}]  {node.DisplayName}");
 
     if (!string.IsNullOrEmpty(node.Annotation))
         output.WriteLine($"{indentP}// {node.Annotation.Replace("\r\n", " | ").Replace('\n', '|').Trim()}");
@@ -457,34 +599,18 @@ static void RenderJson(WfProject project, TextWriter output)
     output.WriteLine(json);
 }
 
-// ── Assembly resolver — NuGet transitive deps + Studio-only assemblies ────────
-// UiPath activities like ForEachRow load UiPath.Activities.Contracts at
-// construction time (called from GetActivities()/CacheMetadata()).  That DLL is
-// not on NuGet — it ships with Studio only.
+// ── Assembly resolver — NuGet transitive deps only ────────────────────────────
+// Studio DLLs are intentionally excluded.  Activities that require Studio at
+// construction time (e.g. ForEachRow → UiPath.Activities.Contracts) will cause
+// ActivityXamlServices.Load() to throw, triggering Level-A XAML fallback.
 //
-// Probe order:
-//   1. AppContext.BaseDirectory  — all NuGet transitive deps (NPOI, ClosedXML, …)
-//      copied here by the dotnet runfile build
-//   2. Latest Studio installation dir — Studio-only DLLs (UiPath.Activities.Contracts, …)
+// --trace-resolve verifies no Studio assembly sneaks in via NuGet transitive deps.
+// studioLoadedNames tracks UiPath.* names resolved from outside AppContext.BaseDirectory.
+// With Studio excluded, this set should always be empty.
+var studioLoadedNames     = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+bool studioUsedForCurrent = false;
+
 var assemblyProbePaths = new List<string> { AppContext.BaseDirectory };
-var studioBase = Path.Combine(
-    Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
-    "UiPathPlatform", "Studio");
-if (Directory.Exists(studioBase))
-{
-    var latestStudio = Directory.GetDirectories(studioBase)
-                                .OrderByDescending(d => d)
-                                .FirstOrDefault();
-    if (latestStudio is not null)
-    {
-        // Prefer net472 folder: those DLLs target .NET Framework 4.x which loads
-        // cleanly in .NET 6 via the compat shim.  The Studio root contains .NET 8
-        // builds that pull in System.Runtime 8.0.0.0 — incompatible with net6.0.
-        var net472 = Path.Combine(latestStudio, "net472");
-        if (Directory.Exists(net472)) assemblyProbePaths.Add(net472);
-        assemblyProbePaths.Add(latestStudio);
-    }
-}
 
 AppDomain.CurrentDomain.AssemblyResolve += (_, args) =>
 {
@@ -497,8 +623,23 @@ AppDomain.CurrentDomain.AssemblyResolve += (_, args) =>
         if (dir != AppContext.BaseDirectory && !name.StartsWith("UiPath")) continue;
         var path = Path.Combine(dir, $"{name}.dll");
         if (File.Exists(path))
-            try { return Assembly.LoadFrom(path); } catch { }
+            try
+            {
+                var asm = Assembly.LoadFrom(path);
+                if (dir != AppContext.BaseDirectory)
+                {
+                    studioLoadedNames.Add(name);
+                    studioUsedForCurrent = true;
+                }
+                if (traceResolve)
+                    Console.Error.WriteLine($"PROBE loaded  {name,-50}  {dir}");
+                return asm;
+            }
+            catch { }
     }
+    // Only log misses for UiPath.* names — non-UiPath misses are expected framework noise.
+    if (name.StartsWith("UiPath") && traceResolve)
+        Console.Error.WriteLine($"PROBE miss    {name}");
     return null;
 };
 
@@ -525,6 +666,14 @@ catch (Exception ex)
 
 var schemaContext = new UiPathXamlSchemaContext();
 
+// Snapshot Studio deps loaded during init (dependency loading + schema context construction).
+// After this point the resolver resets to track only per-workflow loads.
+// Per-workflow 'studio-assisted' means a NEW Studio assembly was pulled in during THAT
+// workflow's processing — not that it merely benefits from assemblies loaded at init.
+var initStudioNames = new HashSet<string>(studioLoadedNames, StringComparer.OrdinalIgnoreCase);
+studioLoadedNames.Clear();
+studioUsedForCurrent = false;
+
 // ── Output routing ────────────────────────────────────────────────────────────
 // --text-out path   → IR tree to file; summary to stdout
 // --json (no path)  → JSON to stdout; suppress all human text
@@ -539,13 +688,15 @@ StreamWriter? treeWriter = textOutArg is not null
         new System.Text.UTF8Encoding(encoderShouldEmitUTF8Identifier: false))
     : null;
 
-// Header: suppress in pure machine mode (--json to stdout)
+// Header: operational metadata → stderr; suppress in pure machine mode (--json to stdout)
 if (!jsonToStdout)
 {
-    Console.WriteLine($"project.json  : {projectJsonPath}");
-    Console.WriteLine($"name          : {projectName}");
-    Console.WriteLine($"entrypoints   : {entryPoints.Count}");
-    Console.WriteLine();
+    Console.Error.WriteLine($"project.json  : {projectJsonPath}");
+    Console.Error.WriteLine($"name          : {projectName}");
+    Console.Error.WriteLine($"entrypoints   : {entryPoints.Count}");
+    if (traceResolve && initStudioNames.Count > 0)
+        Console.Error.WriteLine($"studio (init) : {string.Join(", ", initStudioNames.OrderBy(x => x))}");
+    Console.Error.WriteLine();
 }
 
 // ── BFS graph traversal from entrypoints ─────────────────────────────────────
@@ -566,6 +717,8 @@ while (queue.Count > 0)
         continue;
     }
 
+    studioUsedForCurrent = false;
+
     Activity root;
     try
     {
@@ -576,15 +729,92 @@ while (queue.Count > 0)
     }
     catch (Exception ex)
     {
-        Console.Error.WriteLine($"LOAD ERROR {relPath}: {ex.Message}");
+        Console.Error.WriteLine($"LOAD ERROR [{relPath}]: {ex.Message}");
+        Console.Error.WriteLine($"           → switching to Level-A XAML fallback");
+        // Level A XAML fallback: WF object model unavailable; parse raw XAML structure.
+        // All nodes in this workflow will carry Resolution = "XamlFallback".
+        try
+        {
+            var xamlDoc2        = XDocument.Load(fullPath);
+            var annotations2    = ExtractAnnotations(fullPath);
+            var allExpressions2 = new List<string>();
+            int idCounter2      = 0;
+            var wfNode2 = BuildFromXaml(xamlDoc2.Root!, annotations2,
+                                        ref idCounter2, allExpressions2, relPath);
+
+            workflows[relPath] = new WfWorkflow(
+                relPath, wfNode2,
+                annotations2.Count,
+                allExpressions2.Distinct().Count(),
+                allExpressions2.Count);
+
+            foreach (var (nodeId2, rawFileName2) in FindInvokeEdges(wfNode2))
+            {
+                var targetRel2  = NormalizeRelPath(rawFileName2);
+                var targetFull2 = Path.GetFullPath(Path.Combine(projectRoot, targetRel2));
+                var resolved2   = File.Exists(targetFull2);
+                invokeEdges.Add(new InvokeEdge(relPath, nodeId2, targetRel2, resolved2));
+                if (resolved2 && queuedOrBuilt.Add(targetRel2))
+                    queue.Enqueue(targetRel2);
+            }
+
+            if (!jsonToStdout)
+            {
+                var freq2     = new Dictionary<string, int>();
+                CollectStats(wfNode2, freq2);
+                var actCount2 = freq2.Values.Sum();
+                Console.WriteLine($"  [xaml-fallback   ]  {relPath,-52}  {actCount2,4} activities  " +
+                                  $"{annotations2.Count,3} annotations  " +
+                                  $"{allExpressions2.Distinct().Count(),3} expressions");
+            }
+        }
+        catch (Exception ex2)
+        {
+            Console.Error.WriteLine($"XAML FALLBACK ERROR [{relPath}]: {ex2.Message}");
+        }
         continue;
     }
 
     var annotations    = ExtractAnnotations(fullPath);
     var allExpressions = new List<string>();
     int idCounter      = 0;
-    var wfNode         = Build(root, annotations, ref idCounter, allExpressions, relPath);
+    int warnCount      = 0;
+    var wfNode         = Build(root, annotations, ref idCounter, allExpressions, relPath, ref warnCount);
     if (wfNode is null) continue;
+
+    // Level B XAML fallback: WF load succeeded but GetActivities hit a boundary
+    // (constructor called Studio-only dep).  Rebuild the whole tree from XAML so all
+    // nodes are present, and clear the partial expression accumulator first.
+    bool usedXamlFallback = false;
+    if (warnCount > 0)
+    {
+        Console.Error.WriteLine($"           → WF descent incomplete ({warnCount} warn(s)), rebuilding from XAML");
+        try
+        {
+            var xamlDocB = XDocument.Load(fullPath);
+            allExpressions.Clear();
+            int idCounterB = 0;
+            wfNode = BuildFromXaml(xamlDocB.Root!, annotations, ref idCounterB, allExpressions, relPath);
+            usedXamlFallback = true;
+        }
+        catch (Exception exB)
+        {
+            Console.Error.WriteLine($"XAML FALLBACK ERROR [{relPath}]: {exB.Message}");
+            usedXamlFallback = true; // still mark as fallback — WF tree was incomplete
+        }
+    }
+
+    // Classify resolution boundary:
+    //   xaml-fallback    — WF descent partially failed (GetActivities WARN fired)
+    //   studio-assisted  — WF descent succeeded but triggered a new Studio assembly load
+    //   pure-nuget       — WF descent succeeded using only NuGet-restored assemblies
+    // Note: once a Studio assembly is loaded into the AppDomain it stays loaded, so
+    // subsequent workflows that share the same activity types won't re-trigger the
+    // resolver.  'studio-assisted' therefore marks the FIRST workflow to cause each load;
+    // later workflows appear 'pure-nuget' even if they use the same types.
+    var resolution = usedXamlFallback       ? "xaml-fallback"
+                   : studioUsedForCurrent   ? "studio-assisted"
+                   :                          "pure-nuget";
 
     workflows[relPath] = new WfWorkflow(
         relPath, wfNode,
@@ -608,13 +838,30 @@ while (queue.Count > 0)
         var freq     = new Dictionary<string, int>();
         CollectStats(wfNode, freq);
         var actCount = freq.Values.Sum();
-        Console.WriteLine($"  {relPath,-52}  {actCount,4} activities  " +
+        Console.WriteLine($"  [{resolution,-16}]  {relPath,-52}  {actCount,4} activities  " +
                           $"{annotations.Count,3} annotations  " +
                           $"{allExpressions.Distinct().Count(),3} expressions");
     }
 }
 
 var wfProject = new WfProject(projectName, mainPath, entryPoints, workflows, invokeEdges);
+
+// Post-run Studio assembly inventory (--trace-resolve only)
+if (traceResolve)
+{
+    Console.Error.WriteLine();
+    if (studioLoadedNames.Count > 0)
+    {
+        Console.Error.WriteLine($"── Studio assemblies loaded during BFS ({studioLoadedNames.Count}) ──");
+        foreach (var n in studioLoadedNames.OrderBy(x => x))
+            Console.Error.WriteLine($"  {n}");
+    }
+    else
+    {
+        Console.Error.WriteLine("── Studio assemblies loaded during BFS: none ──");
+    }
+    Console.Error.WriteLine();
+}
 
 // ── Text tree output (IR) ─────────────────────────────────────────────────────
 if (treeWriter is not null)
@@ -631,7 +878,7 @@ if (treeWriter is not null)
 }
 treeWriter?.Dispose();
 if (treeWriter is not null)
-    Console.WriteLine($"tree written to: {resolvedTextOut}");
+    Console.Error.WriteLine($"tree written to: {resolvedTextOut}");
 
 // ── JSON emit ─────────────────────────────────────────────────────────────────
 if (emitJson)
@@ -641,7 +888,7 @@ if (emitJson)
         using var jsonWriter = new StreamWriter(jsonOutArg, false,
             new System.Text.UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
         RenderJson(wfProject, jsonWriter);
-        Console.WriteLine($"JSON written to: {jsonOutArg}");
+        Console.Error.WriteLine($"JSON written to: {jsonOutArg}");
     }
     else
     {
@@ -708,7 +955,8 @@ record WfNode(
     List<WfArgument> Arguments,
     List<WfVariable> Variables,
     List<WfExpression> Expressions,       // node-local named: Condition / Value / To / Message
-    List<WfNode> Children
+    List<WfNode> Children,
+    string Resolution = "RuntimeResolved" // "RuntimeResolved" | "XamlFallback"
 );
 
 // ── Project-level model ───────────────────────────────────────────────────────
