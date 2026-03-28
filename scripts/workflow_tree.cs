@@ -8,6 +8,11 @@
 
 #:package UiPath.Workflow@6.0.3
 #:package UiPath.System.Activities@24.10.4
+#:package UiPath.Excel.Activities@2.24.3
+#:package UiPath.Mail.Activities@2.2.10
+#:package UiPath.MicrosoftOffice365.Activities@2.7.24
+#:package UiPath.Testing.Activities@24.10.4
+#:package UiPath.UIAutomation.Activities@25.10.12
 #:property TargetFramework=net6.0-windows7.0
 #:property PublishAot=false
 
@@ -374,8 +379,10 @@ static IEnumerable<(string NodeId, string RawFileName)> FindInvokeEdges(WfNode n
 
 // ── Text renderer (IR) ────────────────────────────────────────────────────────
 // Walks the IR-normalized WfNode tree and writes an indented text representation.
-// Depth is presentation-derived; not stored on the node.
-static void Render(WfNode node, int depth, TextWriter output)
+// When an InvokeWorkflowFile node is encountered the called workflow is inlined
+// at depth+1 using the project graph.  `visiting` guards against cycles.
+static void Render(WfNode node, int depth, TextWriter output,
+                   WfProject project, HashSet<string> visiting)
 {
     var indent  = new string(' ', depth * 2);
     var indentP = indent + "  ";
@@ -394,8 +401,30 @@ static void Render(WfNode node, int depth, TextWriter output)
     foreach (var expr in node.Expressions)
         output.WriteLine($"{indentP}.{expr.Name} = {expr.Value}");
 
+    // Graph traversal: inline the called workflow instead of showing raw children
+    if (node.Type == "InvokeWorkflowFile")
+    {
+        var fileExpr = node.Expressions.FirstOrDefault(e => e.Name == "WorkflowFileName");
+        if (fileExpr is not null)
+        {
+            var targetPath = NormalizeRelPath(fileExpr.Value);
+            if (visiting.Contains(targetPath))
+            {
+                output.WriteLine($"{indentP}── [cycle: {targetPath}]");
+            }
+            else if (project.Workflows.TryGetValue(targetPath, out var callee))
+            {
+                visiting.Add(targetPath);
+                output.WriteLine($"{indentP}── {targetPath}");
+                Render(NormalizeTree(callee.Root), depth + 1, output, project, visiting);
+                visiting.Remove(targetPath);
+            }
+        }
+        return;   // children are expression containers (Literal<T> etc.) — skip
+    }
+
     foreach (var child in node.Children)
-        Render(child, depth + 1, output);
+        Render(child, depth + 1, output, project, visiting);
 }
 
 // ── JSON renderer ─────────────────────────────────────────────────────────────
@@ -408,33 +437,28 @@ static void RenderJson(WfProject project, TextWriter output)
     output.WriteLine(json);
 }
 
-// ── Build a XamlSchemaContext that knows about UiPath types ──────────────────
-// ActivityXamlServices.Load(stream, settings) uses the internal
-// DynamicActivityReaderSchemaContext which does NOT scan XmlnsDefinitionAttribute
-// from loaded assemblies.  We bypass it by seeding a standard XamlSchemaContext
-// with both the CoreWF assembly and UiPath.System.Activities, then passing a
-// XamlXmlReader built from that context to Load(XamlReader, settings).
-Assembly uiPathAsm;
-try
+// ── Load UiPath activity assemblies from project.json dependencies ────────────
+// Must happen BEFORE constructing UiPathXamlSchemaContext so that
+// BuildTypeCache() sees all loaded assemblies.
+// Failures are non-fatal — the schema context degrades gracefully per assembly.
+if (projectJson.TryGetProperty("dependencies", out var depsEl))
 {
-    uiPathAsm = Assembly.Load("UiPath.System.Activities");
+    foreach (var dep in depsEl.EnumerateObject())
+    {
+        try   { Assembly.Load(dep.Name); }
+        catch { Console.Error.WriteLine($"WARN  assembly not available: {dep.Name}"); }
+    }
 }
+
+// UiPath.System.Activities is required for core types.
+try { Assembly.Load("UiPath.System.Activities"); }
 catch (Exception ex)
 {
     Console.Error.WriteLine($"Could not load UiPath.System.Activities: {ex.Message}");
     return 1;
 }
 
-// Do NOT pass uiPathAsm to the XamlSchemaContext constructor.
-// That constructor calls GetCustomAttributes() on every passed assembly to scan
-// XmlnsDefinitionAttribute entries. On UiPath.System.Activities that scan tries
-// to decode Persistence/Telemetry attribute types that live in
-// UiPath.Activities.Contracts — a Studio-only DLL not available here.
-//
-// Instead we subclass and override GetXamlType for the UiPath namespace,
-// resolving types by direct Assembly.GetType() name lookup which never
-// triggers assembly-level attribute scanning.
-var schemaContext = new UiPathXamlSchemaContext(uiPathAsm);
+var schemaContext = new UiPathXamlSchemaContext();
 
 // ── Output routing ────────────────────────────────────────────────────────────
 // --text-out path   → IR tree to file; summary to stdout
@@ -532,11 +556,12 @@ if (treeWriter is not null)
 {
     foreach (var wf in wfProject.Workflows.Values)
     {
-        var irNode = NormalizeTree(wf.Root);
+        var irNode  = NormalizeTree(wf.Root);
+        var visiting = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { wf.Path };
         treeWriter.WriteLine();
         treeWriter.WriteLine($"  {wf.Path}");
         treeWriter.WriteLine($"  {new string('─', wf.Path.Length)}");
-        Render(irNode, 2, treeWriter);
+        Render(irNode, 2, treeWriter, wfProject, visiting);
     }
 }
 treeWriter?.Dispose();
@@ -658,28 +683,32 @@ static class WalkFilter
         "LocationReferenceValue`1",         // variable location wrapper
         "LambdaValue`1",                    // lambda expression wrapper
         "DelegateArgumentValue`1",          // delegate argument accessor
+        "Literal`1",                        // constant value expression container
     };
 
     public static bool IsScaffolding(string typeName) => Scaffolding.Contains(typeName);
 }
 
 // ── UiPath-aware XamlSchemaContext ────────────────────────────────────────────
-// Passes only System.Activities to the base constructor (safe to attribute-scan).
-// Resolves the UiPath XAML namespace via direct Assembly.GetType() — no attribute
-// scan on UiPath.System.Activities, so UiPath.Activities.Contracts is never needed.
+// Passes only System.Activities, UiPath.Workflow, and mscorlib to the base
+// constructor (safe to attribute-scan — none reference UiPath.Activities.Contracts).
+//
+// All UiPath activity assemblies listed in project.json are loaded before this
+// context is constructed.  BuildTypeCache() then scans every UiPath-prefixed
+// assembly in the AppDomain and builds a Name → Type lookup that covers all
+// packages (Excel, UIAutomation, Mail, etc.) without needing to know CLR
+// namespace paths in advance.
+//
+// Generic activities (e.g. ForEach<String>) are handled by stripping the arity
+// suffix to key the open generic type, then closing it with the XAML typeArguments.
 class UiPathXamlSchemaContext : XamlSchemaContext
 {
     private const string UiPathNs = "http://schemas.uipath.com/workflow/activities";
-    private static readonly string[] UiPathClrNamespaces =
-        new[] { "UiPath.Core.Activities", "UiPath.Core" };
 
-    private readonly Assembly _uiPathAsm;
+    // Simple name → open-generic or concrete CLR Type, populated at construction.
+    private readonly Dictionary<string, Type> _typeCache;
 
-    public UiPathXamlSchemaContext(Assembly uiPathAsm)
-        // Include UiPath.Workflow.dll — it defines XmlnsDefinition entries for
-        // Microsoft.VisualBasic.Activities (VisualBasic.Settings) and other
-        // CoreWF namespaces.  It has NO reference to UiPath.Activities.Contracts,
-        // so scanning its attributes is safe.
+    public UiPathXamlSchemaContext()
         : base(new[]
         {
             typeof(Activity).Assembly,                       // System.Activities
@@ -687,7 +716,48 @@ class UiPathXamlSchemaContext : XamlSchemaContext
             typeof(Dictionary<,>).Assembly,                  // System.Private.CoreLib — scg: namespace
         })
     {
-        _uiPathAsm = uiPathAsm;
+        _typeCache = BuildTypeCache();
+    }
+
+    // Scan every UiPath-prefixed assembly currently in the AppDomain.
+    // GetExportedTypes() is wrapped — assemblies with native or missing
+    // transitive dependencies degrade gracefully (their types are skipped).
+    private static Dictionary<string, Type> BuildTypeCache()
+    {
+        var cache = new Dictionary<string, Type>(StringComparer.Ordinal);
+        foreach (var asm in AppDomain.CurrentDomain.GetAssemblies()
+                                     .Where(a => a.GetName().Name?.StartsWith("UiPath") == true))
+        {
+            Type[] types;
+            try
+            {
+                // GetTypes() (not GetExportedTypes()) is used because UiPath assemblies
+                // commonly reference Studio-only transitive dependencies that are absent
+                // here (e.g. Microsoft.Rest.ClientRuntime, UiPath.Activities.Contracts).
+                // GetExportedTypes() propagates the missing-assembly FileNotFoundException
+                // directly, discarding all type info.  GetTypes() raises
+                // ReflectionTypeLoadException which carries the types that DID load,
+                // so we recover partial results rather than skipping the assembly entirely.
+                types = asm.GetTypes();
+            }
+            catch (ReflectionTypeLoadException e)
+            {
+                types = e.Types.Where(t => t is not null).ToArray()!;
+            }
+            catch { continue; }
+
+            foreach (var t in types)
+            {
+                if (string.IsNullOrEmpty(t?.Name)) continue;
+                // Generic types: "ForEach`1" keyed as "ForEach"
+                var backtick = t.Name.IndexOf('`');
+                var key = (t.IsGenericTypeDefinition && backtick > 0)
+                    ? t.Name[..backtick]
+                    : t.Name;
+                cache.TryAdd(key, t);
+            }
+        }
+        return cache;
     }
 
     protected override XamlType? GetXamlType(
@@ -696,14 +766,18 @@ class UiPathXamlSchemaContext : XamlSchemaContext
         var baseType = base.GetXamlType(xamlNamespace, name, typeArguments);
         if (baseType is not null && !baseType.IsUnknown) return baseType;
 
-        if (xamlNamespace == UiPathNs)
+        if (xamlNamespace == UiPathNs && _typeCache.TryGetValue(name, out var clrType))
         {
-            foreach (var ns in UiPathClrNamespaces)
+            if (clrType.IsGenericTypeDefinition && typeArguments.Length > 0)
             {
-                var clrType = _uiPathAsm.GetType($"{ns}.{name}");
-                if (clrType is not null)
-                    return GetXamlType(clrType);
+                try
+                {
+                    var typeArgs = typeArguments.Select(t => t.UnderlyingType).ToArray();
+                    clrType = clrType.MakeGenericType(typeArgs);
+                }
+                catch { return baseType; }
             }
+            return GetXamlType(clrType);
         }
 
         return baseType;
