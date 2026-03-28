@@ -40,3 +40,7 @@ run entry:
 # Walk all implementation XAML files and emit the activity tree to workflow_tree_output.txt
 tree:
     dotnet run --file scripts/workflow_tree.cs
+
+# Walk all implementation XAML files and emit both text tree and JSON model
+tree-json:
+    dotnet run --file scripts/workflow_tree.cs -- --json

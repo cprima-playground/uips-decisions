@@ -33,7 +33,22 @@ static string? FindProjectJson()
     return null;
 }
 
-var projectJsonPath = args.Length > 0 ? args[0] : FindProjectJson();
+// ── Arg parsing ──────────────────────────────────────────────────────────────
+// positional: optional project.json path
+// --json            emit JSON to default path (workflow_tree_output.json)
+// --json-out <path> emit JSON to specified path
+string? projectJsonArg = null;
+bool    emitJson       = false;
+string? jsonOutArg     = null;
+
+for (int i = 0; i < args.Length; i++)
+{
+    if      (args[i] == "--json")                             { emitJson = true; }
+    else if (args[i] == "--json-out" && i + 1 < args.Length) { emitJson = true; jsonOutArg = args[++i]; }
+    else if (!args[i].StartsWith("--"))                       { projectJsonArg = args[i]; }
+}
+
+var projectJsonPath = projectJsonArg ?? FindProjectJson();
 if (projectJsonPath is null || !File.Exists(projectJsonPath))
 {
     Console.Error.WriteLine("project.json not found");
@@ -342,6 +357,15 @@ static void CollectStats(WfNode node, Dictionary<string, int> freq)
 }
 
 
+// ── JSON renderer ─────────────────────────────────────────────────────────────
+// Serializes all WfNode trees to a single JSON object keyed by relative XAML path.
+// No DTOs — WfNode serializes directly.  Called once after the per-file loop.
+static void RenderJson(Dictionary<string, WfNode> nodes, string jsonPath)
+{
+    var json = JsonSerializer.Serialize(nodes, new JsonSerializerOptions { WriteIndented = true });
+    File.WriteAllText(jsonPath, json, new System.Text.UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+}
+
 // ── Build a XamlSchemaContext that knows about UiPath types ──────────────────
 // ActivityXamlServices.Load(stream, settings) uses the internal
 // DynamicActivityReaderSchemaContext which does NOT scan XmlnsDefinitionAttribute
@@ -384,8 +408,14 @@ using var tee = new StreamWriter(teeFile, append: false, System.Text.Encoding.UT
 var originalOut = Console.Out;
 Console.SetOut(new TeeWriter(originalOut, tee));
 
+// JSON output path resolved once teeFile is known.
+var jsonOutPath = jsonOutArg
+    ?? Path.Combine(Path.GetDirectoryName(teeFile)!, "workflow_tree_output.json");
+
 Console.WriteLine($"Output also written to: {teeFile}");
 Console.WriteLine("── Per-file activity tree ───────────────────────────────────────");
+
+var allNodes = new Dictionary<string, WfNode>();   // populated only when emitJson
 
 foreach (var xamlPath in implFiles)
 {
@@ -426,6 +456,15 @@ foreach (var xamlPath in implFiles)
     // CollectStats-based counting over-reports when multiple nodes share a DisplayName.
     Console.WriteLine($"  annotations : {annotations.Count}");
     Console.WriteLine($"  expressions : {allExpressions.Distinct().Count()} distinct ({allExpressions.Count} total)");
+
+    if (emitJson && wfNode is not null)
+        allNodes[relPath] = wfNode;
+}
+
+if (emitJson)
+{
+    RenderJson(allNodes, jsonOutPath);
+    Console.WriteLine($"JSON written to: {jsonOutPath}");
 }
 
 return 0;
