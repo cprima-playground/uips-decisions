@@ -55,6 +55,9 @@ dist/
 cache/
 .doit.db*
 
+# UiPath package output (pack_and_run.ps1 default output folder)
+out/
+
 # OS
 .DS_Store
 Thumbs.db
