@@ -62,3 +62,7 @@ out/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# workflow_tree script outputs
+workflow_tree_output.txt
+workflow_tree_output.json
