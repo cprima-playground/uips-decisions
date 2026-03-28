@@ -492,6 +492,9 @@ AppDomain.CurrentDomain.AssemblyResolve += (_, args) =>
     if (name is null) return null;
     foreach (var dir in assemblyProbePaths)
     {
+        // Studio paths (net472, Studio root) are restricted to UiPath.* names.
+        // AppContext.BaseDirectory (index 0) is unrestricted — all NuGet-restored deps are safe.
+        if (dir != AppContext.BaseDirectory && !name.StartsWith("UiPath")) continue;
         var path = Path.Combine(dir, $"{name}.dll");
         if (File.Exists(path))
             try { return Assembly.LoadFrom(path); } catch { }
