@@ -3,6 +3,10 @@
     {
       "filePath": ".variations\\E2E_EligibilityDecision.json",
       "dataVariationType": "File"
+    },
+    {
+      "filePath": ".variations\\E2E_RoutingPipeline.json",
+      "dataVariationType": "File"
     }
   ]
 }

@@ -83,6 +83,14 @@
         "testCaseType": "TestCase",
         "executionTemplateInvokeIsolated": false,
         "fileName": "Tests\\EligibilityDecision\\TestCase_EligibilityDecision_StateMachine.xaml"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "79332bf1-46b6-4b98-84b2-881615ef4e30",
+        "dataVariationFilePath": ".variations\\E2E_RoutingPipeline.json",
+        "testCaseType": "TestCase",
+        "executionTemplateInvokeIsolated": false,
+        "fileName": "Tests\\RoutingPipeline\\TestCase_RoutingPipeline_Pipeline.xaml"
       }
     ],
     "modernBehavior": false,
@@ -123,6 +131,12 @@
     {
       "filePath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_StateMachine.xaml",
       "uniqueId": "d4e5f6a7-b8c9-0123-defa-234567890123",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "Tests\\RoutingPipeline\\Workflow_RoutingPipeline_Pipeline.xaml",
+      "uniqueId": "f1e2d3c4-b5a6-7890-fedc-ba9876543210",
       "input": [],
       "output": []
     }
