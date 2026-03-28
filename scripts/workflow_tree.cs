@@ -229,7 +229,8 @@ static WfNode? Build(
     Activity activity,
     IReadOnlyDictionary<string, string> annotations,
     ref int idCounter,
-    List<string> allExpressions)
+    List<string> allExpressions,
+    string relPath = "")
 {
     var typeName = activity.GetType().Name;
 
@@ -325,17 +326,26 @@ static WfNode? Build(
     catch (InvalidWorkflowException)
     {
         try { rawChildren = WorkflowInspectionServices.GetActivities(activity).ToList(); }
-        catch { rawChildren = Enumerable.Empty<Activity>(); }
+        catch (Exception ex2)
+        {
+            Console.Error.WriteLine(
+                $"WARN  GetActivities [{relPath}] [{typeName}] [{displayName}]: " +
+                $"{ex2.GetType().Name}: {ex2.Message}");
+            rawChildren = Enumerable.Empty<Activity>();
+        }
     }
-    catch   // e.g. XamlObjectWriterException for unknown generic UiPath types
+    catch (Exception ex)
     {
+        Console.Error.WriteLine(
+            $"WARN  GetActivities [{relPath}] [{typeName}] [{displayName}]: " +
+            $"{ex.GetType().Name}: {ex.Message}");
         rawChildren = Enumerable.Empty<Activity>();
     }
 
     var children = new List<WfNode>();
     foreach (var child in rawChildren)
     {
-        var childNode = Build(child, annotations, ref idCounter, allExpressions);
+        var childNode = Build(child, annotations, ref idCounter, allExpressions, relPath);
         if (childNode is not null) children.Add(childNode);
     }
 
@@ -518,7 +528,7 @@ while (queue.Count > 0)
     var annotations    = ExtractAnnotations(fullPath);
     var allExpressions = new List<string>();
     int idCounter      = 0;
-    var wfNode         = Build(root, annotations, ref idCounter, allExpressions);
+    var wfNode         = Build(root, annotations, ref idCounter, allExpressions, relPath);
     if (wfNode is null) continue;
 
     workflows[relPath] = new WfWorkflow(
