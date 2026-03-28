@@ -1,0 +1,615 @@
+
+  EligibilityDecision\DecisionTable.xaml
+  ──────────────────────────────────────
+    [DynamicActivity]  DecisionTable
+      // Pattern: DecisionTable|Rules encoded as rows in an inline List(Of String()) with wildcard "*" cells.|LINQ .Any() scans rows top-to-bottom; first match wins → Positive.|No match → Negative.|Inputs / Output: same as IfElse.xaml.||Column index mapping:|  [0] SecondaryIndicator  ("True" / "*")|  [1] CaseGroup           ("RG1" / "RG2" / "*")|  [2] ComplianceAssessment|  [3] Attribute_A|  [4] Attribute_BC        ("Yes" = Attribute_B OR Attribute_C = No_or_low_impact)|  [5] Indicator_X|  [6] Detail_X
+      arg In in_Config : InArgument`1
+      arg In in_TransactionItem : InArgument`1
+      arg Out out_DecisionValue : OutArgument`1
+      [Sequence]  DecisionTable
+        // Pattern: DecisionTable|Rules encoded as rows in an inline List(Of String()) with wildcard "*" cells.|LINQ .Any() scans rows top-to-bottom; first match wins → Positive.|No match → Negative.|Inputs / Output: same as IfElse.xaml.||Column index mapping:|  [0] SecondaryIndicator  ("True" / "*")|  [1] CaseGroup           ("RG1" / "RG2" / "*")|  [2] ComplianceAssessment|  [3] Attribute_A|  [4] Attribute_BC        ("Yes" = Attribute_B OR Attribute_C = No_or_low_impact)|  [5] Indicator_X|  [6] Detail_X
+        var v_CaseCategory : String
+        var v_ComplianceAssessment : String
+        var v_Attribute_A : String
+        var v_Attribute_B : String
+        var v_Attribute_C : String
+        var v_Indicator_X : String
+        var v_Detail_X : String
+        var v_SecondaryIndicator : Boolean
+        var v_MatchFound : Boolean
+        [MultipleAssign]  Extract from SpecificContent
+          // Extracts all typed inputs from SpecificContent into local variables.
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_CaseCategory"))
+            .To = v_CaseCategory
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_ComplianceAssessment"))
+            .To = v_ComplianceAssessment
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_A"))
+            .To = v_Attribute_A
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_B"))
+            .To = v_Attribute_B
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_C"))
+            .To = v_Attribute_C
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Indicator_X"))
+            .To = v_Indicator_X
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Detail_X"))
+            .To = v_Detail_X
+          [AssignOperation]  AssignOperation
+            .Value = CBool(in_TransactionItem.SpecificContent("in_SecondaryIndicator"))
+            .To = v_SecondaryIndicator
+        [Assign]  Match: first Positive rule fires?
+          // [RULE]|Inline table + LINQ .Any() match in one expression.|Each row is a String array; "*" in a cell means "don't care" for that column.|Match predicate per column:|  r(n) = "*"  → always matches|  r(n) = val  → must equal the corresponding input variable|Column [4] (Attribute_BC): r(4)="Yes" matches when|  Attribute_B = No_or_low_impact OR Attribute_C = No_or_low_impact.|Open question #1: OR vs AND — currently OR.||Implementation note: the entire List(Of String()) must be inline|(cannot be stored in a typed XAML variable — scg:List(x:String())|is not valid as a XAML type argument).
+          .Value = New List(Of String()) From {New String() {"True","*","*","*","*","*","*"},New String() {"*","RG1","Compliant","*","*","*","*"},New String() {"*","RG1","","*","*","*","*"},New String() {"*","RG1","Non_Compliant","Verification_not_available","Yes","*","*"},New String() {"*","RG1","Non_Compliant","Special_case_without_certified_component","Yes","*","*"},New String() {"*","RG2","*","*","*","Y","Noticeable_irregularity"},New String() {"*","RG2","*","*","*","Y",""},New String() {"*","RG2","Compliant","*","*","N","*"},New String() {"*","RG2","","*","*","N","*"},New String() {"*","RG2","Non_Compliant","Verification_not_available","Yes","N","*"},New String() {"*","RG2","Non_Compliant","Special_case_without_certified_component","Yes","N","*"}}.Any(Function(r) (r(0)="*" OrElse (r(0)="True" AndAlso v_SecondaryIndicator)) AndAlso (r(1)="*" OrElse (r(1)="RG1" AndAlso (v_CaseCategory="Event_A" OrElse v_CaseCategory="Event_B")) OrElse (r(1)="RG2" AndAlso (v_CaseCategory="Event_C" OrElse v_CaseCategory="Event_D"))) AndAlso (r(2)="*" OrElse r(2)=v_ComplianceAssessment) AndAlso (r(3)="*" OrElse r(3)=v_Attribute_A) AndAlso (r(4)="*" OrElse (r(4)="Yes" AndAlso (v_Attribute_B="No_or_low_impact" OrElse v_Attribute_C="No_or_low_impact"))) AndAlso (r(5)="*" OrElse r(5)=v_Indicator_X) AndAlso (r(6)="*" OrElse r(6)=v_Detail_X))
+          .To = v_MatchFound
+        [Assign]  Set DecisionValue
+          // Converts Boolean match result to String output:|  True  → "Positive"|  False → "Negative"
+          .Value = If(v_MatchFound, "Positive", "Negative")
+          .To = out_DecisionValue
+
+  EligibilityDecision\Expression.xaml
+  ───────────────────────────────────
+    [DynamicActivity]  Expression
+      // Pattern: Expression|The entire decision for each rule group is encoded as one compound|VB.NET boolean expression inside a single If.Condition.|No intermediate variables — logic is evaluated atomically.|Inputs / Output: same as IfElse.xaml.
+      arg In in_Config : InArgument`1
+      arg In in_TransactionItem : InArgument`1
+      arg Out out_DecisionValue : OutArgument`1
+      [Sequence]  Expression
+        // Pattern: Expression|The entire decision for each rule group is encoded as one compound|VB.NET boolean expression inside a single If.Condition.|No intermediate variables — logic is evaluated atomically.|Inputs / Output: same as IfElse.xaml.
+        var v_CaseCategory : String
+        var v_ComplianceAssessment : String
+        var v_Attribute_A : String
+        var v_Attribute_B : String
+        var v_Attribute_C : String
+        var v_Indicator_X : String
+        var v_Detail_X : String
+        var v_SecondaryIndicator : Boolean
+        [MultipleAssign]  Extract from SpecificContent
+          // Extracts all typed inputs from SpecificContent into local variables.|All subsequent logic references local variables only.
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_CaseCategory"))
+            .To = v_CaseCategory
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_ComplianceAssessment"))
+            .To = v_ComplianceAssessment
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_A"))
+            .To = v_Attribute_A
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_B"))
+            .To = v_Attribute_B
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_C"))
+            .To = v_Attribute_C
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Indicator_X"))
+            .To = v_Indicator_X
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Detail_X"))
+            .To = v_Detail_X
+          [AssignOperation]  AssignOperation
+            .Value = CBool(in_TransactionItem.SpecificContent("in_SecondaryIndicator"))
+            .To = v_SecondaryIndicator
+        [Assign]  Default: Negative
+          // [RULE]|Default-deny: out_DecisionValue = "Negative" before any rule is tested.|Either rule group If below may overwrite this to "Positive".|If neither fires, "Negative" stands.
+          .Value = "Negative"
+          .To = out_DecisionValue
+        [If]  Rule Group 1: Event_A or Event_B
+          // [RULE]|Condition encodes the full Rule Group 1 logic in one expression:|  (CaseCategory ∈ RG1)|  AND (SecondaryIndicator|       OR ComplianceAssessment = Compliant|       OR ComplianceAssessment = empty|       OR (Non_Compliant AND special Attribute_A|           AND (Attribute_B OR Attribute_C = No_or_low_impact)))|Open question #1 applies to the Attribute_BC sub-expression (OR vs AND).
+          .Condition = (v_CaseCategory = "Event_A" OrElse v_CaseCategory = "Event_B") AndAlso (v_SecondaryIndicator OrElse v_ComplianceAssessment = "Compliant" OrElse String.IsNullOrEmpty(v_ComplianceAssessment) OrElse (v_ComplianceAssessment = "Non_Compliant" AndAlso (v_Attribute_A = "Verification_not_available" OrElse v_Attribute_A = "Special_case_without_certified_component") AndAlso (v_Attribute_B = "No_or_low_impact" OrElse v_Attribute_C = "No_or_low_impact")))
+          [Assign]  Positive
+            // RG1 compound condition matched → Positive.
+            .Value = "Positive"
+            .To = out_DecisionValue
+        [If]  Rule Group 2: Event_C or Event_D
+          // [RULE]|Condition encodes the full Rule Group 2 logic in one expression:|  (CaseCategory ∈ RG2)|  AND (SecondaryIndicator|       OR (Indicator_X=Y AND (Detail_X = Noticeable_irregularity OR empty))|       OR (Indicator_X=N AND (Compliant OR empty|           OR (Non_Compliant AND special Attribute_A|               AND (Attribute_B OR Attribute_C = No_or_low_impact)))))|Mirrors RG1 compliance sub-logic for Indicator_X=N branch.
+          .Condition = (v_CaseCategory = "Event_C" OrElse v_CaseCategory = "Event_D") AndAlso (v_SecondaryIndicator OrElse (v_Indicator_X = "Y" AndAlso (v_Detail_X = "Noticeable_irregularity" OrElse String.IsNullOrEmpty(v_Detail_X))) OrElse (v_Indicator_X = "N" AndAlso (v_ComplianceAssessment = "Compliant" OrElse String.IsNullOrEmpty(v_ComplianceAssessment) OrElse (v_ComplianceAssessment = "Non_Compliant" AndAlso (v_Attribute_A = "Verification_not_available" OrElse v_Attribute_A = "Special_case_without_certified_component") AndAlso (v_Attribute_B = "No_or_low_impact" OrElse v_Attribute_C = "No_or_low_impact")))))
+          [Assign]  Positive
+            // RG1 compound condition matched → Positive.
+            .Value = "Positive"
+            .To = out_DecisionValue
+
+  EligibilityDecision\IfElse.xaml
+  ───────────────────────────────
+    [DynamicActivity]  IfElse
+      // Pattern: IfElse|Each branch tests one predicate; the matched leaf assigns the output.|Inputs  (from in_TransactionItem.SpecificContent):|  in_CaseCategory, in_ComplianceAssessment|  in_Attribute_A, in_Attribute_B, in_Attribute_C|  in_Indicator_X, in_Detail_X, in_SecondaryIndicator (Boolean)|Output: out_DecisionValue — Positive | Negative
+      arg In in_Config : InArgument`1
+      arg In in_TransactionItem : InArgument`1
+      arg Out out_DecisionValue : OutArgument`1
+      [Sequence]  IfElse
+        // Pattern: IfElse|Each branch tests one predicate; the matched leaf assigns the output.|Inputs  (from in_TransactionItem.SpecificContent):|  in_CaseCategory, in_ComplianceAssessment|  in_Attribute_A, in_Attribute_B, in_Attribute_C|  in_Indicator_X, in_Detail_X, in_SecondaryIndicator (Boolean)|Output: out_DecisionValue — Positive | Negative
+        var v_CaseCategory : String
+        var v_ComplianceAssessment : String
+        var v_Attribute_A : String
+        var v_Attribute_B : String
+        var v_Attribute_C : String
+        var v_Indicator_X : String
+        var v_Detail_X : String
+        var v_SecondaryIndicator : Boolean
+        [MultipleAssign]  Extract from SpecificContent
+          // Extracts all typed inputs from SpecificContent into local variables.|SecondaryIndicator is stored as Boolean; all others as String.
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_CaseCategory"))
+            .To = v_CaseCategory
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_ComplianceAssessment"))
+            .To = v_ComplianceAssessment
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_A"))
+            .To = v_Attribute_A
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_B"))
+            .To = v_Attribute_B
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_C"))
+            .To = v_Attribute_C
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Indicator_X"))
+            .To = v_Indicator_X
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Detail_X"))
+            .To = v_Detail_X
+          [AssignOperation]  AssignOperation
+            .Value = CBool(in_TransactionItem.SpecificContent("in_SecondaryIndicator"))
+            .To = v_SecondaryIndicator
+        [If]  SecondaryIndicator = True?
+          // [RULE]|Universal override: SecondaryIndicator = True → always Positive,|regardless of CaseCategory or any other field.|Evaluated first so it short-circuits both rule groups.
+          .Condition = v_SecondaryIndicator
+          [Assign]  Positive
+            // SecondaryIndicator override fires → Positive.
+            .Value = "Positive"
+            .To = out_DecisionValue
+          [If]  CaseCategory = Event_A or Event_B?
+            // Dispatch: CaseCategory ∈ {Event_A, Event_B} → Rule Group 1 branch.
+            .Condition = v_CaseCategory = "Event_A" OrElse v_CaseCategory = "Event_B"
+            [If]  ComplianceAssessment = Compliant or empty?
+              // [SENTINEL]|RG1 positive path: ComplianceAssessment = Compliant OR empty.|Empty string is a sentinel meaning "assessment not yet available" — treated as Positive.
+              .Condition = v_ComplianceAssessment = "Compliant" OrElse String.IsNullOrEmpty(v_ComplianceAssessment)
+              [Assign]  Positive
+                // SecondaryIndicator override fires → Positive.
+                .Value = "Positive"
+                .To = out_DecisionValue
+              [If]  ComplianceAssessment = Non_Compliant?
+                // RG1: ComplianceAssessment = Non_Compliant — enter attribute evaluation.
+                .Condition = v_ComplianceAssessment = "Non_Compliant"
+                [If]  Attribute_A = Verif_NA or Special_case?
+                  // [RULE]|RG1 Non_Compliant: Attribute_A must be one of two special values|that indicate mitigating circumstances:|  Verification_not_available|  Special_case_without_certified_component
+                  .Condition = v_Attribute_A = "Verification_not_available" OrElse v_Attribute_A = "Special_case_without_certified_component"
+                  [If]  Attribute_B or Attribute_C = No_or_low_impact?
+                    // [OPEN]|RG1 Non_Compliant + special Attribute_A:|  Positive if Attribute_B = No_or_low_impact|           OR Attribute_C = No_or_low_impact|Open question #1: is this OR or AND? Currently implemented as OR.
+                    .Condition = v_Attribute_B = "No_or_low_impact" OrElse v_Attribute_C = "No_or_low_impact"
+                    [Assign]  Positive
+                      // SecondaryIndicator override fires → Positive.
+                      .Value = "Positive"
+                      .To = out_DecisionValue
+                    [Assign]  Negative
+                      // RG1 Non_Compliant + special Attribute_A + NO low-impact Attribute_BC → Negative.
+                      .Value = "Negative"
+                      .To = out_DecisionValue
+                  [Assign]  Negative
+                    // RG1 Non_Compliant + special Attribute_A + NO low-impact Attribute_BC → Negative.
+                    .Value = "Negative"
+                    .To = out_DecisionValue
+                [Assign]  Negative
+                  // RG1 Non_Compliant + special Attribute_A + NO low-impact Attribute_BC → Negative.
+                  .Value = "Negative"
+                  .To = out_DecisionValue
+            [If]  CaseCategory = Event_C or Event_D?
+              // Dispatch: CaseCategory ∈ {Event_C, Event_D} → Rule Group 2 branch.
+              .Condition = v_CaseCategory = "Event_C" OrElse v_CaseCategory = "Event_D"
+              [If]  Indicator_X = Y?
+                // RG2: Indicator_X = Y → evaluate Detail_X.
+                .Condition = v_Indicator_X = "Y"
+                [If]  Detail_X = Noticeable_irregularity or empty?
+                  // [SENTINEL]|RG2 Indicator_X=Y: Positive if Detail_X = Noticeable_irregularity OR empty.|Empty Detail_X is a sentinel meaning "irregularity present but not yet classified".
+                  .Condition = v_Detail_X = "Noticeable_irregularity" OrElse String.IsNullOrEmpty(v_Detail_X)
+                  [Assign]  Positive
+                    // SecondaryIndicator override fires → Positive.
+                    .Value = "Positive"
+                    .To = out_DecisionValue
+                  [Assign]  Negative
+                    // RG1 Non_Compliant + special Attribute_A + NO low-impact Attribute_BC → Negative.
+                    .Value = "Negative"
+                    .To = out_DecisionValue
+                [If]  Indicator_X = N?
+                  // RG2: Indicator_X = N → apply same compliance logic as Rule Group 1.
+                  .Condition = v_Indicator_X = "N"
+                  [If]  ComplianceAssessment = Compliant or empty?
+                    // [SENTINEL]|RG1 positive path: ComplianceAssessment = Compliant OR empty.|Empty string is a sentinel meaning "assessment not yet available" — treated as Positive.
+                    .Condition = v_ComplianceAssessment = "Compliant" OrElse String.IsNullOrEmpty(v_ComplianceAssessment)
+                    [Assign]  Positive
+                      // SecondaryIndicator override fires → Positive.
+                      .Value = "Positive"
+                      .To = out_DecisionValue
+                    [If]  ComplianceAssessment = Non_Compliant?
+                      // RG1: ComplianceAssessment = Non_Compliant — enter attribute evaluation.
+                      .Condition = v_ComplianceAssessment = "Non_Compliant"
+                      [If]  Attribute_A = Verif_NA or Special_case?
+                        // [RULE]|RG1 Non_Compliant: Attribute_A must be one of two special values|that indicate mitigating circumstances:|  Verification_not_available|  Special_case_without_certified_component
+                        .Condition = v_Attribute_A = "Verification_not_available" OrElse v_Attribute_A = "Special_case_without_certified_component"
+                        [If]  Attribute_B or Attribute_C = No_or_low_impact?
+                          // [OPEN]|RG1 Non_Compliant + special Attribute_A:|  Positive if Attribute_B = No_or_low_impact|           OR Attribute_C = No_or_low_impact|Open question #1: is this OR or AND? Currently implemented as OR.
+                          .Condition = v_Attribute_B = "No_or_low_impact" OrElse v_Attribute_C = "No_or_low_impact"
+                          [Assign]  Positive
+                            // SecondaryIndicator override fires → Positive.
+                            .Value = "Positive"
+                            .To = out_DecisionValue
+                          [Assign]  Negative
+                            // RG1 Non_Compliant + special Attribute_A + NO low-impact Attribute_BC → Negative.
+                            .Value = "Negative"
+                            .To = out_DecisionValue
+                        [Assign]  Negative
+                          // RG1 Non_Compliant + special Attribute_A + NO low-impact Attribute_BC → Negative.
+                          .Value = "Negative"
+                          .To = out_DecisionValue
+                      [Assign]  Negative
+                        // RG1 Non_Compliant + special Attribute_A + NO low-impact Attribute_BC → Negative.
+                        .Value = "Negative"
+                        .To = out_DecisionValue
+                  [Assign]  Negative
+                    // RG1 Non_Compliant + special Attribute_A + NO low-impact Attribute_BC → Negative.
+                    .Value = "Negative"
+                    .To = out_DecisionValue
+              [Assign]  Negative
+                // RG1 Non_Compliant + special Attribute_A + NO low-impact Attribute_BC → Negative.
+                .Value = "Negative"
+                .To = out_DecisionValue
+
+  EligibilityDecision\RuleBased.xaml
+  ──────────────────────────────────
+    [DynamicActivity]  RuleBased
+      // Pattern: RuleBased|Each business rule is evaluated into a named Boolean variable.|A final combine step fires if any rule flag is True.|Inputs / Output: same as IfElse.xaml.||Named rule flags:|  b_Rule_Override           — SecondaryIndicator override|  b_Rule_RG1_Compliant      — RG1: Compliant or empty|  b_Rule_RG1_NonCompliant   — RG1: Non_Compliant + special Attribute_A + low-impact BC|  b_Rule_RG2_IX_Y           — RG2: Indicator_X=Y + acceptable Detail_X|  b_Rule_RG2_IX_N_Compliant — RG2: Indicator_X=N + Compliant or empty|  b_Rule_RG2_IX_N_NonCompliant — RG2: Indicator_X=N + Non_Compliant + attrs
+      arg In in_Config : InArgument`1
+      arg In in_TransactionItem : InArgument`1
+      arg Out out_DecisionValue : OutArgument`1
+      [Sequence]  RuleBased
+        // Pattern: RuleBased|Each business rule is evaluated into a named Boolean variable.|A final combine step fires if any rule flag is True.|Inputs / Output: same as IfElse.xaml.||Named rule flags:|  b_Rule_Override           — SecondaryIndicator override|  b_Rule_RG1_Compliant      — RG1: Compliant or empty|  b_Rule_RG1_NonCompliant   — RG1: Non_Compliant + special Attribute_A + low-impact BC|  b_Rule_RG2_IX_Y           — RG2: Indicator_X=Y + acceptable Detail_X|  b_Rule_RG2_IX_N_Compliant — RG2: Indicator_X=N + Compliant or empty|  b_Rule_RG2_IX_N_NonCompliant — RG2: Indicator_X=N + Non_Compliant + attrs
+        var v_CaseCategory : String
+        var v_ComplianceAssessment : String
+        var v_Attribute_A : String
+        var v_Attribute_B : String
+        var v_Attribute_C : String
+        var v_Indicator_X : String
+        var v_Detail_X : String
+        var v_SecondaryIndicator : Boolean
+        var b_Rule_Override : Boolean
+        var b_Rule_RG1_Compliant : Boolean
+        var b_Rule_RG1_NonCompliant : Boolean
+        var b_Rule_RG2_IX_Y : Boolean
+        var b_Rule_RG2_IX_N_Compliant : Boolean
+        var b_Rule_RG2_IX_N_NonCompliant : Boolean
+        [MultipleAssign]  Extract from SpecificContent
+          // Step 1: Extracts all typed inputs from SpecificContent into local variables.
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_CaseCategory"))
+            .To = v_CaseCategory
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_ComplianceAssessment"))
+            .To = v_ComplianceAssessment
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_A"))
+            .To = v_Attribute_A
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_B"))
+            .To = v_Attribute_B
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_C"))
+            .To = v_Attribute_C
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Indicator_X"))
+            .To = v_Indicator_X
+          [AssignOperation]  AssignOperation
+            .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Detail_X"))
+            .To = v_Detail_X
+          [AssignOperation]  AssignOperation
+            .Value = CBool(in_TransactionItem.SpecificContent("in_SecondaryIndicator"))
+            .To = v_SecondaryIndicator
+        [MultipleAssign]  Evaluate Named Rules
+          // Step 2: Evaluates all six named rule flags independently.|All rules are always evaluated — no short-circuiting between rules.|Each flag name encodes the rule group and condition it represents.|Useful for audit: inspect individual flags in the Locals panel during debug.
+          [AssignOperation]  AssignOperation
+            .Value = v_SecondaryIndicator
+            .To = b_Rule_Override
+          [AssignOperation]  AssignOperation
+            .Value = (v_CaseCategory = "Event_A" OrElse v_CaseCategory = "Event_B") AndAlso (v_ComplianceAssessment = "Compliant" OrElse String.IsNullOrEmpty(v_ComplianceAssessment))
+            .To = b_Rule_RG1_Compliant
+          [AssignOperation]  AssignOperation
+            .Value = (v_CaseCategory = "Event_A" OrElse v_CaseCategory = "Event_B") AndAlso v_ComplianceAssessment = "Non_Compliant" AndAlso (v_Attribute_A = "Verification_not_available" OrElse v_Attribute_A = "Special_case_without_certified_component") AndAlso (v_Attribute_B = "No_or_low_impact" OrElse v_Attribute_C = "No_or_low_impact")
+            .To = b_Rule_RG1_NonCompliant
+          [AssignOperation]  AssignOperation
+            .Value = (v_CaseCategory = "Event_C" OrElse v_CaseCategory = "Event_D") AndAlso v_Indicator_X = "Y" AndAlso (v_Detail_X = "Noticeable_irregularity" OrElse String.IsNullOrEmpty(v_Detail_X))
+            .To = b_Rule_RG2_IX_Y
+          [AssignOperation]  AssignOperation
+            .Value = (v_CaseCategory = "Event_C" OrElse v_CaseCategory = "Event_D") AndAlso v_Indicator_X = "N" AndAlso (v_ComplianceAssessment = "Compliant" OrElse String.IsNullOrEmpty(v_ComplianceAssessment))
+            .To = b_Rule_RG2_IX_N_Compliant
+          [AssignOperation]  AssignOperation
+            .Value = (v_CaseCategory = "Event_C" OrElse v_CaseCategory = "Event_D") AndAlso v_Indicator_X = "N" AndAlso v_ComplianceAssessment = "Non_Compliant" AndAlso (v_Attribute_A = "Verification_not_available" OrElse v_Attribute_A = "Special_case_without_certified_component") AndAlso (v_Attribute_B = "No_or_low_impact" OrElse v_Attribute_C = "No_or_low_impact")
+            .To = b_Rule_RG2_IX_N_NonCompliant
+        [Assign]  Combine Rules: any Positive rule fires?
+          // [RULE]|Combine step: any rule flag True → Positive, all False → Negative.|Expression: If(b_Rule_Override OrElse b_Rule_RG1_Compliant OrElse|               b_Rule_RG1_NonCompliant OrElse b_Rule_RG2_IX_Y OrElse|               b_Rule_RG2_IX_N_Compliant OrElse b_Rule_RG2_IX_N_NonCompliant,|               "Positive", "Negative")|Pattern note: OrElse is the combinator here. Replace with AndAlso,|majority vote, or weighted sum to change the combination logic|without touching the rule evaluation step above.
+          .Value = If(b_Rule_Override OrElse b_Rule_RG1_Compliant OrElse b_Rule_RG1_NonCompliant OrElse b_Rule_RG2_IX_Y OrElse b_Rule_RG2_IX_N_Compliant OrElse b_Rule_RG2_IX_N_NonCompliant, "Positive", "Negative")
+          .To = out_DecisionValue
+
+  EligibilityDecision\StateMachine.xaml
+  ─────────────────────────────────────
+    [DynamicActivity]  StateMachine
+      // Pattern: StateMachine|WF4 StateMachine models the decision as an explicit state graph.|Variables are declared on the outer Sequence (not inside StateMachine)|so they are accessible across all states.|Inputs / Output: same as IfElse.xaml.||State graph:|  Extract → Route → RG1 ──→ Positive → Final|                 → RG2 ──→ Negative → Final|                 → Positive (SecondaryIndicator override)|                 → Negative (unknown CaseCategory)
+      arg In in_Config : InArgument`1
+      arg In in_TransactionItem : InArgument`1
+      arg Out out_DecisionValue : OutArgument`1
+      [Sequence]  StateMachine
+        // Pattern: StateMachine|WF4 StateMachine models the decision as an explicit state graph.|Variables are declared on the outer Sequence (not inside StateMachine)|so they are accessible across all states.|Inputs / Output: same as IfElse.xaml.||State graph:|  Extract → Route → RG1 ──→ Positive → Final|                 → RG2 ──→ Negative → Final|                 → Positive (SecondaryIndicator override)|                 → Negative (unknown CaseCategory)
+        var v_CaseCategory : String
+        var v_ComplianceAssessment : String
+        var v_Attribute_A : String
+        var v_Attribute_B : String
+        var v_Attribute_C : String
+        var v_Indicator_X : String
+        var v_Detail_X : String
+        var v_SecondaryIndicator : Boolean
+        [StateMachine]  EligibilityDecision StateMachine
+          // WF4 StateMachine constraints observed here:|  • Transition.Condition is Activity<Boolean>, not InArgument<Boolean>.|    Use text-content form: <Transition.Condition>[expr]</Transition.Condition>|  • States with multiple trigger-less transitions must have explicit|    conditions on ALL transitions (including catch-all → [True]).|  • At most one unconditional (no condition) transition per state is allowed.
+          [StateMachineEventManagerFactory]  StateMachineEventManagerFactory
+          [InternalState]  Extract from SpecificContent
+            // Entry state: extracts all typed inputs from SpecificContent.|Single outgoing transition → Route (always taken).
+            [MultipleAssign]  Extract from SpecificContent
+              // Entry state: extracts all typed inputs from SpecificContent.|Single outgoing transition → Route (always taken).
+              [AssignOperation]  AssignOperation
+                .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_CaseCategory"))
+                .To = v_CaseCategory
+              [AssignOperation]  AssignOperation
+                .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_ComplianceAssessment"))
+                .To = v_ComplianceAssessment
+              [AssignOperation]  AssignOperation
+                .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_A"))
+                .To = v_Attribute_A
+              [AssignOperation]  AssignOperation
+                .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_B"))
+                .To = v_Attribute_B
+              [AssignOperation]  AssignOperation
+                .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_C"))
+                .To = v_Attribute_C
+              [AssignOperation]  AssignOperation
+                .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Indicator_X"))
+                .To = v_Indicator_X
+              [AssignOperation]  AssignOperation
+                .Value = Convert.ToString(in_TransactionItem.SpecificContent("in_Detail_X"))
+                .To = v_Detail_X
+              [AssignOperation]  AssignOperation
+                .Value = CBool(in_TransactionItem.SpecificContent("in_SecondaryIndicator"))
+                .To = v_SecondaryIndicator
+            [NoOp]  Null Trigger
+          [InternalState]  Route by Category
+            // Routing state: dispatches to the correct rule group based on|SecondaryIndicator (override) and CaseCategory.|Four outgoing transitions evaluated in order:|  1. SecondaryIndicator = True → Positive (override)|  2. CaseCategory ∈ {Event_A, Event_B} → RG1|  3. CaseCategory ∈ {Event_C, Event_D} → RG2|  4. [True] catch-all → Negative (unknown category)
+            [NoOp]  Null Trigger
+          [InternalState]  Rule Group 1: Event_A or Event_B
+            // [RULE]|Rule Group 1 evaluation (CaseCategory = Event_A or Event_B).|Three outgoing transitions:|  1. Compliant or empty ComplianceAssessment → Positive|  2. Non_Compliant + special Attribute_A + low-impact Attribute_BC → Positive|  3. [True] catch-all → Negative|Open question #1 applies to transition 2 (Attribute_BC: OR vs AND).
+            [NoOp]  Null Trigger
+          [InternalState]  Rule Group 2: Event_C or Event_D
+            // [RULE]|Rule Group 2 evaluation (CaseCategory = Event_C or Event_D).|Four outgoing transitions:|  1. Indicator_X=Y + Detail_X OK → Positive|  2. Indicator_X=N + Compliant or empty → Positive|  3. Indicator_X=N + Non_Compliant + attrs → Positive|  4. [True] catch-all → Negative
+            [NoOp]  Null Trigger
+          [InternalState]  Set Positive
+            // Terminal assignment state: sets out_DecisionValue = "Positive".|Single outgoing transition → Final.
+            [Assign]  Positive
+              // Sets output to "Positive". Reached from SecondaryIndicator override,|RG1 positive transitions, or RG2 positive transitions.
+              .Value = "Positive"
+              .To = out_DecisionValue
+            [NoOp]  Null Trigger
+          [InternalState]  Set Negative
+            // Terminal assignment state: sets out_DecisionValue = "Negative".|Single outgoing transition → Final.
+            [Assign]  Negative
+              // Sets output to "Negative". Reached from catch-all transitions in|Route, RG1, and RG2 states.
+              .Value = "Negative"
+              .To = out_DecisionValue
+            [NoOp]  Null Trigger
+          [InternalState]  Final
+            // IsFinal=True state. No outgoing transitions. Workflow execution ends here.|out_DecisionValue is set before reaching this state.
+
+  RoutingPipeline\AggregateErrors.xaml
+  ────────────────────────────────────
+    [DynamicActivity]  AggregateErrors
+      // Sub-decision 6 of 7 | Pattern: MultipleAssign passthrough (extension point) | Inputs:  in_HasCustomerErrors (Boolean) |          in_HasInternalErrors (Boolean) | Outputs: out_CustomerErrors (Boolean) |          out_InternalErrors (Boolean)
+      arg In in_HasCustomerErrors : InArgument`1
+      arg In in_HasInternalErrors : InArgument`1
+      arg Out out_CustomerErrors : OutArgument`1
+      arg Out out_InternalErrors : OutArgument`1
+      [Sequence]  AggregateErrors
+        // Sub-decision 6 of 7 | Pattern: MultipleAssign passthrough (extension point) | Inputs:  in_HasCustomerErrors (Boolean) |          in_HasInternalErrors (Boolean) | Outputs: out_CustomerErrors (Boolean) |          out_InternalErrors (Boolean)
+        [MultipleAssign]  Classify customer vs internal errors
+          // Current implementation: direct passthrough — inputs equal outputs. | Design intent: this activity is the extension point for real aggregation. | Replace the expressions here to aggregate from a validation result list, | an enrichment result set, or any other error source — without changing | Pipeline.xaml or DetermineRouting.xaml.
+          [AssignOperation]  AssignOperation
+            .Value = in_HasCustomerErrors
+            .To = out_CustomerErrors
+          [AssignOperation]  AssignOperation
+            .Value = in_HasInternalErrors
+            .To = out_InternalErrors
+
+  RoutingPipeline\DetermineChannel.xaml
+  ─────────────────────────────────────
+    [DynamicActivity]  DetermineChannel
+      // Sub-decision 1 of 7 | Pattern: IfElse | Input:  in_HasRegistryId (Boolean) |         in_RegistryParticipantExists (Boolean) |         in_DocumentTypesAccepted (Boolean) | Output: out_Channel — Channel_A | Channel_B
+      arg In in_HasRegistryId : InArgument`1
+      arg In in_RegistryParticipantExists : InArgument`1
+      arg In in_DocumentTypesAccepted : InArgument`1
+      arg Out out_Channel : OutArgument`1
+      [Sequence]  DetermineChannel
+        // Sub-decision 1 of 7 | Pattern: IfElse | Input:  in_HasRegistryId (Boolean) |         in_RegistryParticipantExists (Boolean) |         in_DocumentTypesAccepted (Boolean) | Output: out_Channel — Channel_A | Channel_B
+        [If]  Channel_A if all conditions met else Channel_B
+          // [RULE] | Rule: all three conditions must be True for Channel_A. | Any single False → Channel_B. | Short-circuits on first False (AndAlso).
+          .Condition = in_HasRegistryId AndAlso in_RegistryParticipantExists AndAlso in_DocumentTypesAccepted
+          [Assign]  Assign Channel_A
+            // Channel_A: preferred channel when registry entry is valid | and all document types are accepted.
+            .Value = "Channel_A"
+            .To = out_Channel
+          [Assign]  Assign Channel_B
+            // Channel_B: fallback channel for all other cases.
+            .Value = "Channel_B"
+            .To = out_Channel
+
+  RoutingPipeline\DetermineCustomerStatus.xaml
+  ────────────────────────────────────────────
+    [DynamicActivity]  DetermineCustomerStatus
+      // Sub-decision 4 of 7 | Pattern: Expression | Input:  in_CustomerExists (Boolean) | Output: out_CustomerStatus — EXISTING | NEW
+      arg In in_CustomerExists : InArgument`1
+      arg Out out_CustomerStatus : OutArgument`1
+      [Sequence]  DetermineCustomerStatus
+        // Sub-decision 4 of 7 | Pattern: Expression | Input:  in_CustomerExists (Boolean) | Output: out_CustomerStatus — EXISTING | NEW
+        [Assign]  EXISTING or NEW
+          // [RULE] | Expression: If(in_CustomerExists, "EXISTING", "NEW") | In production: in_CustomerExists would be set by an ExternalRegistry_X lookup | upstream of this workflow. Here it is provided directly as an input.
+          .Value = If(in_CustomerExists, "EXISTING", "NEW")
+          .To = out_CustomerStatus
+
+  RoutingPipeline\DetermineRouting.xaml
+  ─────────────────────────────────────
+    [DynamicActivity]  DetermineRouting
+      // Sub-decision 7 of 7 | Pattern: BitmaskLookup | Inputs:  in_CustomerErrors (Boolean) |          in_InternalErrors (Boolean) | Output:  out_RoutingDecision — HAPPY_PATH | ROUTE_TO_CUSTOMER | ROUTE_TO_INTERNAL | OPEN |  | Two boolean inputs encode 4 mutually exclusive states via a 2-bit index. | Each index maps to one routing outcome in the lookup step.
+      arg In in_CustomerErrors : InArgument`1
+      arg In in_InternalErrors : InArgument`1
+      arg Out out_RoutingDecision : OutArgument`1
+      [Sequence]  DetermineRouting
+        // Sub-decision 7 of 7 | Pattern: BitmaskLookup | Inputs:  in_CustomerErrors (Boolean) |          in_InternalErrors (Boolean) | Output:  out_RoutingDecision — HAPPY_PATH | ROUTE_TO_CUSTOMER | ROUTE_TO_INTERNAL | OPEN |  | Two boolean inputs encode 4 mutually exclusive states via a 2-bit index. | Each index maps to one routing outcome in the lookup step.
+        var v_Matrix : Int32
+        [Assign]  Compute bitmask: CustomerErrors x1 + InternalErrors x2
+          // [RULE] | Expression: If(in_CustomerErrors,1,0) + If(in_InternalErrors,2,0) | Encodes two independent booleans as a single integer: |   bit 0 (×1): CustomerErrors |   bit 1 (×2): InternalErrors | Result range: 0 (neither) to 3 (both). | Each integer value is unique to one combination of inputs.
+          .Value = If(in_CustomerErrors,1,0) + If(in_InternalErrors,2,0)
+          .To = v_Matrix
+        [Assign]  Lookup: 0=HAPPY_PATH 1=ROUTE_TO_CUSTOMER 2=ROUTE_TO_INTERNAL 3=OPEN
+          // [RULE] | Lookup table (index → outcome): |   0 → HAPPY_PATH          (no errors) |   1 → ROUTE_TO_CUSTOMER   (customer errors only) |   2 → ROUTE_TO_INTERNAL   (internal errors only) |   3 → OPEN                (both — open question #1: precedence unresolved) |  | Sentinel: "OPEN" is a placeholder. Replace index 3 mapping once | open question #1 is resolved. |  | Pattern note: nested If() is the VB.NET equivalent of a dictionary | lookup. With 4 entries the depth is acceptable; for more outcomes | use a Dictionary(Of Integer, String) instead.
+          .Value = If(v_Matrix=0,"HAPPY_PATH",If(v_Matrix=1,"ROUTE_TO_CUSTOMER",If(v_Matrix=2,"ROUTE_TO_INTERNAL","OPEN")))
+          .To = out_RoutingDecision
+
+  RoutingPipeline\DetermineVatClassification.xaml
+  ───────────────────────────────────────────────
+    [DynamicActivity]  DetermineVatClassification
+      // Sub-decision 3 of 7 | Pattern: Expression | Input:  in_VatId (String) | Output: out_VatClassification — NATIONAL | INTERNATIONAL
+      arg In in_VatId : InArgument`1
+      arg Out out_VatClassification : OutArgument`1
+      [Sequence]  DetermineVatClassification
+        // Sub-decision 3 of 7 | Pattern: Expression | Input:  in_VatId (String) | Output: out_VatClassification — NATIONAL | INTERNATIONAL
+        [Assign]  NATIONAL if VatId starts with DOM- else INTERNATIONAL
+          // [RULE] | Expression: If(in_VatId.StartsWith("DOM-"), "NATIONAL", "INTERNATIONAL") | Convention: domestic VAT IDs are prefixed "DOM-". | NATIONAL  → domestic transaction | INTERNATIONAL → cross-border transaction
+          .Value = If(in_VatId.StartsWith("DOM-"), "NATIONAL", "INTERNATIONAL")
+          .To = out_VatClassification
+
+  RoutingPipeline\IsPublicSectorRelevant.xaml
+  ───────────────────────────────────────────
+    [DynamicActivity]  IsPublicSectorRelevant
+      // Sub-decision 2 of 7 | Pattern: Expression | Input:  in_RegistryId (String) | Output: out_IsPublicSector (Boolean)
+      arg In in_RegistryId : InArgument`1
+      arg Out out_IsPublicSector : OutArgument`1
+      [Sequence]  IsPublicSectorRelevant
+        // Sub-decision 2 of 7 | Pattern: Expression | Input:  in_RegistryId (String) | Output: out_IsPublicSector (Boolean)
+        [Assign]  IsPublicSector = RegistryId starts with PS-
+          // [RULE] | Expression: in_RegistryId.StartsWith("PS-") | Convention: public sector registry IDs are prefixed "PS-". | Returns True if the registry entry belongs to a public sector entity.
+          .Value = in_RegistryId.StartsWith("PS-")
+          .To = out_IsPublicSector
+
+  RoutingPipeline\IsSegment_P_Customer.xaml
+  ─────────────────────────────────────────
+    [DynamicActivity]  IsSegment_P_Customer
+      // Sub-decision 5 of 7 | Pattern: Expression + fire-and-continue side effect | Input:  in_IsSegmentP (Boolean) | Output: out_IsSegmentP (Boolean) | Side effect: LogMessage when True (non-blocking)
+      arg In in_IsSegmentP : InArgument`1
+      arg Out out_IsSegmentP : OutArgument`1
+      [Sequence]  IsSegment_P_Customer
+        // Sub-decision 5 of 7 | Pattern: Expression + fire-and-continue side effect | Input:  in_IsSegmentP (Boolean) | Output: out_IsSegmentP (Boolean) | Side effect: LogMessage when True (non-blocking)
+        [Assign]  Pass through IsSegmentP flag
+          // Passes through the IsSegmentP flag unchanged. | In production: this would be a lookup against a Segment_P registry.
+          .Value = in_IsSegmentP
+          .To = out_IsSegmentP
+        [If]  Fire-and-continue: notify if Segment_P
+          // Fire-and-continue pattern: notification is sent when IsSegmentP = True, | but the If activity has no Else branch — execution always proceeds to | the next step regardless of the flag value. | The notification does not block or change the output.
+          .Condition = in_IsSegmentP
+          [LogMessage]  NotifySegment_P_Case
+            // [SIDE EFFECT] | Side effect: notifies downstream systems of a Segment_P case. | In production: replace LogMessage with an actual notification call | (e.g. queue message, webhook) without changing the surrounding If structure.
+            .Message = "Segment_P notification fired (fire-and-continue)"
+            [Literal`1]  Literal<LogLevel>
+
+  RoutingPipeline\Pipeline.xaml
+  ─────────────────────────────
+    [DynamicActivity]  Pipeline
+      // Pattern: Pipeline|Sub-decisions execute in order; each result is a local variable|threaded into the next step that needs it.||Inputs  (from in_TransactionItem.SpecificContent):|  in_HasRegistryId, in_RegistryParticipantExists, in_DocumentTypesAccepted|  in_RegistryId, in_VatId|  in_CustomerExists, in_IsSegmentP|  in_HasCustomerErrors, in_HasInternalErrors||Output: out_RoutingDecision|  HAPPY_PATH | ROUTE_TO_CUSTOMER | ROUTE_TO_INTERNAL | OPEN||Open question #1: precedence when both error types present → OPEN sentinel
+      arg In in_Config : InArgument`1
+      arg In in_TransactionItem : InArgument`1
+      arg Out out_RoutingDecision : OutArgument`1
+      [Sequence]  Pipeline
+        // Pattern: Pipeline|Sub-decisions execute in order; each result is a local variable|threaded into the next step that needs it.||Inputs  (from in_TransactionItem.SpecificContent):|  in_HasRegistryId, in_RegistryParticipantExists, in_DocumentTypesAccepted|  in_RegistryId, in_VatId|  in_CustomerExists, in_IsSegmentP|  in_HasCustomerErrors, in_HasInternalErrors||Output: out_RoutingDecision|  HAPPY_PATH | ROUTE_TO_CUSTOMER | ROUTE_TO_INTERNAL | OPEN||Open question #1: precedence when both error types present → OPEN sentinel
+        var v_HasRegistryId : Boolean
+        var v_RegistryParticipantExists : Boolean
+        var v_DocumentTypesAccepted : Boolean
+        var v_RegistryId : String
+        var v_VatId : String
+        var v_CustomerExists : Boolean
+        var v_IsSegmentP : Boolean
+        var v_HasCustomerErrors : Boolean
+        var v_HasInternalErrors : Boolean
+        var v_Channel : String
+        var v_IsPublicSector : Boolean
+        var v_VatClassification : String
+        var v_CustomerStatus : String
+        var v_IsSegmentP_out : Boolean
+        var v_CustomerErrors : Boolean
+        var v_InternalErrors : Boolean
+        [MultipleAssign]  Extract from SpecificContent
+          // Extracts all typed inputs from SpecificContent into local variables.|CBool() / CStr() cast Object → Boolean / String.|All subsequent steps use local variables, not SpecificContent directly.
+          [AssignOperation]  AssignOperation
+            .Value = CBool(in_TransactionItem.SpecificContent("in_HasRegistryId"))
+            .To = v_HasRegistryId
+          [AssignOperation]  AssignOperation
+            .Value = CBool(in_TransactionItem.SpecificContent("in_RegistryParticipantExists"))
+            .To = v_RegistryParticipantExists
+          [AssignOperation]  AssignOperation
+            .Value = CBool(in_TransactionItem.SpecificContent("in_DocumentTypesAccepted"))
+            .To = v_DocumentTypesAccepted
+          [AssignOperation]  AssignOperation
+            .Value = CStr(in_TransactionItem.SpecificContent("in_RegistryId"))
+            .To = v_RegistryId
+          [AssignOperation]  AssignOperation
+            .Value = CStr(in_TransactionItem.SpecificContent("in_VatId"))
+            .To = v_VatId
+          [AssignOperation]  AssignOperation
+            .Value = CBool(in_TransactionItem.SpecificContent("in_CustomerExists"))
+            .To = v_CustomerExists
+          [AssignOperation]  AssignOperation
+            .Value = CBool(in_TransactionItem.SpecificContent("in_IsSegmentP"))
+            .To = v_IsSegmentP
+          [AssignOperation]  AssignOperation
+            .Value = CBool(in_TransactionItem.SpecificContent("in_HasCustomerErrors"))
+            .To = v_HasCustomerErrors
+          [AssignOperation]  AssignOperation
+            .Value = CBool(in_TransactionItem.SpecificContent("in_HasInternalErrors"))
+            .To = v_HasInternalErrors
+        [InvokeWorkflowFile]  Step 1 — DetermineChannel
+          // [RULE]|Rule: HasRegistryId AND RegistryParticipantExists AND DocumentTypesAccepted|      → Channel_A|      otherwise → Channel_B|Result stored in v_Channel (not consumed by DetermineRouting).
+          [Literal`1]  Literal<String>
+        [InvokeWorkflowFile]  Step 2 — IsPublicSectorRelevant
+          // [RULE]|Rule: RegistryId starts with "PS-" → IsPublicSector = True|Result stored in v_IsPublicSector (contextual, not consumed by DetermineRouting).
+          [Literal`1]  Literal<String>
+        [InvokeWorkflowFile]  Step 3 — DetermineVatClassification
+          // [RULE]|Rule: VatId starts with "DOM-" → NATIONAL, otherwise INTERNATIONAL|Result stored in v_VatClassification (contextual, not consumed by DetermineRouting).
+          [Literal`1]  Literal<String>
+        [InvokeWorkflowFile]  Step 4 — DetermineCustomerStatus
+          // [RULE]|Rule: CustomerExists = True → EXISTING, otherwise NEW|Result stored in v_CustomerStatus (contextual, not consumed by DetermineRouting).
+          [Literal`1]  Literal<String>
+        [InvokeWorkflowFile]  Step 5 — IsSegment_P_Customer
+          // [RULE]|Rule: IsSegmentP = True → fire-and-continue notification + return True|Side effect: LogMessage fires when True; execution continues regardless.|Result stored in v_IsSegmentP_out (not consumed by DetermineRouting).
+          [Literal`1]  Literal<String>
+        [InvokeWorkflowFile]  Step 6 — AggregateErrors
+          // Classifies errors into two buckets: customer-attributable vs internal.|In this implementation: direct passthrough of in_HasCustomerErrors / in_HasInternalErrors.|Extension point: replace with real aggregation logic without changing Pipeline.xaml.
+          [Literal`1]  Literal<String>
+        [InvokeWorkflowFile]  Step 7 — DetermineRouting
+          // [RULE]|Rule:|  no errors              → HAPPY_PATH|  customer errors only   → ROUTE_TO_CUSTOMER|  internal errors only   → ROUTE_TO_INTERNAL|  both errors            → OPEN  (open question #1 — precedence unresolved)||Pattern: BitmaskLookup|  CustomerErrors × 1 + InternalErrors × 2 → integer index 0–3|  Each index maps to exactly one routing outcome.
+          [Literal`1]  Literal<String>
+
+  Utils\LogDictionary.xaml
+  ────────────────────────
+    [DynamicActivity]  LogDictionary
+      arg In in_Dictionary : InArgument`1
+      arg In in_Label : InArgument`1
+      [Sequence]  LogDictionary
+        [LogMessage]  Log Dictionary
+          .Message = If(String.IsNullOrEmpty(in_Label), "Dictionary", in_Label) & " (" & in_Dictionary.Count.ToString() & " entries):" & Environment.NewLine & String.Join(Environment.NewLine, in_Dictionary.[Select](Function(kvp) "  " & kvp.Key & " (" & If(kvp.Value Is Nothing, "Nothing", kvp.Value.GetType().Name) & ") = " & If(kvp.Value Is Nothing, "(Nothing)", If(TypeOf kvp.Value Is Dictionary(Of String, Object), "{" & String.Join(", ", CType(kvp.Value, Dictionary(Of String, Object)).[Select](Function(y) y.Key & ": " & Convert.ToString(y.Value).Replace(Environment.NewLine, " "))) & "}", If(TypeOf kvp.Value Is DataTable, "<DataTable>", Convert.ToString(kvp.Value).Replace(Environment.NewLine, " "))))))
+          [Literal`1]  Literal<LogLevel>

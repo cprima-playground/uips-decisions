@@ -37,9 +37,9 @@ run-eligibility pattern="IfElse":
 run entry:
     pwsh -NonInteractive -File {{_script}} -EntryPoint "{{entry}}"
 
-# Walk all implementation XAML files and emit the activity tree to workflow_tree_output.txt
+# Walk all implementation XAML files and emit the IR text tree to workflow_tree_output.txt
 tree:
-    dotnet run --file scripts/workflow_tree.cs
+    dotnet run --file scripts/workflow_tree.cs -- --text-out workflow_tree_output.txt
 
 # Walk all implementation XAML files and emit both text tree and JSON model
 tree-json:

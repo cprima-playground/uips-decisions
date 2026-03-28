@@ -3,6 +3,8 @@
 // Usage:
 //   dotnet run --file scripts/workflow_tree.cs
 //   dotnet run --file scripts/workflow_tree.cs -- path/to/project.json
+//   dotnet run --file scripts/workflow_tree.cs -- --json
+//   dotnet run --file scripts/workflow_tree.cs -- --json-out path/to/output.json
 
 #:package UiPath.Workflow@6.0.3
 #:package UiPath.System.Activities@24.10.4
@@ -34,16 +36,19 @@ static string? FindProjectJson()
 }
 
 // ── Arg parsing ──────────────────────────────────────────────────────────────
-// positional: optional project.json path
-// --json            emit JSON to default path (workflow_tree_output.json)
-// --json-out <path> emit JSON to specified path
+// positional:           optional project.json path
+// --text-out <path>     IR tree to file  (summary still to stdout)
+// --json                JSON to stdout — suppresses all human text
+// --json-out <path>     JSON to file     (summary still to stdout)
 string? projectJsonArg = null;
 bool    emitJson       = false;
 string? jsonOutArg     = null;
+string? textOutArg     = null;
 
 for (int i = 0; i < args.Length; i++)
 {
-    if      (args[i] == "--json")                             { emitJson = true; }
+    if      (args[i] == "--text-out" && i + 1 < args.Length) { textOutArg = args[++i]; }
+    else if (args[i] == "--json")                             { emitJson = true; }
     else if (args[i] == "--json-out" && i + 1 < args.Length) { emitJson = true; jsonOutArg = args[++i]; }
     else if (!args[i].StartsWith("--"))                       { projectJsonArg = args[i]; }
 }
@@ -61,12 +66,6 @@ var projectRoot  = Path.GetDirectoryName(projectJsonPath)!;
 using var jsonDoc = JsonDocument.Parse(File.ReadAllText(projectJsonPath));
 var projectJson = jsonDoc.RootElement;
 
-Console.WriteLine($"project.json : {projectJsonPath}");
-Console.WriteLine($"name         : {projectJson.GetProperty("name").GetString()}");
-Console.WriteLine($"expressionLang: {projectJson.GetProperty("expressionLanguage").GetString()}");
-Console.WriteLine($"targetFramework: {projectJson.GetProperty("targetFramework").GetString()}");
-Console.WriteLine();
-
 // ── Collect implementation XAML files ────────────────────────────────────────
 var implFiles = Directory
     .EnumerateFiles(projectRoot, "*.xaml", SearchOption.AllDirectories)
@@ -77,8 +76,6 @@ var implFiles = Directory
     .OrderBy(f => f)
     .ToList();
 
-Console.WriteLine($"Implementation XAML files: {implFiles.Count}");
-Console.WriteLine();
 
 // ── Expression extractor — argument properties not exposed by GetActivities() ─
 // GetActivities() yields argument expression activities already declared as
@@ -319,32 +316,6 @@ static WfNode? Build(
     return new WfNode(id, typeName, displayName, annotation, arguments, variables, expressions, children);
 }
 
-// ── Renderer ──────────────────────────────────────────────────────────────────
-// Render walks a WfNode tree and produces console output.
-// Depth is presentation-derived; it is not stored on the node.
-static void Render(WfNode node, int depth)
-{
-    var indent  = new string(' ', depth * 2);
-    var indentP = indent + "  ";
-
-    Console.WriteLine($"{indent}[{depth}] {node.Type}  [{node.DisplayName}]");
-
-    if (!string.IsNullOrEmpty(node.Annotation))
-        Console.WriteLine($"{indentP}// {node.Annotation.Replace("\r\n", " | ").Replace('\n', '|').Trim()}");
-
-    foreach (var arg in node.Arguments)
-        Console.WriteLine($"{indentP}arg {arg.Name} : {arg.Type}");
-
-    foreach (var v in node.Variables)
-        Console.WriteLine($"{indentP}var {v.Name} : {v.Type}");
-
-    foreach (var expr in node.Expressions)
-        Console.WriteLine($"{indentP}.{expr.Name} = {expr.Value}");
-
-    foreach (var child in node.Children)
-        Render(child, depth + 1);
-}
-
 // ── Stats collector ───────────────────────────────────────────────────────────
 // Derives activity type frequency table from WfNode only.
 // Expression totals come from the build-time accumulator.
@@ -357,13 +328,40 @@ static void CollectStats(WfNode node, Dictionary<string, int> freq)
 }
 
 
+// ── Text renderer (IR) ────────────────────────────────────────────────────────
+// Walks the IR-normalized WfNode tree and writes an indented text representation.
+// Depth is presentation-derived; not stored on the node.
+static void Render(WfNode node, int depth, TextWriter output)
+{
+    var indent  = new string(' ', depth * 2);
+    var indentP = indent + "  ";
+
+    output.WriteLine($"{indent}[{node.Type}]  {node.DisplayName}");
+
+    if (!string.IsNullOrEmpty(node.Annotation))
+        output.WriteLine($"{indentP}// {node.Annotation.Replace("\r\n", " | ").Replace('\n', '|').Trim()}");
+
+    foreach (var arg in node.Arguments)
+        output.WriteLine($"{indentP}arg {arg.Direction} {arg.Name} : {arg.Type}");
+
+    foreach (var v in node.Variables)
+        output.WriteLine($"{indentP}var {v.Name} : {v.Type}");
+
+    foreach (var expr in node.Expressions)
+        output.WriteLine($"{indentP}.{expr.Name} = {expr.Value}");
+
+    foreach (var child in node.Children)
+        Render(child, depth + 1, output);
+}
+
 // ── JSON renderer ─────────────────────────────────────────────────────────────
 // Serializes all WfNode trees to a single JSON object keyed by relative XAML path.
-// No DTOs — WfNode serializes directly.  Called once after the per-file loop.
-static void RenderJson(Dictionary<string, WfNode> nodes, string jsonPath)
+// No DTOs — WfNode serializes directly.  Writes to the supplied TextWriter
+// (Console.Out for --json, a StreamWriter for --json-out <path>).
+static void RenderJson(Dictionary<string, WfNode> nodes, TextWriter output)
 {
     var json = JsonSerializer.Serialize(nodes, new JsonSerializerOptions { WriteIndented = true });
-    File.WriteAllText(jsonPath, json, new System.Text.UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+    output.WriteLine(json);
 }
 
 // ── Build a XamlSchemaContext that knows about UiPath types ──────────────────
@@ -383,12 +381,6 @@ catch (Exception ex)
     return 1;
 }
 
-Console.WriteLine($"UiPath.System.Activities : {uiPathAsm.Location}");
-Console.WriteLine($"  MultipleAssign  : {uiPathAsm.GetType("UiPath.Core.Activities.MultipleAssign")?.FullName ?? "NOT FOUND"}");
-Console.WriteLine($"  AssignOperation : {uiPathAsm.GetType("UiPath.Core.Activities.AssignOperation")?.FullName ?? "NOT FOUND"}");
-Console.WriteLine($"  QueueItem       : {uiPathAsm.GetType("UiPath.Core.QueueItem")?.FullName ?? "NOT FOUND"}");
-Console.WriteLine();
-
 // Do NOT pass uiPathAsm to the XamlSchemaContext constructor.
 // That constructor calls GetCustomAttributes() on every passed assembly to scan
 // XmlnsDefinitionAttribute entries. On UiPath.System.Activities that scan tries
@@ -400,29 +392,34 @@ Console.WriteLine();
 // triggers assembly-level attribute scanning.
 var schemaContext = new UiPathXamlSchemaContext(uiPathAsm);
 
-// ── Per-file report ───────────────────────────────────────────────────────────
-// Tee output to a file next to this script so it can be inspected after the run.
-var teeFile = Path.Combine(Path.GetDirectoryName(projectJsonPath)!, "..", "workflow_tree_output.txt");
-teeFile = Path.GetFullPath(teeFile);
-using var tee = new StreamWriter(teeFile, append: false, System.Text.Encoding.UTF8);
-var originalOut = Console.Out;
-Console.SetOut(new TeeWriter(originalOut, tee));
+// ── Output routing ────────────────────────────────────────────────────────────
+// --text-out path   → IR tree to file; summary to stdout
+// --json (no path)  → JSON to stdout; suppress all human text
+// --json-out path   → JSON to file; summary to stdout
+// (no flags)        → one-line summary per file to stdout
+bool jsonToStdout = emitJson && jsonOutArg is null;
 
-// JSON output path resolved once teeFile is known.
-var jsonOutPath = jsonOutArg
-    ?? Path.Combine(Path.GetDirectoryName(teeFile)!, "workflow_tree_output.json");
+var defaultTextOut = Path.Combine(projectRoot, "workflow_tree_output.txt");
+var resolvedTextOut = textOutArg ?? defaultTextOut;
+StreamWriter? treeWriter = textOutArg is not null
+    ? new StreamWriter(resolvedTextOut, false,
+        new System.Text.UTF8Encoding(encoderShouldEmitUTF8Identifier: false))
+    : null;
 
-Console.WriteLine($"Output also written to: {teeFile}");
-Console.WriteLine("── Per-file activity tree ───────────────────────────────────────");
+// Header: suppress in pure machine mode (--json to stdout)
+if (!jsonToStdout)
+{
+    Console.WriteLine($"project.json  : {projectJsonPath}");
+    Console.WriteLine($"name          : {projectJson.GetProperty("name").GetString()}");
+    Console.WriteLine($"files         : {implFiles.Count}");
+    Console.WriteLine();
+}
 
 var allNodes = new Dictionary<string, WfNode>();   // populated only when emitJson
 
 foreach (var xamlPath in implFiles)
 {
     var relPath = Path.GetRelativePath(projectRoot, xamlPath);
-    Console.WriteLine();
-    Console.WriteLine($"  {relPath}");
-    Console.WriteLine($"  {new string('─', relPath.Length)}");
 
     Activity root;
     try
@@ -434,7 +431,7 @@ foreach (var xamlPath in implFiles)
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"  LOAD ERROR: {ex.Message}");
+        Console.Error.WriteLine($"LOAD ERROR {relPath}: {ex.Message}");
         continue;
     }
 
@@ -442,32 +439,91 @@ foreach (var xamlPath in implFiles)
     var allExpressions = new List<string>();
     int idCounter      = 0;
     var wfNode         = Build(root, annotations, ref idCounter, allExpressions);
+    var irNode         = wfNode is not null ? NormalizeTree(wfNode) : null;
 
-    if (wfNode is not null) Render(wfNode, 2);
+    // ── One-line summary (human modes) ────────────────────────────────────────
+    if (!jsonToStdout)
+    {
+        var freq         = new Dictionary<string, int>();
+        if (irNode is not null) CollectStats(irNode, freq);
+        var actCount     = freq.Values.Sum();
+        var exprCount    = allExpressions.Distinct().Count();
+        Console.WriteLine($"  {relPath,-52}  {actCount,4} activities  {annotations.Count,3} annotations  {exprCount,3} expressions");
+    }
 
-    var freq = new Dictionary<string, int>();
-    if (wfNode is not null) CollectStats(wfNode, freq);
-
-    Console.WriteLine();
-    Console.WriteLine("  activity counts:");
-    foreach (var (type, count) in freq.OrderByDescending(kv => kv.Value))
-        Console.WriteLine($"    {count,4}  {type}");
-    // annotations.Count = distinct DisplayNames with annotations in raw XAML (source-of-truth).
-    // CollectStats-based counting over-reports when multiple nodes share a DisplayName.
-    Console.WriteLine($"  annotations : {annotations.Count}");
-    Console.WriteLine($"  expressions : {allExpressions.Distinct().Count()} distinct ({allExpressions.Count} total)");
+    // ── Text tree output (IR) ─────────────────────────────────────────────────
+    if (treeWriter is not null && irNode is not null)
+    {
+        treeWriter.WriteLine();
+        treeWriter.WriteLine($"  {relPath}");
+        treeWriter.WriteLine($"  {new string('─', relPath.Length)}");
+        Render(irNode, 2, treeWriter);
+    }
 
     if (emitJson && wfNode is not null)
         allNodes[relPath] = wfNode;
 }
 
+treeWriter?.Dispose();
+if (treeWriter is not null)
+    Console.WriteLine($"tree written to: {resolvedTextOut}");
+
+// ── JSON emit ─────────────────────────────────────────────────────────────────
 if (emitJson)
 {
-    RenderJson(allNodes, jsonOutPath);
-    Console.WriteLine($"JSON written to: {jsonOutPath}");
+    if (jsonOutArg is not null)
+    {
+        using var jsonWriter = new StreamWriter(jsonOutArg, false,
+            new System.Text.UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+        RenderJson(allNodes, jsonWriter);
+        Console.WriteLine($"JSON written to: {jsonOutArg}");
+    }
+    else
+    {
+        RenderJson(allNodes, Console.Out);
+    }
 }
 
 return 0;
+
+// ── IR normalization pipeline ─────────────────────────────────────────────────
+// NormalizeTree applies rules bottom-up (children first).
+// Rules are pure WfNode → WfNode functions; return the node unchanged when the
+// precondition is not met.  Add new calls inside NormalizeTree to extend the IR.
+
+static WfNode NormalizeTree(WfNode node)
+{
+    var normalizedChildren = node.Children
+        .Select(NormalizeTree)
+        .ToList();
+    var n = node with { Children = normalizedChildren };
+    n = CollapseMultipleAssign(n);
+    // future rules: n = CollapseFlowSwitch(n);
+    return n;
+}
+
+// Collapses the runtime expansion of MultipleAssign back to designer-level.
+// CoreWF expands MultipleAssign into: Sequence → [TryCatch(AssignOperation, Throw)] × N.
+// This rule keeps the Sequence (preserving its annotation) but replaces the
+// TryCatch wrappers with their AssignOperation payloads directly, so the result is:
+//   MultipleAssign → Sequence (annotated) → [AssignOperation] × N
+// Guard: if the expected structure is not found, the node is returned unchanged.
+static WfNode CollapseMultipleAssign(WfNode node)
+{
+    if (node.Type != "MultipleAssign") return node;
+
+    var assignOps = node.Children
+        .Where(c => c.Type == "Sequence")
+        .SelectMany(seq => seq.Children)
+        .Where(tc => tc.Type == "TryCatch")
+        .Select(tc => tc.Children.FirstOrDefault())
+        .Where(ao => ao is not null && ao!.Type == "AssignOperation")
+        .Select(ao => ao!)
+        .ToList();
+
+    if (assignOps.Count == 0) return node;
+    return node with { Children = assignOps };
+}
 
 // ── Semantic model ────────────────────────────────────────────────────────────
 
@@ -489,17 +545,6 @@ record WfNode(
     List<WfExpression> Expressions,       // node-local named: Condition / Value / To / Message
     List<WfNode> Children
 );
-
-// ── TeeWriter — writes to two TextWriters simultaneously ─────────────────────
-class TeeWriter : TextWriter
-{
-    private readonly TextWriter _a, _b;
-    public TeeWriter(TextWriter a, TextWriter b) { _a = a; _b = b; }
-    public override System.Text.Encoding Encoding => _a.Encoding;
-    public override void Write(char value) { _a.Write(value); _b.Write(value); }
-    public override void WriteLine(string? value) { _a.WriteLine(value); _b.WriteLine(value); }
-    protected override void Dispose(bool disposing) { if (disposing) { _a.Flush(); _b.Flush(); } base.Dispose(disposing); }
-}
 
 // ── Scaffolding filter ────────────────────────────────────────────────────────
 static class WalkFilter
