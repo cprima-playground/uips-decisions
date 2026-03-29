@@ -55,6 +55,9 @@ static string? FindProjectJson()
 // --expr-json-out <path>    Roslyn VB expression analysis to JSON file (Layer 2)
 // --expr-text-out <path|-> Roslyn-annotated IR tree to file (Layer 2)
 // --rule-json-out <path>   Rule model (conditions + assignments) to JSON (Layer 3)
+// --transform-in  <path>  JSON file describing XamlInsertionPoint + snippet (Layer 4)
+// --transform-out <path>  Write rewritten XAML to this path (default: overwrite source)
+// --transform-diff-out <path>  Write unified text diff of original vs rewritten XAML
 string? projectJsonArg = null;
 bool    emitJson       = false;
 string? jsonOutArg     = null;
@@ -63,6 +66,9 @@ bool    traceResolve   = false;
 string? exprJsonOutArg  = null;
 string? exprTextOutArg  = null;
 string? ruleJsonOutArg  = null;
+string? transformInArg  = null;
+string? transformOutArg = null;
+string? transformDiffOutArg = null;
 
 for (int i = 0; i < args.Length; i++)
 {
@@ -72,8 +78,11 @@ for (int i = 0; i < args.Length; i++)
     else if (args[i] == "--trace-resolve")                          { traceResolve = true; }
     else if (args[i] == "--expr-json-out"  && i + 1 < args.Length) { exprJsonOutArg  = args[++i]; }
     else if (args[i] == "--expr-text-out"  && i + 1 < args.Length) { exprTextOutArg  = args[++i]; }
-    else if (args[i] == "--rule-json-out"  && i + 1 < args.Length) { ruleJsonOutArg  = args[++i]; }
-    else if (!args[i].StartsWith("--"))                             { projectJsonArg = args[i]; }
+    else if (args[i] == "--rule-json-out"       && i + 1 < args.Length) { ruleJsonOutArg      = args[++i]; }
+    else if (args[i] == "--transform-in"        && i + 1 < args.Length) { transformInArg      = args[++i]; }
+    else if (args[i] == "--transform-out"       && i + 1 < args.Length) { transformOutArg     = args[++i]; }
+    else if (args[i] == "--transform-diff-out"  && i + 1 < args.Length) { transformDiffOutArg = args[++i]; }
+    else if (!args[i].StartsWith("--"))                                  { projectJsonArg = args[i]; }
 }
 
 var projectJsonPath = projectJsonArg ?? FindProjectJson();
@@ -999,6 +1008,39 @@ if (exprJsonOutArg is not null || exprTextOutArg is not null || ruleJsonOutArg i
     }
 }
 
+// ── XAML transformation (Layer 4) ────────────────────────────────────────────
+if (transformInArg is not null)
+{
+    var specJson = File.ReadAllText(transformInArg);
+    var spec     = JsonSerializer.Deserialize<XamlTransformSpec>(specJson,
+        new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
+        ?? throw new InvalidOperationException("Failed to deserialize transform spec.");
+
+    if (!wfProject.Workflows.TryGetValue(
+            NormalizeRelPath(spec.Anchor.WorkflowPath), out var targetWf))
+        throw new InvalidOperationException(
+            $"WorkflowPath not found in project: {spec.Anchor.WorkflowPath}");
+
+    var fullXamlPath = Path.GetFullPath(Path.Combine(projectRoot, targetWf.Path));
+    var rewritten    = ApplyInsertion(fullXamlPath, targetWf.Root, spec.Anchor, spec.SnippetXml);
+
+    var outPath = transformOutArg
+        ?? Path.Combine(Path.GetDirectoryName(fullXamlPath)!,
+                        Path.GetFileNameWithoutExtension(fullXamlPath) + ".transformed.xaml");
+    File.WriteAllText(outPath, rewritten, new System.Text.UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+    Console.Error.WriteLine($"transform written to: {outPath}");
+
+    if (transformDiffOutArg is not null)
+    {
+        var original  = File.ReadAllText(fullXamlPath);
+        var diffText  = BuildUnifiedDiff(original, rewritten,
+            $"a/{targetWf.Path}", $"b/{targetWf.Path}");
+        File.WriteAllText(transformDiffOutArg, diffText,
+            new System.Text.UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+        Console.Error.WriteLine($"diff written to: {transformDiffOutArg}");
+    }
+}
+
 return 0;
 
 // ── IR normalization pipeline ─────────────────────────────────────────────────
@@ -1255,6 +1297,201 @@ static WfRuleModel BuildRuleModel(string projectName, List<WfExpressionAnalysis>
     return new WfRuleModel(projectName, conditions.AsReadOnly(), assignments.AsReadOnly());
 }
 
+// ── XAML transformation layer (Layer 4) ──────────────────────────────────────
+
+// Locates the XElement in doc whose source line matches node.XamlLine.
+// Primary match: line + local-name matches node type (e.g. "If", "Assign").
+// Fallback:      line match only (when type name differs from local name).
+static XElement? FindElementForNode(XDocument doc, WfNode node)
+{
+    if (node.XamlLine is null) return null;
+    var targetLine = node.XamlLine.Value;
+
+    XElement? byTypeThenLine = null;
+    XElement? byLineOnly     = null;
+
+    foreach (var el in doc.Descendants())
+    {
+        if (el is not IXmlLineInfo li || !li.HasLineInfo()) continue;
+        if (li.LineNumber != targetLine) continue;
+
+        // Line matches — check if local name also matches the semantic type.
+        if (el.Name.LocalName.Equals(node.Type, StringComparison.OrdinalIgnoreCase)
+            && byTypeThenLine is null)
+            byTypeThenLine = el;
+
+        byLineOnly ??= el;
+    }
+
+    return byTypeThenLine ?? byLineOnly;
+}
+
+// Parses a single-root XAML activity fragment, preserving namespaces.
+// Throws InvalidOperationException with a clear message on invalid XML.
+static XElement ParseSnippet(string snippetXml)
+{
+    try
+    {
+        return XElement.Parse(snippetXml, LoadOptions.PreserveWhitespace);
+    }
+    catch (Exception ex)
+    {
+        throw new InvalidOperationException($"Snippet XML is invalid: {ex.Message}", ex);
+    }
+}
+
+// Inserts snippet relative to target element.
+// Mode: "Before" → AddBeforeSelf, "After" → AddAfterSelf, "Inside" → AddFirst.
+static void InsertSnippet(XElement target, XElement snippet, string mode)
+{
+    switch (mode.ToLowerInvariant())
+    {
+        case "before": target.AddBeforeSelf(snippet); break;
+        case "after":  target.AddAfterSelf(snippet);  break;
+        case "inside": target.AddFirst(snippet);      break;
+        default: throw new ArgumentException($"Unknown InsertionMode: '{mode}'. Use Before, After, or Inside.");
+    }
+}
+
+// Applies a single insertion to the XAML file at fullXamlPath.
+// Returns the serialized text of the rewritten document.
+static string ApplyInsertion(
+    string fullXamlPath,
+    WfNode rootNode,
+    XamlInsertionPoint anchor,
+    string snippetXml)
+{
+    var doc = XDocument.Load(fullXamlPath,
+        LoadOptions.SetLineInfo | LoadOptions.PreserveWhitespace);
+
+    // Locate the target node in the WfNode tree by NodeId, then resolve to XElement.
+    var targetNode = FindNodeById(rootNode, anchor.NodeId);
+    if (targetNode is null)
+        throw new InvalidOperationException(
+            $"NodeId '{anchor.NodeId}' not found in workflow '{anchor.WorkflowPath}'.");
+
+    var targetEl = FindElementForNode(doc, targetNode);
+    if (targetEl is null)
+        throw new InvalidOperationException(
+            $"Could not locate XElement for NodeId='{anchor.NodeId}' " +
+            $"Type='{anchor.NodeType}' XamlLine={anchor.XamlLine} " +
+            $"in '{anchor.WorkflowPath}'.");
+
+    var snippet = ParseSnippet(snippetXml);
+    // Determine the indentation of the target element so the snippet gets
+    // a matching newline+indent text node inserted alongside it.
+    string indent = "";
+    if (targetEl.PreviousNode is XText prevText && prevText.Value.Contains('\n'))
+        indent = prevText.Value.Substring(prevText.Value.LastIndexOf('\n'));
+
+    InsertSnippet(targetEl, snippet, anchor.Mode);
+
+    // Insert a whitespace text node to keep the snippet on its own line.
+    switch (anchor.Mode.ToLowerInvariant())
+    {
+        case "before": snippet.AddAfterSelf(new XText(indent)); break;
+        case "after":  snippet.AddBeforeSelf(new XText(indent)); break;
+        case "inside": snippet.AddAfterSelf(new XText(indent)); break;
+    }
+
+    var sb = new System.Text.StringBuilder();
+    using (var writer = System.Xml.XmlWriter.Create(sb,
+        new System.Xml.XmlWriterSettings
+        {
+            Indent             = false,
+            OmitXmlDeclaration = true,
+            Encoding           = new System.Text.UTF8Encoding(encoderShouldEmitUTF8Identifier: false),
+            NewLineHandling    = System.Xml.NewLineHandling.Entitize,
+        }))
+    {
+        doc.Save(writer);
+    }
+
+    // Detect original file's line ending and apply to output so round-trip
+    // diffs show only the inserted content, not whitespace-only line-ending noise.
+    var originalRaw  = File.ReadAllText(fullXamlPath);
+    bool originalCrlf = originalRaw.Contains("\r\n");
+    var output = sb.ToString();
+    // XML parser normalises \r\n → \n; restore if original used CRLF.
+    if (originalCrlf)
+        output = output.Replace("\r\n", "\n").Replace("\n", "\r\n");
+    return output;
+}
+
+// Finds a WfNode by its Id, depth-first.
+static WfNode? FindNodeById(WfNode node, string id)
+{
+    if (node.Id == id) return node;
+    foreach (var child in node.Children)
+    {
+        var found = FindNodeById(child, id);
+        if (found is not null) return found;
+    }
+    return null;
+}
+
+// Produces a minimal unified diff between two texts.
+// Uses line-level LCS — adequate for XAML files; no external library needed.
+static string BuildUnifiedDiff(string originalText, string newText, string fromLabel, string toLabel)
+{
+    // Normalise line endings before splitting so CRLF vs LF differences
+    // in the original file do not pollute the diff with whitespace-only changes.
+    var origLines = originalText.Replace("\r\n", "\n").TrimEnd('\n').Split('\n');
+    var newLines  = newText.Replace("\r\n", "\n").TrimEnd('\n').Split('\n');
+    var sb        = new System.Text.StringBuilder();
+
+    sb.AppendLine($"--- {fromLabel}");
+    sb.AppendLine($"+++ {toLabel}");
+
+    // Build LCS length table.
+    int m = origLines.Length, n = newLines.Length;
+    var lcs = new int[m + 1, n + 1];
+    for (int i = m - 1; i >= 0; i--)
+        for (int j = n - 1; j >= 0; j--)
+            lcs[i, j] = origLines[i] == newLines[j]
+                ? lcs[i + 1, j + 1] + 1
+                : Math.Max(lcs[i + 1, j], lcs[i, j + 1]);
+
+    // Collect hunks from edit script.
+    var edits = new List<(char op, int origLine, string text)>();
+    int oi = 0, ni = 0;
+    while (oi < m || ni < n)
+    {
+        if (oi < m && ni < n && origLines[oi] == newLines[ni])
+        { edits.Add((' ', oi + 1, origLines[oi])); oi++; ni++; }
+        else if (ni < n && (oi >= m || lcs[oi, ni + 1] >= lcs[oi + 1, ni]))
+        { edits.Add(('+', oi + 1, newLines[ni])); ni++; }
+        else
+        { edits.Add(('-', oi + 1, origLines[oi])); oi++; }
+    }
+
+    // Emit hunks (context = 3 lines).
+    const int ctx = 3;
+    int e = 0;
+    while (e < edits.Count)
+    {
+        if (edits[e].op == ' ') { e++; continue; }
+        // Found a change — build hunk boundaries.
+        int hunkStart = Math.Max(0, e - ctx);
+        int hunkEnd   = e;
+        while (hunkEnd < edits.Count && (edits[hunkEnd].op != ' ' || hunkEnd - e < ctx))
+            hunkEnd++;
+        hunkEnd = Math.Min(edits.Count, hunkEnd + ctx);
+
+        var hunk = edits.Skip(hunkStart).Take(hunkEnd - hunkStart).ToList();
+        int origStart = hunk.First().origLine;
+        int origCount = hunk.Count(x => x.op is ' ' or '-');
+        int newCount  = hunk.Count(x => x.op is ' ' or '+');
+        sb.AppendLine($"@@ -{origStart},{origCount} +{origStart},{newCount} @@");
+        foreach (var (op, _, text) in hunk)
+            sb.AppendLine($"{op}{text}");
+
+        e = hunkEnd;
+    }
+
+    return sb.ToString();
+}
+
 static void CollectNodeExpressions(
     WfNode node, string workflowPath, List<WfExpressionAnalysis> results)
 {
@@ -1448,6 +1685,21 @@ record WfRuleModel(
     string ProjectName,
     IReadOnlyList<WfConditionRule>  Conditions,
     IReadOnlyList<WfAssignmentRule> Assignments
+);
+
+// ── Layer 4: XAML transformation records ─────────────────────────────────────
+
+record XamlInsertionPoint(
+    string WorkflowPath,
+    string NodeId,
+    string NodeType,
+    int?   XamlLine,
+    string Mode   // "before" | "after" | "inside"
+);
+
+record XamlTransformSpec(
+    XamlInsertionPoint Anchor,
+    string SnippetXml
 );
 
 // ── Scaffolding filter ────────────────────────────────────────────────────────
