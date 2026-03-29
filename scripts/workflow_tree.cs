@@ -25,6 +25,7 @@ using System.Activities.Statements;
 using System.Reflection;
 using System.Text.Json;
 using System.Xaml;
+using System.Xml;
 using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.VisualBasic;
@@ -52,6 +53,8 @@ static string? FindProjectJson()
 // --json-out <path>         JSON to file     (summary still to stdout)
 // --trace-resolve           emit PROBE lines to stderr + post-run Studio assembly inventory
 // --expr-json-out <path>    Roslyn VB expression analysis to JSON file (Layer 2)
+// --expr-text-out <path|-> Roslyn-annotated IR tree to file (Layer 2)
+// --rule-json-out <path>   Rule model (conditions + assignments) to JSON (Layer 3)
 string? projectJsonArg = null;
 bool    emitJson       = false;
 string? jsonOutArg     = null;
@@ -59,6 +62,7 @@ string? textOutArg     = null;
 bool    traceResolve   = false;
 string? exprJsonOutArg  = null;
 string? exprTextOutArg  = null;
+string? ruleJsonOutArg  = null;
 
 for (int i = 0; i < args.Length; i++)
 {
@@ -68,6 +72,7 @@ for (int i = 0; i < args.Length; i++)
     else if (args[i] == "--trace-resolve")                          { traceResolve = true; }
     else if (args[i] == "--expr-json-out"  && i + 1 < args.Length) { exprJsonOutArg  = args[++i]; }
     else if (args[i] == "--expr-text-out"  && i + 1 < args.Length) { exprTextOutArg  = args[++i]; }
+    else if (args[i] == "--rule-json-out"  && i + 1 < args.Length) { ruleJsonOutArg  = args[++i]; }
     else if (!args[i].StartsWith("--"))                             { projectJsonArg = args[i]; }
 }
 
@@ -510,7 +515,36 @@ static WfNode BuildFromXaml(
     foreach (var c in XamlActivityChildren(el))
         children.Add(BuildFromXaml(c, annotations, ref idCounter, allExpressions, relPath));
 
-    return new WfNode(id, typeName, displayName, annotation, arguments, variables, expressions, children, "XamlFallback");
+    int? xamlLine = null;
+    if (el is IXmlLineInfo xli && xli.HasLineInfo())
+        xamlLine = xli.LineNumber;
+
+    return new WfNode(id, typeName, displayName, annotation, arguments, variables, expressions, children, "XamlFallback", xamlLine);
+}
+
+// ── XAML line number helpers ──────────────────────────────────────────────────
+// For RuntimeResolved nodes we have no XElement, so we do a best-effort match
+// by DisplayName after the WF tree is built.  First occurrence wins; duplicates
+// (activities sharing a DisplayName) get whichever line appears first in the file.
+static Dictionary<string, int> BuildDisplayNameLineMap(string xamlPath)
+{
+    var map = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+    var doc = XDocument.Load(xamlPath, LoadOptions.SetLineInfo);
+    foreach (var el in doc.Descendants())
+    {
+        var dn = el.Attribute("DisplayName")?.Value;
+        if (dn is null) continue;
+        if (el is IXmlLineInfo li && li.HasLineInfo() && !map.ContainsKey(dn))
+            map[dn] = li.LineNumber;
+    }
+    return map;
+}
+
+static WfNode AttachXamlLines(WfNode node, Dictionary<string, int> map)
+{
+    var line     = node.XamlLine ?? (map.TryGetValue(node.DisplayName, out var l) ? (int?)l : null);
+    var children = node.Children.Select(c => AttachXamlLines(c, map)).ToList();
+    return node with { XamlLine = line, Children = children };
 }
 
 // ── Stats collector ───────────────────────────────────────────────────────────
@@ -745,7 +779,7 @@ while (queue.Count > 0)
         // All nodes in this workflow will carry Resolution = "XamlFallback".
         try
         {
-            var xamlDoc2        = XDocument.Load(fullPath);
+            var xamlDoc2        = XDocument.Load(fullPath, LoadOptions.SetLineInfo);
             var annotations2    = ExtractAnnotations(fullPath);
             var allExpressions2 = new List<string>();
             int idCounter2      = 0;
@@ -801,7 +835,7 @@ while (queue.Count > 0)
         Console.Error.WriteLine($"           → WF descent incomplete ({warnCount} warn(s)), rebuilding from XAML");
         try
         {
-            var xamlDocB = XDocument.Load(fullPath);
+            var xamlDocB = XDocument.Load(fullPath, LoadOptions.SetLineInfo);
             allExpressions.Clear();
             int idCounterB = 0;
             wfNode = BuildFromXaml(xamlDocB.Root!, annotations, ref idCounterB, allExpressions, relPath);
@@ -825,6 +859,13 @@ while (queue.Count > 0)
     var resolution = usedXamlFallback       ? "xaml-fallback"
                    : studioUsedForCurrent   ? "studio-assisted"
                    :                          "pure-nuget";
+
+    // Attach source line numbers to RuntimeResolved nodes (best-effort DisplayName match)
+    if (!usedXamlFallback)
+    {
+        var lineMap = BuildDisplayNameLineMap(fullPath);
+        wfNode = AttachXamlLines(wfNode, lineMap);
+    }
 
     workflows[relPath] = new WfWorkflow(
         relPath, wfNode,
@@ -907,7 +948,7 @@ if (emitJson)
 }
 
 // ── Expression analysis (Layer 2) ────────────────────────────────────────────
-if (exprJsonOutArg is not null || exprTextOutArg is not null)
+if (exprJsonOutArg is not null || exprTextOutArg is not null || ruleJsonOutArg is not null)
 {
     var analyses = AnalyzeProject(wfProject);
 
@@ -945,6 +986,16 @@ if (exprJsonOutArg is not null || exprTextOutArg is not null)
 
         if (exprTextOutArg != "-")
             Console.Error.WriteLine($"expr-text written to: {exprTextOutArg}  ({analyses.Count} expressions)");
+    }
+
+    if (ruleJsonOutArg is not null)
+    {
+        var model    = BuildRuleModel(wfProject.Name, analyses);
+        var ruleJson = JsonSerializer.Serialize(model, new JsonSerializerOptions { WriteIndented = true });
+        File.WriteAllText(ruleJsonOutArg, ruleJson,
+            new System.Text.UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+        Console.Error.WriteLine($"rule-model written to: {ruleJsonOutArg}  " +
+            $"({model.Conditions.Count} conditions, {model.Assignments.Count} assignments)");
     }
 }
 
@@ -1029,6 +1080,92 @@ static string? TryInferType(string expressionText)
     catch { return null; }
 }
 
+// ── Predicate extractor ───────────────────────────────────────────────────────
+// Classifies simple VB boolean patterns into a structured WfPredicate.
+// Returns null for patterns that don't cleanly match — no false structure imposed.
+static WfPredicate? ExtractPredicate(string sourceText)
+{
+    try
+    {
+        // Wrap in a Sub so VB parses `x = "A"` inside a conditional context (equality,
+        // not assignment).  Module/Sub wrapper mirrors TryInferType for consistency.
+        var wrapped =
+            "Module M\n" +
+            "  Sub S()\n" +
+            "    If (" + sourceText + ") Then\n" +
+            "    End If\n" +
+            "  End Sub\n" +
+            "End Module";
+        var tree    = VisualBasicSyntaxTree.ParseText(wrapped);
+        // IfStatementSyntax.Condition is the condition expression.
+        var ifStmt = tree.GetRoot().DescendantNodes()
+                         .OfType<IfStatementSyntax>().FirstOrDefault();
+        if (ifStmt is null) return null;
+        // Unwrap outer parentheses added by our wrapper: If (expr) Then → expr
+        ExpressionSyntax first = ifStmt.Condition;
+        while (first is ParenthesizedExpressionSyntax paren)
+            first = paren.Expression;
+        switch (first)
+        {
+            // x = "A"  /  x <> "A"  /  x > 5  /  x <= 10  etc.
+            case BinaryExpressionSyntax bin
+                when bin.Kind() is SyntaxKind.EqualsExpression
+                               or SyntaxKind.NotEqualsExpression
+                               or SyntaxKind.GreaterThanExpression
+                               or SyntaxKind.GreaterThanOrEqualExpression
+                               or SyntaxKind.LessThanExpression
+                               or SyntaxKind.LessThanOrEqualExpression:
+                var op   = bin.OperatorToken.ValueText;
+                var lhs  = bin.Left  is IdentifierNameSyntax  lid ? lid.Identifier.ValueText : null;
+                var rhs  = bin.Right is LiteralExpressionSyntax rl ? rl.Token.ValueText       : null;
+                var bkind = bin.Kind() == SyntaxKind.EqualsExpression   ? "equality"
+                          : bin.Kind() == SyntaxKind.NotEqualsExpression ? "inequality"
+                          : "comparison";
+                return new WfPredicate(bkind, lhs, op, rhs, null, Array.Empty<WfPredicate>());
+
+            // x Is Nothing  /  x IsNot Nothing
+            case BinaryExpressionSyntax isBin
+                when isBin.Kind() is SyntaxKind.IsExpression or SyntaxKind.IsNotExpression:
+                var isVar  = isBin.Left is IdentifierNameSyntax iv ? iv.Identifier.ValueText : null;
+                var isKind = isBin.Kind() == SyntaxKind.IsExpression ? "null-check" : "not-null-check";
+                return new WfPredicate(isKind, isVar, isBin.OperatorToken.ValueText, null, null,
+                    Array.Empty<WfPredicate>());
+
+            // x OrElse y  /  x AndAlso y
+            case BinaryExpressionSyntax cmpd
+                when cmpd.Kind() is SyntaxKind.OrElseExpression or SyntaxKind.AndAlsoExpression:
+                var ckind = cmpd.Kind() == SyntaxKind.OrElseExpression ? "compound-or" : "compound-and";
+                var cleft  = ExtractPredicate(cmpd.Left.ToString());
+                var cright = ExtractPredicate(cmpd.Right.ToString());
+                if (cleft is null || cright is null) return null;
+                return new WfPredicate(ckind, null, null, null, null,
+                    new[] { cleft, cright }.ToList().AsReadOnly());
+
+            // Not expr
+            case UnaryExpressionSyntax neg when neg.Kind() == SyntaxKind.NotExpression:
+                var inner = ExtractPredicate(neg.Operand.ToString());
+                if (inner is null) return null;
+                return new WfPredicate("negation", null, null, null, null,
+                    new[] { inner }.ToList().AsReadOnly());
+
+            // String.IsNullOrEmpty(x)  /  String.IsNullOrWhiteSpace(x)
+            case InvocationExpressionSyntax inv:
+                var fname = inv.Expression.ToString();
+                if (fname is "String.IsNullOrEmpty" or "String.IsNullOrWhiteSpace")
+                {
+                    var farg = inv.ArgumentList.Arguments.FirstOrDefault()?.ToString();
+                    return new WfPredicate("known-function", farg, null, null, fname,
+                        Array.Empty<WfPredicate>());
+                }
+                return null;
+
+            default:
+                return null;
+        }
+    }
+    catch { return null; }
+}
+
 static WfExpressionAnalysis AnalyzeExpression(
     string workflowPath, WfNode wfNode, WfExpression expr)
 {
@@ -1070,11 +1207,14 @@ static WfExpressionAnalysis AnalyzeExpression(
         .Select(d => $"{d.Id}: {d.GetMessage()}")
         .ToList();
 
+    var predicate = expr.Name == "Condition" ? ExtractPredicate(sourceText) : null;
+
     return new WfExpressionAnalysis(
         workflowPath,
         wfNode.Id,
         wfNode.Type,
         wfNode.DisplayName,
+        wfNode.XamlLine,
         expr.Name,
         sourceText,
         syntaxKind,
@@ -1083,7 +1223,36 @@ static WfExpressionAnalysis AnalyzeExpression(
         invocations.Distinct().ToList().AsReadOnly(),
         literals.ToList().AsReadOnly(),
         diagnostics.AsReadOnly(),
-        TryInferType(sourceText));
+        TryInferType(sourceText),
+        predicate);
+}
+
+// ── Rule model builder (Layer 3) ──────────────────────────────────────────────
+static WfRuleModel BuildRuleModel(string projectName, List<WfExpressionAnalysis> analyses)
+{
+    var conditions  = new List<WfConditionRule>();
+    var assignExprs = new List<WfExpressionAnalysis>();
+
+    foreach (var a in analyses)
+    {
+        if (a.ExpressionName == "Condition")
+            conditions.Add(new WfConditionRule(
+                a.WorkflowPath, a.NodeId, a.NodeDisplayName, a.XamlLine,
+                a.SourceText, a.Predicate));
+        else if (a.ExpressionName is "Value" or "To")
+            assignExprs.Add(a);
+    }
+
+    var assignments = assignExprs
+        .GroupBy(a => (a.WorkflowPath, a.NodeId))
+        .Select(g => new WfAssignmentRule(
+            g.Key.WorkflowPath, g.Key.NodeId,
+            g.First().NodeDisplayName, g.First().XamlLine,
+            g.FirstOrDefault(x => x.ExpressionName == "To")?.SourceText    ?? "",
+            g.FirstOrDefault(x => x.ExpressionName == "Value")?.SourceText ?? ""))
+        .ToList();
+
+    return new WfRuleModel(projectName, conditions.AsReadOnly(), assignments.AsReadOnly());
 }
 
 static void CollectNodeExpressions(
@@ -1131,7 +1300,8 @@ static void RenderWithAnalysis(
             var warn    = a.Diagnostics.Count > 0 ? " ⚠" : "";
             var ids     = a.Identifiers.Count  > 0 ? $"  ids:{string.Join(",", a.Identifiers)}" : "";
             var lits    = a.Literals.Count     > 0 ? $"  lit:{string.Join(",", a.Literals.Select(l => $"\"{l}\""))}" : "";
-            output.WriteLine($"{indentP}.{expr.Name} = {expr.Value}   ∷ {type}{warn}{ids}{lits}");
+            var lineRef = a.XamlLine.HasValue ? $"  @L{a.XamlLine}" : "";
+            output.WriteLine($"{indentP}.{expr.Name} = {expr.Value}   ∷ {type}{warn}{ids}{lits}{lineRef}");
         }
         else
         {
@@ -1192,7 +1362,8 @@ record WfNode(
     List<WfVariable> Variables,
     List<WfExpression> Expressions,       // node-local named: Condition / Value / To / Message
     List<WfNode> Children,
-    string Resolution = "RuntimeResolved" // "RuntimeResolved" | "XamlFallback"
+    string Resolution = "RuntimeResolved",// "RuntimeResolved" | "XamlFallback"
+    int? XamlLine = null                  // source line in XAML file; null when not resolvable
 );
 
 // ── Project-level model ───────────────────────────────────────────────────────
@@ -1222,11 +1393,25 @@ record WfProject(
 
 // ── Expression analysis model (Layer 2) ──────────────────────────────────────
 
+// Structured representation of a simple VB boolean predicate.
+// null when the expression does not match a supported pattern.
+record WfPredicate(
+    string Kind,         // "equality" | "inequality" | "comparison" | "null-check"
+                         // | "not-null-check" | "known-function" | "compound-and"
+                         // | "compound-or" | "negation"
+    string? Variable,    // LHS identifier for simple predicates; null for compound/function
+    string? Operator,    // "=" | "<>" | ">" | ">=" | "<" | "<=" | "Is" | "IsNot"
+    string? Literal,     // RHS literal value (string or number); null when not a literal
+    string? FuncName,    // e.g. "String.IsNullOrEmpty" for known-function kind
+    IReadOnlyList<WfPredicate> Operands  // sub-predicates for compound/negation; empty otherwise
+);
+
 record WfExpressionAnalysis(
     string WorkflowPath,
     string NodeId,
     string NodeType,
     string NodeDisplayName,
+    int?   XamlLine,
     string ExpressionName,
     string SourceText,
     string SyntaxKind,
@@ -1235,7 +1420,34 @@ record WfExpressionAnalysis(
     IReadOnlyList<string> Invocations,
     IReadOnlyList<string> Literals,
     IReadOnlyList<string> Diagnostics,
-    string? InferredType
+    string?    InferredType,
+    WfPredicate? Predicate       // non-null only for Condition expressions that match a known pattern
+);
+
+// ── Rule model (Layer 3) ──────────────────────────────────────────────────────
+
+record WfConditionRule(
+    string WorkflowPath,
+    string NodeId,
+    string DisplayName,
+    int?   XamlLine,
+    string SourceText,
+    WfPredicate? Predicate
+);
+
+record WfAssignmentRule(
+    string WorkflowPath,
+    string NodeId,
+    string DisplayName,
+    int?   XamlLine,
+    string Target,   // .To expression
+    string Value     // .Value expression
+);
+
+record WfRuleModel(
+    string ProjectName,
+    IReadOnlyList<WfConditionRule>  Conditions,
+    IReadOnlyList<WfAssignmentRule> Assignments
 );
 
 // ── Scaffolding filter ────────────────────────────────────────────────────────
