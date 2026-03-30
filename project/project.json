@@ -139,6 +139,42 @@
       "uniqueId": "f1e2d3c4-b5a6-7890-fedc-ba9876543210",
       "input": [],
       "output": []
+    },
+    {
+      "filePath": "RoutingPipeline\\Pipeline.xaml",
+      "uniqueId": "09dc7b26-e35d-4835-82fc-08c01729f58b",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "EligibilityDecision\\DecisionTable.xaml",
+      "uniqueId": "ddc7d790-cbbb-4736-9312-3f76bdf619cf",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "EligibilityDecision\\Expression.xaml",
+      "uniqueId": "c6ec828b-07bc-46f4-805a-9ea603c5568e",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "EligibilityDecision\\IfElse.xaml",
+      "uniqueId": "17c4db42-388f-48ca-b515-55dc1d57033a",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "EligibilityDecision\\RuleBased.xaml",
+      "uniqueId": "0474c8ed-8ded-4e45-8fc6-755c357ebbbd",
+      "input": [],
+      "output": []
+    },
+    {
+      "filePath": "EligibilityDecision\\StateMachine.xaml",
+      "uniqueId": "e60339ac-d515-4689-8e54-d20ed807a90a",
+      "input": [],
+      "output": []
     }
   ],
   "isTemplate": false,
