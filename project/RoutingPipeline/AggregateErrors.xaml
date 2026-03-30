@@ -64,7 +64,7 @@
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-    <ui:MultipleAssign DisplayName="Classify customer vs internal errors" sap2010:Annotation.AnnotationText="[NEEDLE]&#xD;&#xA;Current implementation: direct passthrough — inputs equal outputs.&#xD;&#xA;Design intent: this activity is the extension point for real aggregation.&#xD;&#xA;Replace the expressions here to aggregate from a validation result list,&#xD;&#xA;an enrichment result set, or any other error source — without changing&#xD;&#xA;Pipeline.xaml or DetermineRouting.xaml.&#xD;&#xA;&#xD;&#xA;#cb39fe" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+    <ui:MultipleAssign DisplayName="Classify customer vs internal errors" sap2010:Annotation.AnnotationText="Current implementation: direct passthrough — inputs equal outputs.&#xD;&#xA;Design intent: this activity is the extension point for real aggregation.&#xD;&#xA;Replace the expressions here to aggregate from a validation result list,&#xD;&#xA;an enrichment result set, or any other error source — without changing&#xD;&#xA;Pipeline.xaml or DetermineRouting.xaml." sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOp_1">

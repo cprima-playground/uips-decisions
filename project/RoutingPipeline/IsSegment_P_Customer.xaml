@@ -71,7 +71,7 @@
         <InArgument x:TypeArguments="x:Boolean">[in_IsSegmentP]</InArgument>
       </If.Condition>
       <If.Then>
-        <ui:LogMessage DisplayName="NotifySegment_P_Case" Level="Info" sap2010:Annotation.AnnotationText="[NEEDLE]&#xD;&#xA;Side effect: notifies downstream systems of a Segment_P case.&#xD;&#xA;In production: replace LogMessage with an actual notification call&#xD;&#xA;(e.g. queue message, webhook) without changing the surrounding If structure.&#xD;&#xA;&#xD;&#xA;#cb39fe" sap2010:WorkflowViewState.IdRef="LogMessage_1">
+        <ui:LogMessage DisplayName="NotifySegment_P_Case" Level="Info" sap2010:Annotation.AnnotationText="[SIDE EFFECT]&#xD;&#xA;Side effect: notifies downstream systems of a Segment_P case.&#xD;&#xA;In production: replace LogMessage with an actual notification call&#xD;&#xA;(e.g. queue message, webhook) without changing the surrounding If structure." sap2010:WorkflowViewState.IdRef="LogMessage_1">
           <ui:LogMessage.Message>["Segment_P notification fired (fire-and-continue)"]</ui:LogMessage.Message>
         </ui:LogMessage>
       </If.Then>

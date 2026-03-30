@@ -1,9 +1,13 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="StateMachine" VisualBasic.Settings="{x:Null}" sap2010:WorkflowViewState.IdRef="StateMachine_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="StateMachine" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
     <x:Property Name="in_TransactionItem" Type="InArgument(ui:QueueItem)" />
     <x:Property Name="out_DecisionValue" Type="OutArgument(x:String)" />
   </x:Members>
+  <VisualBasic.Settings>
+    <x:Null />
+  </VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>StateMachine_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
       <x:String>System.Activities</x:String>
@@ -57,7 +61,7 @@
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="StateMachine" sap2010:Annotation.AnnotationText="Pattern: StateMachine&#xD;&#xA;WF4 StateMachine models the decision as an explicit state graph.&#xD;&#xA;Variables are declared on the outer Sequence (not inside StateMachine)&#xD;&#xA;so they are accessible across all states.&#xD;&#xA;Inputs / Output: same as IfElse.xaml.&#xD;&#xA;&#xD;&#xA;State graph:&#xD;&#xA;  Extract → Route → RG1 ──→ Positive → Final&#xD;&#xA;                 → RG2 ──→ Negative → Final&#xD;&#xA;                 → Positive (SecondaryIndicator override)&#xD;&#xA;                 → Negative (unknown CaseCategory)" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Pattern: StateMachine&#xA;WF4 StateMachine models the decision as an explicit state graph.&#xA;Variables are declared on the outer Sequence (not inside StateMachine)&#xA;so they are accessible across all states.&#xA;Inputs / Output: same as IfElse.xaml.&#xA;&#xA;State graph:&#xA;  Extract → Route → RG1 ──→ Positive → Final&#xA;                 → RG2 ──→ Negative → Final&#xA;                 → Positive (SecondaryIndicator override)&#xA;                 → Negative (unknown CaseCategory)" DisplayName="StateMachine" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="v_CaseCategory" />
       <Variable x:TypeArguments="x:String" Name="v_ComplianceAssessment" />
@@ -74,150 +78,162 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <StateMachine DisplayName="EligibilityDecision StateMachine" sap2010:Annotation.AnnotationText="WF4 StateMachine constraints observed here:&#xD;&#xA;  • Transition.Condition is Activity&lt;Boolean&gt;, not InArgument&lt;Boolean&gt;.&#xD;&#xA;    Use text-content form: &lt;Transition.Condition&gt;[expr]&lt;/Transition.Condition&gt;&#xD;&#xA;  • States with multiple trigger-less transitions must have explicit&#xD;&#xA;    conditions on ALL transitions (including catch-all → [True]).&#xD;&#xA;  • At most one unconditional (no condition) transition per state is allowed." sap2010:WorkflowViewState.IdRef="StateMachine_SM">
-      <StateMachine.InitialState>
-        <x:Reference>State_Extract</x:Reference>
-      </StateMachine.InitialState>
-      <StateMachine.States>
-
-        <State x:Name="State_Extract" DisplayName="Extract from SpecificContent" sap2010:Annotation.AnnotationText="Entry state: extracts all typed inputs from SpecificContent.&#xD;&#xA;Single outgoing transition → Route (always taken)." sap2010:WorkflowViewState.IdRef="State_Extract">
-          <State.Entry>
-            <ui:MultipleAssign DisplayName="Extract from SpecificContent" sap2010:Annotation.AnnotationText="Extracts all typed inputs from SpecificContent into outer-Sequence variables." sap2010:WorkflowViewState.IdRef="MultipleAssign_Extract">
-              <ui:MultipleAssign.AssignOperations>
-                <scg:List x:TypeArguments="ui:AssignOperation" Capacity="8">
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
-                    <ui:AssignOperation.To><OutArgument x:TypeArguments="x:String">[v_CaseCategory]</OutArgument></ui:AssignOperation.To>
-                    <ui:AssignOperation.Value><InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_CaseCategory"))]</InArgument></ui:AssignOperation.Value>
-                  </ui:AssignOperation>
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
-                    <ui:AssignOperation.To><OutArgument x:TypeArguments="x:String">[v_ComplianceAssessment]</OutArgument></ui:AssignOperation.To>
-                    <ui:AssignOperation.Value><InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_ComplianceAssessment"))]</InArgument></ui:AssignOperation.Value>
-                  </ui:AssignOperation>
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
-                    <ui:AssignOperation.To><OutArgument x:TypeArguments="x:String">[v_Attribute_A]</OutArgument></ui:AssignOperation.To>
-                    <ui:AssignOperation.Value><InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_A"))]</InArgument></ui:AssignOperation.Value>
-                  </ui:AssignOperation>
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
-                    <ui:AssignOperation.To><OutArgument x:TypeArguments="x:String">[v_Attribute_B]</OutArgument></ui:AssignOperation.To>
-                    <ui:AssignOperation.Value><InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_B"))]</InArgument></ui:AssignOperation.Value>
-                  </ui:AssignOperation>
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_5">
-                    <ui:AssignOperation.To><OutArgument x:TypeArguments="x:String">[v_Attribute_C]</OutArgument></ui:AssignOperation.To>
-                    <ui:AssignOperation.Value><InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_C"))]</InArgument></ui:AssignOperation.Value>
-                  </ui:AssignOperation>
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_6">
-                    <ui:AssignOperation.To><OutArgument x:TypeArguments="x:String">[v_Indicator_X]</OutArgument></ui:AssignOperation.To>
-                    <ui:AssignOperation.Value><InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_Indicator_X"))]</InArgument></ui:AssignOperation.Value>
-                  </ui:AssignOperation>
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_7">
-                    <ui:AssignOperation.To><OutArgument x:TypeArguments="x:String">[v_Detail_X]</OutArgument></ui:AssignOperation.To>
-                    <ui:AssignOperation.Value><InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_Detail_X"))]</InArgument></ui:AssignOperation.Value>
-                  </ui:AssignOperation>
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_8">
-                    <ui:AssignOperation.To><OutArgument x:TypeArguments="x:Boolean">[v_SecondaryIndicator]</OutArgument></ui:AssignOperation.To>
-                    <ui:AssignOperation.Value><InArgument x:TypeArguments="x:Boolean">[CBool(in_TransactionItem.SpecificContent("in_SecondaryIndicator"))]</InArgument></ui:AssignOperation.Value>
-                  </ui:AssignOperation>
-                </scg:List>
-              </ui:MultipleAssign.AssignOperations>
-            </ui:MultipleAssign>
-          </State.Entry>
-          <State.Transitions>
-            <Transition DisplayName="&#x2192; Route" sap2010:Annotation.AnnotationText="Unconditional transition — always proceeds to Route after extraction." sap2010:WorkflowViewState.IdRef="Transition_Extract_Route">
-              <Transition.To><x:Reference>State_Route</x:Reference></Transition.To>
-            </Transition>
-          </State.Transitions>
-        </State>
-
-        <State x:Name="State_Route" DisplayName="Route by Category" sap2010:Annotation.AnnotationText="Routing state: dispatches to the correct rule group based on&#xD;&#xA;SecondaryIndicator (override) and CaseCategory.&#xD;&#xA;Four outgoing transitions evaluated in order:&#xD;&#xA;  1. SecondaryIndicator = True → Positive (override)&#xD;&#xA;  2. CaseCategory ∈ {Event_A, Event_B} → RG1&#xD;&#xA;  3. CaseCategory ∈ {Event_C, Event_D} → RG2&#xD;&#xA;  4. [True] catch-all → Negative (unknown category)" sap2010:WorkflowViewState.IdRef="State_Route">
-          <State.Transitions>
-            <Transition DisplayName="SecondaryIndicator &#x2192; Positive" sap2010:Annotation.AnnotationText="SecondaryIndicator override: bypasses rule groups entirely → Positive." sap2010:WorkflowViewState.IdRef="Transition_Route_Secondary">
-              <Transition.Condition>[v_SecondaryIndicator]</Transition.Condition>
-              <Transition.To><x:Reference>State_Positive</x:Reference></Transition.To>
-            </Transition>
-            <Transition DisplayName="Event_A or Event_B &#x2192; RG1" sap2010:Annotation.AnnotationText="CaseCategory = Event_A or Event_B → enter Rule Group 1 evaluation." sap2010:WorkflowViewState.IdRef="Transition_Route_RG1">
-              <Transition.Condition>[v_CaseCategory = "Event_A" OrElse v_CaseCategory = "Event_B"]</Transition.Condition>
-              <Transition.To><x:Reference>State_RG1</x:Reference></Transition.To>
-            </Transition>
-            <Transition DisplayName="Event_C or Event_D &#x2192; RG2" sap2010:Annotation.AnnotationText="CaseCategory = Event_C or Event_D → enter Rule Group 2 evaluation." sap2010:WorkflowViewState.IdRef="Transition_Route_RG2">
-              <Transition.Condition>[v_CaseCategory = "Event_C" OrElse v_CaseCategory = "Event_D"]</Transition.Condition>
-              <Transition.To><x:Reference>State_RG2</x:Reference></Transition.To>
-            </Transition>
-            <Transition DisplayName="Unknown CaseCategory &#x2192; Negative" sap2010:Annotation.AnnotationText="Catch-all [True]: CaseCategory is not in any known group → Negative.&#xD;&#xA;Default-deny for unrecognised values." sap2010:WorkflowViewState.IdRef="Transition_Route_UnknownNeg">
-              <Transition.Condition>[True]</Transition.Condition>
-              <Transition.To><x:Reference>State_Negative</x:Reference></Transition.To>
-            </Transition>
-          </State.Transitions>
-        </State>
-
-        <State x:Name="State_RG1" DisplayName="Rule Group 1: Event_A or Event_B" sap2010:Annotation.AnnotationText="[NEEDLE — RG1 decision state]&#xD;&#xA;Rule Group 1 evaluation (CaseCategory = Event_A or Event_B).&#xD;&#xA;Three outgoing transitions:&#xD;&#xA;  1. Compliant or empty ComplianceAssessment → Positive&#xD;&#xA;  2. Non_Compliant + special Attribute_A + low-impact Attribute_BC → Positive&#xD;&#xA;  3. [True] catch-all → Negative&#xD;&#xA;Open question #1 applies to transition 2 (Attribute_BC: OR vs AND).&#xD;&#xA;&#xD;&#xA;#cb39fe" sap2010:WorkflowViewState.IdRef="State_RG1">
-          <State.Transitions>
-            <Transition DisplayName="Compliant or empty &#x2192; Positive" sap2010:Annotation.AnnotationText="RG1: ComplianceAssessment = Compliant OR empty → Positive.&#xD;&#xA;Empty is a sentinel for &quot;not yet assessed&quot; — treated as Positive." sap2010:WorkflowViewState.IdRef="Transition_RG1_Compliant">
-              <Transition.Condition>[v_ComplianceAssessment = "Compliant" OrElse String.IsNullOrEmpty(v_ComplianceAssessment)]</Transition.Condition>
-              <Transition.To><x:Reference>State_Positive</x:Reference></Transition.To>
-            </Transition>
-            <Transition DisplayName="Non_Compliant + Attr_A + Attr_BC &#x2192; Positive" sap2010:Annotation.AnnotationText="RG1: Non_Compliant AND Attribute_A ∈ {Verification_not_available,&#xD;&#xA;Special_case_without_certified_component}&#xD;&#xA;AND (Attribute_B OR Attribute_C = No_or_low_impact) → Positive.&#xD;&#xA;Open question #1: Attribute_BC condition is currently OR." sap2010:WorkflowViewState.IdRef="Transition_RG1_NonCompliant">
-              <Transition.Condition>[v_ComplianceAssessment = "Non_Compliant" AndAlso (v_Attribute_A = "Verification_not_available" OrElse v_Attribute_A = "Special_case_without_certified_component") AndAlso (v_Attribute_B = "No_or_low_impact" OrElse v_Attribute_C = "No_or_low_impact")]</Transition.Condition>
-              <Transition.To><x:Reference>State_Positive</x:Reference></Transition.To>
-            </Transition>
-            <Transition DisplayName="Otherwise &#x2192; Negative" sap2010:Annotation.AnnotationText="Catch-all [True]: no RG1 positive condition matched → Negative." sap2010:WorkflowViewState.IdRef="Transition_RG1_Neg">
-              <Transition.Condition>[True]</Transition.Condition>
-              <Transition.To><x:Reference>State_Negative</x:Reference></Transition.To>
-            </Transition>
-          </State.Transitions>
-        </State>
-
-        <State x:Name="State_RG2" DisplayName="Rule Group 2: Event_C or Event_D" sap2010:Annotation.AnnotationText="Rule Group 2 evaluation (CaseCategory = Event_C or Event_D).&#xD;&#xA;Four outgoing transitions:&#xD;&#xA;  1. Indicator_X=Y + Detail_X OK → Positive&#xD;&#xA;  2. Indicator_X=N + Compliant or empty → Positive&#xD;&#xA;  3. Indicator_X=N + Non_Compliant + attrs → Positive&#xD;&#xA;  4. [True] catch-all → Negative" sap2010:WorkflowViewState.IdRef="State_RG2">
-          <State.Transitions>
-            <Transition DisplayName="Indicator_X=Y + Detail_X OK &#x2192; Positive" sap2010:Annotation.AnnotationText="RG2: Indicator_X=Y AND (Detail_X = Noticeable_irregularity OR empty) → Positive.&#xD;&#xA;Empty Detail_X sentinel: irregularity present, classification pending." sap2010:WorkflowViewState.IdRef="Transition_RG2_IX_Y">
-              <Transition.Condition>[v_Indicator_X = "Y" AndAlso (v_Detail_X = "Noticeable_irregularity" OrElse String.IsNullOrEmpty(v_Detail_X))]</Transition.Condition>
-              <Transition.To><x:Reference>State_Positive</x:Reference></Transition.To>
-            </Transition>
-            <Transition DisplayName="Indicator_X=N + Compliant or empty &#x2192; Positive" sap2010:Annotation.AnnotationText="RG2: Indicator_X=N AND (ComplianceAssessment = Compliant OR empty) → Positive." sap2010:WorkflowViewState.IdRef="Transition_RG2_IX_N_Compliant">
-              <Transition.Condition>[v_Indicator_X = "N" AndAlso (v_ComplianceAssessment = "Compliant" OrElse String.IsNullOrEmpty(v_ComplianceAssessment))]</Transition.Condition>
-              <Transition.To><x:Reference>State_Positive</x:Reference></Transition.To>
-            </Transition>
-            <Transition DisplayName="Indicator_X=N + Non_Compliant + Attr_A + Attr_BC &#x2192; Positive" sap2010:Annotation.AnnotationText="RG2: Indicator_X=N AND Non_Compliant AND special Attribute_A&#xD;&#xA;AND (Attribute_B OR Attribute_C = No_or_low_impact) → Positive.&#xD;&#xA;Open question #1: Attribute_BC condition is currently OR." sap2010:WorkflowViewState.IdRef="Transition_RG2_IX_N_NonCompliant">
-              <Transition.Condition>[v_Indicator_X = "N" AndAlso v_ComplianceAssessment = "Non_Compliant" AndAlso (v_Attribute_A = "Verification_not_available" OrElse v_Attribute_A = "Special_case_without_certified_component") AndAlso (v_Attribute_B = "No_or_low_impact" OrElse v_Attribute_C = "No_or_low_impact")]</Transition.Condition>
-              <Transition.To><x:Reference>State_Positive</x:Reference></Transition.To>
-            </Transition>
-            <Transition DisplayName="Otherwise &#x2192; Negative" sap2010:Annotation.AnnotationText="Catch-all [True]: no RG2 positive condition matched → Negative." sap2010:WorkflowViewState.IdRef="Transition_RG2_Neg">
-              <Transition.Condition>[True]</Transition.Condition>
-              <Transition.To><x:Reference>State_Negative</x:Reference></Transition.To>
-            </Transition>
-          </State.Transitions>
-        </State>
-
-        <State x:Name="State_Positive" DisplayName="Set Positive" sap2010:Annotation.AnnotationText="Terminal assignment state: sets out_DecisionValue = &quot;Positive&quot;.&#xD;&#xA;Single outgoing transition → Final." sap2010:WorkflowViewState.IdRef="State_Positive">
-          <State.Entry>
-            <Assign DisplayName="Positive" sap2010:Annotation.AnnotationText="Sets output to &quot;Positive&quot;. Reached from SecondaryIndicator override,&#xD;&#xA;RG1 positive transitions, or RG2 positive transitions." sap2010:WorkflowViewState.IdRef="Assign_Positive">
-              <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
-              <Assign.Value><InArgument x:TypeArguments="x:String">["Positive"]</InArgument></Assign.Value>
-            </Assign>
-          </State.Entry>
-          <State.Transitions>
-            <Transition DisplayName="&#x2192; Final" sap2010:Annotation.AnnotationText="Unconditional transition → Final (IsFinal=True state). Workflow ends." sap2010:WorkflowViewState.IdRef="Transition_Positive_Final">
-              <Transition.To><x:Reference>State_Final</x:Reference></Transition.To>
-            </Transition>
-          </State.Transitions>
-        </State>
-
-        <State x:Name="State_Negative" DisplayName="Set Negative" sap2010:Annotation.AnnotationText="Terminal assignment state: sets out_DecisionValue = &quot;Negative&quot;.&#xD;&#xA;Single outgoing transition → Final." sap2010:WorkflowViewState.IdRef="State_Negative">
-          <State.Entry>
-            <Assign DisplayName="Negative" sap2010:Annotation.AnnotationText="Sets output to &quot;Negative&quot;. Reached from catch-all transitions in&#xD;&#xA;Route, RG1, and RG2 states." sap2010:WorkflowViewState.IdRef="Assign_Negative">
-              <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
-              <Assign.Value><InArgument x:TypeArguments="x:String">["Negative"]</InArgument></Assign.Value>
-            </Assign>
-          </State.Entry>
-          <State.Transitions>
-            <Transition DisplayName="&#x2192; Final" sap2010:Annotation.AnnotationText="Unconditional transition → Final (IsFinal=True state). Workflow ends." sap2010:WorkflowViewState.IdRef="Transition_Negative_Final">
-              <Transition.To><x:Reference>State_Final</x:Reference></Transition.To>
-            </Transition>
-          </State.Transitions>
-        </State>
-
-        <State x:Name="State_Final" DisplayName="Final" IsFinal="True" sap2010:Annotation.AnnotationText="IsFinal=True state. No outgoing transitions. Workflow execution ends here.&#xD;&#xA;out_DecisionValue is set before reaching this state." sap2010:WorkflowViewState.IdRef="State_Final" />
-
-      </StateMachine.States>
+    <StateMachine InitialState="{x:Reference __ReferenceID6}" sap2010:Annotation.AnnotationText="WF4 StateMachine constraints observed here:&#xA;  • Transition.Condition is Activity&lt;Boolean&gt;, not InArgument&lt;Boolean&gt;.&#xA;    Use text-content form: &lt;Transition.Condition&gt;[expr]&lt;/Transition.Condition&gt;&#xA;  • States with multiple trigger-less transitions must have explicit&#xA;    conditions on ALL transitions (including catch-all → [True]).&#xA;  • At most one unconditional (no condition) transition per state is allowed." DisplayName="EligibilityDecision StateMachine" sap2010:WorkflowViewState.IdRef="StateMachine_SM">
+      <State x:Name="__ReferenceID6" sap2010:Annotation.AnnotationText="Entry state: extracts all typed inputs from SpecificContent.&#xA;Single outgoing transition → Route (always taken)." DisplayName="Extract from SpecificContent" sap2010:WorkflowViewState.IdRef="State_Extract">
+        <State.Entry>
+          <ui:MultipleAssign sap2010:Annotation.AnnotationText="Extracts all typed inputs from SpecificContent into outer-Sequence variables." DisplayName="Extract from SpecificContent" sap2010:WorkflowViewState.IdRef="MultipleAssign_Extract">
+            <ui:MultipleAssign.AssignOperations>
+              <scg:List x:TypeArguments="ui:AssignOperation" Capacity="8">
+                <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
+                  <ui:AssignOperation.To>
+                    <OutArgument x:TypeArguments="x:String">[v_CaseCategory]</OutArgument>
+                  </ui:AssignOperation.To>
+                  <ui:AssignOperation.Value>
+                    <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_CaseCategory"))]</InArgument>
+                  </ui:AssignOperation.Value>
+                </ui:AssignOperation>
+                <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
+                  <ui:AssignOperation.To>
+                    <OutArgument x:TypeArguments="x:String">[v_ComplianceAssessment]</OutArgument>
+                  </ui:AssignOperation.To>
+                  <ui:AssignOperation.Value>
+                    <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_ComplianceAssessment"))]</InArgument>
+                  </ui:AssignOperation.Value>
+                </ui:AssignOperation>
+                <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
+                  <ui:AssignOperation.To>
+                    <OutArgument x:TypeArguments="x:String">[v_Attribute_A]</OutArgument>
+                  </ui:AssignOperation.To>
+                  <ui:AssignOperation.Value>
+                    <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_A"))]</InArgument>
+                  </ui:AssignOperation.Value>
+                </ui:AssignOperation>
+                <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
+                  <ui:AssignOperation.To>
+                    <OutArgument x:TypeArguments="x:String">[v_Attribute_B]</OutArgument>
+                  </ui:AssignOperation.To>
+                  <ui:AssignOperation.Value>
+                    <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_B"))]</InArgument>
+                  </ui:AssignOperation.Value>
+                </ui:AssignOperation>
+                <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_5">
+                  <ui:AssignOperation.To>
+                    <OutArgument x:TypeArguments="x:String">[v_Attribute_C]</OutArgument>
+                  </ui:AssignOperation.To>
+                  <ui:AssignOperation.Value>
+                    <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_Attribute_C"))]</InArgument>
+                  </ui:AssignOperation.Value>
+                </ui:AssignOperation>
+                <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_6">
+                  <ui:AssignOperation.To>
+                    <OutArgument x:TypeArguments="x:String">[v_Indicator_X]</OutArgument>
+                  </ui:AssignOperation.To>
+                  <ui:AssignOperation.Value>
+                    <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_Indicator_X"))]</InArgument>
+                  </ui:AssignOperation.Value>
+                </ui:AssignOperation>
+                <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_7">
+                  <ui:AssignOperation.To>
+                    <OutArgument x:TypeArguments="x:String">[v_Detail_X]</OutArgument>
+                  </ui:AssignOperation.To>
+                  <ui:AssignOperation.Value>
+                    <InArgument x:TypeArguments="x:String">[Convert.ToString(in_TransactionItem.SpecificContent("in_Detail_X"))]</InArgument>
+                  </ui:AssignOperation.Value>
+                </ui:AssignOperation>
+                <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_8">
+                  <ui:AssignOperation.To>
+                    <OutArgument x:TypeArguments="x:Boolean">[v_SecondaryIndicator]</OutArgument>
+                  </ui:AssignOperation.To>
+                  <ui:AssignOperation.Value>
+                    <InArgument x:TypeArguments="x:Boolean">[CBool(in_TransactionItem.SpecificContent("in_SecondaryIndicator"))]</InArgument>
+                  </ui:AssignOperation.Value>
+                </ui:AssignOperation>
+              </scg:List>
+            </ui:MultipleAssign.AssignOperations>
+          </ui:MultipleAssign>
+        </State.Entry>
+        <State.Transitions>
+          <Transition sap2010:Annotation.AnnotationText="Unconditional transition — always proceeds to Route after extraction." DisplayName="→ Route" sap2010:WorkflowViewState.IdRef="Transition_Extract_Route">
+            <Transition.To>
+              <State x:Name="__ReferenceID3" sap2010:Annotation.AnnotationText="Routing state: dispatches to the correct rule group based on&#xA;SecondaryIndicator (override) and CaseCategory.&#xA;Four outgoing transitions evaluated in order:&#xA;  1. SecondaryIndicator = True → Positive (override)&#xA;  2. CaseCategory ∈ {Event_A, Event_B} → RG1&#xA;  3. CaseCategory ∈ {Event_C, Event_D} → RG2&#xA;  4. [True] catch-all → Negative (unknown category)" DisplayName="Route by Category" sap2010:WorkflowViewState.IdRef="State_Route">
+                <State.Transitions>
+                  <Transition sap2010:Annotation.AnnotationText="[RULE]&#xA;SecondaryIndicator override: bypasses rule groups entirely → Positive." DisplayName="SecondaryIndicator → Positive" sap2010:WorkflowViewState.IdRef="Transition_Route_Secondary" Condition="[v_SecondaryIndicator]">
+                    <Transition.To>
+                      <State x:Name="__ReferenceID0" sap2010:Annotation.AnnotationText="Terminal assignment state: sets out_DecisionValue = &quot;Positive&quot;.&#xA;Single outgoing transition → Final." DisplayName="Set Positive" sap2010:WorkflowViewState.IdRef="State_Positive">
+                        <State.Entry>
+                          <Assign sap2010:Annotation.AnnotationText="Sets output to &quot;Positive&quot;. Reached from SecondaryIndicator override,&#xA;RG1 positive transitions, or RG2 positive transitions." DisplayName="Positive" sap2010:WorkflowViewState.IdRef="Assign_Positive">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:String">["Positive"]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                        </State.Entry>
+                        <State.Transitions>
+                          <Transition sap2010:Annotation.AnnotationText="Unconditional transition → Final (IsFinal=True state). Workflow ends." DisplayName="→ Final" sap2010:WorkflowViewState.IdRef="Transition_Positive_Final">
+                            <Transition.To>
+                              <State x:Name="__ReferenceID1" sap2010:Annotation.AnnotationText="IsFinal=True state. No outgoing transitions. Workflow execution ends here.&#xA;out_DecisionValue is set before reaching this state." DisplayName="Final" sap2010:WorkflowViewState.IdRef="State_Final" IsFinal="True" />
+                            </Transition.To>
+                          </Transition>
+                        </State.Transitions>
+                      </State>
+                    </Transition.To>
+                  </Transition>
+                  <Transition sap2010:Annotation.AnnotationText="CaseCategory = Event_A or Event_B → enter Rule Group 1 evaluation." DisplayName="Event_A or Event_B → RG1" sap2010:WorkflowViewState.IdRef="Transition_Route_RG1" Condition="[v_CaseCategory = &quot;Event_A&quot; OrElse v_CaseCategory = &quot;Event_B&quot;]">
+                    <Transition.To>
+                      <State x:Name="__ReferenceID4" sap2010:Annotation.AnnotationText="[RULE]&#xA;Rule Group 1 evaluation (CaseCategory = Event_A or Event_B).&#xA;Three outgoing transitions:&#xA;  1. Compliant or empty ComplianceAssessment → Positive&#xA;  2. Non_Compliant + special Attribute_A + low-impact Attribute_BC → Positive&#xA;  3. [True] catch-all → Negative&#xA;Open question #1 applies to transition 2 (Attribute_BC: OR vs AND)." DisplayName="Rule Group 1: Event_A or Event_B" sap2010:WorkflowViewState.IdRef="State_RG1">
+                        <State.Transitions>
+                          <Transition sap2010:Annotation.AnnotationText="[SENTINEL]&#xA;RG1: ComplianceAssessment = Compliant OR empty → Positive.&#xA;Empty is a sentinel for &quot;not yet assessed&quot; — treated as Positive." DisplayName="Compliant or empty → Positive" sap2010:WorkflowViewState.IdRef="Transition_RG1_Compliant" To="{x:Reference __ReferenceID0}" Condition="[v_ComplianceAssessment = &quot;Compliant&quot; OrElse String.IsNullOrEmpty(v_ComplianceAssessment)]" />
+                          <Transition sap2010:Annotation.AnnotationText="[OPEN]&#xA;RG1: Non_Compliant AND Attribute_A ∈ {Verification_not_available,&#xA;Special_case_without_certified_component}&#xA;AND (Attribute_B OR Attribute_C = No_or_low_impact) → Positive.&#xA;Open question #1: Attribute_BC condition is currently OR." DisplayName="Non_Compliant + Attr_A + Attr_BC → Positive" sap2010:WorkflowViewState.IdRef="Transition_RG1_NonCompliant" To="{x:Reference __ReferenceID0}" Condition="[v_ComplianceAssessment = &quot;Non_Compliant&quot; AndAlso (v_Attribute_A = &quot;Verification_not_available&quot; OrElse v_Attribute_A = &quot;Special_case_without_certified_component&quot;) AndAlso (v_Attribute_B = &quot;No_or_low_impact&quot; OrElse v_Attribute_C = &quot;No_or_low_impact&quot;)]" />
+                          <Transition sap2010:Annotation.AnnotationText="[RULE]&#xA;Catch-all [True]: no RG1 positive condition matched → Negative." DisplayName="Otherwise → Negative" sap2010:WorkflowViewState.IdRef="Transition_RG1_Neg" Condition="[True]">
+                            <Transition.To>
+                              <State x:Name="__ReferenceID2" sap2010:Annotation.AnnotationText="Terminal assignment state: sets out_DecisionValue = &quot;Negative&quot;.&#xA;Single outgoing transition → Final." DisplayName="Set Negative" sap2010:WorkflowViewState.IdRef="State_Negative">
+                                <State.Entry>
+                                  <Assign sap2010:Annotation.AnnotationText="Sets output to &quot;Negative&quot;. Reached from catch-all transitions in&#xA;Route, RG1, and RG2 states." DisplayName="Negative" sap2010:WorkflowViewState.IdRef="Assign_Negative">
+                                    <Assign.To>
+                                      <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
+                                    </Assign.To>
+                                    <Assign.Value>
+                                      <InArgument x:TypeArguments="x:String">["Negative"]</InArgument>
+                                    </Assign.Value>
+                                  </Assign>
+                                </State.Entry>
+                                <State.Transitions>
+                                  <Transition sap2010:Annotation.AnnotationText="Unconditional transition → Final (IsFinal=True state). Workflow ends." DisplayName="→ Final" sap2010:WorkflowViewState.IdRef="Transition_Negative_Final" To="{x:Reference __ReferenceID1}" />
+                                </State.Transitions>
+                              </State>
+                            </Transition.To>
+                          </Transition>
+                        </State.Transitions>
+                      </State>
+                    </Transition.To>
+                  </Transition>
+                  <Transition sap2010:Annotation.AnnotationText="CaseCategory = Event_C or Event_D → enter Rule Group 2 evaluation." DisplayName="Event_C or Event_D → RG2" sap2010:WorkflowViewState.IdRef="Transition_Route_RG2" Condition="[v_CaseCategory = &quot;Event_C&quot; OrElse v_CaseCategory = &quot;Event_D&quot;]">
+                    <Transition.To>
+                      <State x:Name="__ReferenceID5" sap2010:Annotation.AnnotationText="[RULE]&#xA;Rule Group 2 evaluation (CaseCategory = Event_C or Event_D).&#xA;Four outgoing transitions:&#xA;  1. Indicator_X=Y + Detail_X OK → Positive&#xA;  2. Indicator_X=N + Compliant or empty → Positive&#xA;  3. Indicator_X=N + Non_Compliant + attrs → Positive&#xA;  4. [True] catch-all → Negative" DisplayName="Rule Group 2: Event_C or Event_D" sap2010:WorkflowViewState.IdRef="State_RG2">
+                        <State.Transitions>
+                          <Transition sap2010:Annotation.AnnotationText="[SENTINEL]&#xA;RG2: Indicator_X=Y AND (Detail_X = Noticeable_irregularity OR empty) → Positive.&#xA;Empty Detail_X sentinel: irregularity present, classification pending." DisplayName="Indicator_X=Y + Detail_X OK → Positive" sap2010:WorkflowViewState.IdRef="Transition_RG2_IX_Y" To="{x:Reference __ReferenceID0}" Condition="[v_Indicator_X = &quot;Y&quot; AndAlso (v_Detail_X = &quot;Noticeable_irregularity&quot; OrElse String.IsNullOrEmpty(v_Detail_X))]" />
+                          <Transition sap2010:Annotation.AnnotationText="[RULE]&#xA;RG2: Indicator_X=N AND (ComplianceAssessment = Compliant OR empty) → Positive." DisplayName="Indicator_X=N + Compliant or empty → Positive" sap2010:WorkflowViewState.IdRef="Transition_RG2_IX_N_Compliant" To="{x:Reference __ReferenceID0}" Condition="[v_Indicator_X = &quot;N&quot; AndAlso (v_ComplianceAssessment = &quot;Compliant&quot; OrElse String.IsNullOrEmpty(v_ComplianceAssessment))]" />
+                          <Transition sap2010:Annotation.AnnotationText="[OPEN]&#xA;RG2: Indicator_X=N AND Non_Compliant AND special Attribute_A&#xA;AND (Attribute_B OR Attribute_C = No_or_low_impact) → Positive.&#xA;Open question #1: Attribute_BC condition is currently OR." DisplayName="Indicator_X=N + Non_Compliant + Attr_A + Attr_BC → Positive" sap2010:WorkflowViewState.IdRef="Transition_RG2_IX_N_NonCompliant" To="{x:Reference __ReferenceID0}" Condition="[v_Indicator_X = &quot;N&quot; AndAlso v_ComplianceAssessment = &quot;Non_Compliant&quot; AndAlso (v_Attribute_A = &quot;Verification_not_available&quot; OrElse v_Attribute_A = &quot;Special_case_without_certified_component&quot;) AndAlso (v_Attribute_B = &quot;No_or_low_impact&quot; OrElse v_Attribute_C = &quot;No_or_low_impact&quot;)]" />
+                          <Transition sap2010:Annotation.AnnotationText="[RULE]&#xA;Catch-all [True]: no RG2 positive condition matched → Negative." DisplayName="Otherwise → Negative" sap2010:WorkflowViewState.IdRef="Transition_RG2_Neg" To="{x:Reference __ReferenceID2}" Condition="[True]" />
+                        </State.Transitions>
+                      </State>
+                    </Transition.To>
+                  </Transition>
+                  <Transition sap2010:Annotation.AnnotationText="[RULE]&#xA;Catch-all [True]: CaseCategory is not in any known group → Negative.&#xA;Default-deny for unrecognised values." DisplayName="Unknown CaseCategory → Negative" sap2010:WorkflowViewState.IdRef="Transition_Route_UnknownNeg" To="{x:Reference __ReferenceID2}" Condition="[True]" />
+                </State.Transitions>
+              </State>
+            </Transition.To>
+          </Transition>
+        </State.Transitions>
+      </State>
+      <x:Reference>__ReferenceID3</x:Reference>
+      <x:Reference>__ReferenceID4</x:Reference>
+      <x:Reference>__ReferenceID5</x:Reference>
+      <x:Reference>__ReferenceID0</x:Reference>
+      <x:Reference>__ReferenceID2</x:Reference>
+      <x:Reference>__ReferenceID1</x:Reference>
     </StateMachine>
   </Sequence>
 </Activity>

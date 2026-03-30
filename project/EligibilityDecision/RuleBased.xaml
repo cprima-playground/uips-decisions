@@ -1,9 +1,13 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="RuleBased" VisualBasic.Settings="{x:Null}" sap2010:WorkflowViewState.IdRef="RuleBased_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="RuleBased" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
     <x:Property Name="in_TransactionItem" Type="InArgument(ui:QueueItem)" />
     <x:Property Name="out_DecisionValue" Type="OutArgument(x:String)" />
   </x:Members>
+  <VisualBasic.Settings>
+    <x:Null />
+  </VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>RuleBased_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
       <x:String>System.Activities</x:String>
@@ -57,7 +61,7 @@
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="RuleBased" sap2010:Annotation.AnnotationText="Pattern: RuleBased&#xD;&#xA;Each business rule is evaluated into a named Boolean variable.&#xD;&#xA;A final combine step fires if any rule flag is True.&#xD;&#xA;Inputs / Output: same as IfElse.xaml.&#xD;&#xA;&#xD;&#xA;Named rule flags:&#xD;&#xA;  b_Rule_Override           — SecondaryIndicator override&#xD;&#xA;  b_Rule_RG1_Compliant      — RG1: Compliant or empty&#xD;&#xA;  b_Rule_RG1_NonCompliant   — RG1: Non_Compliant + special Attribute_A + low-impact BC&#xD;&#xA;  b_Rule_RG2_IX_Y           — RG2: Indicator_X=Y + acceptable Detail_X&#xD;&#xA;  b_Rule_RG2_IX_N_Compliant — RG2: Indicator_X=N + Compliant or empty&#xD;&#xA;  b_Rule_RG2_IX_N_NonCompliant — RG2: Indicator_X=N + Non_Compliant + attrs" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Pattern: RuleBased&#xA;Each business rule is evaluated into a named Boolean variable.&#xA;A final combine step fires if any rule flag is True.&#xA;Inputs / Output: same as IfElse.xaml.&#xA;&#xA;Named rule flags:&#xA;  b_Rule_Override           — SecondaryIndicator override&#xA;  b_Rule_RG1_Compliant      — RG1: Compliant or empty&#xA;  b_Rule_RG1_NonCompliant   — RG1: Non_Compliant + special Attribute_A + low-impact BC&#xA;  b_Rule_RG2_IX_Y           — RG2: Indicator_X=Y + acceptable Detail_X&#xA;  b_Rule_RG2_IX_N_Compliant — RG2: Indicator_X=N + Compliant or empty&#xA;  b_Rule_RG2_IX_N_NonCompliant — RG2: Indicator_X=N + Non_Compliant + attrs" DisplayName="RuleBased" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="v_CaseCategory" />
       <Variable x:TypeArguments="x:String" Name="v_ComplianceAssessment" />
@@ -80,7 +84,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:MultipleAssign DisplayName="Extract from SpecificContent" sap2010:Annotation.AnnotationText="Step 1: Extracts all typed inputs from SpecificContent into local variables." sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+    <ui:MultipleAssign sap2010:Annotation.AnnotationText="Step 1: Extracts all typed inputs from SpecificContent into local variables." DisplayName="Extract from SpecificContent" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="8">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -150,7 +154,7 @@
         </scg:List>
       </ui:MultipleAssign.AssignOperations>
     </ui:MultipleAssign>
-    <ui:MultipleAssign DisplayName="Evaluate Named Rules" sap2010:Annotation.AnnotationText="Step 2: Evaluates all six named rule flags independently.&#xD;&#xA;All rules are always evaluated — no short-circuiting between rules.&#xD;&#xA;Each flag name encodes the rule group and condition it represents.&#xD;&#xA;Useful for audit: inspect individual flags in the Locals panel during debug." sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
+    <ui:MultipleAssign sap2010:Annotation.AnnotationText="Step 2: Evaluates all six named rule flags independently.&#xA;All rules are always evaluated — no short-circuiting between rules.&#xA;Each flag name encodes the rule group and condition it represents.&#xA;Useful for audit: inspect individual flags in the Locals panel during debug." DisplayName="Evaluate Named Rules" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="6">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_R1">
@@ -204,18 +208,18 @@
         </scg:List>
       </ui:MultipleAssign.AssignOperations>
     </ui:MultipleAssign>
-    <Assign DisplayName="Combine Rules: any Positive rule fires?" sap2010:Annotation.AnnotationText="[NEEDLE]&#xD;&#xA;Combine step: any rule flag True → Positive, all False → Negative.&#xD;&#xA;Expression: If(b_Rule_Override OrElse b_Rule_RG1_Compliant OrElse&#xD;&#xA;               b_Rule_RG1_NonCompliant OrElse b_Rule_RG2_IX_Y OrElse&#xD;&#xA;               b_Rule_RG2_IX_N_Compliant OrElse b_Rule_RG2_IX_N_NonCompliant,&#xD;&#xA;               &quot;Positive&quot;, &quot;Negative&quot;)&#xD;&#xA;Pattern note: OrElse is the combinator here. Replace with AndAlso,&#xD;&#xA;majority vote, or weighted sum to change the combination logic&#xD;&#xA;without touching the rule evaluation step above.&#xD;&#xA;&#xD;&#xA;#cb39fe" sap2010:WorkflowViewState.IdRef="Assign_Combine">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
+    <Assign sap2010:Annotation.AnnotationText="[RULE]&#xA;Combine step: any rule flag True → Positive, all False → Negative.&#xA;Expression: If(b_Rule_Override OrElse b_Rule_RG1_Compliant OrElse&#xA;               b_Rule_RG1_NonCompliant OrElse b_Rule_RG2_IX_Y OrElse&#xA;               b_Rule_RG2_IX_N_Compliant OrElse b_Rule_RG2_IX_N_NonCompliant,&#xA;               &quot;Positive&quot;, &quot;Negative&quot;)&#xA;Pattern note: OrElse is the combinator here. Replace with AndAlso,&#xA;majority vote, or weighted sum to change the combination logic&#xA;without touching the rule evaluation step above." DisplayName="Combine Rules: any Positive rule fires?" sap2010:WorkflowViewState.IdRef="Assign_Combine">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
       </Assign.To>
       <Assign.Value>
         <InArgument x:TypeArguments="x:String">[If(b_Rule_Override OrElse b_Rule_RG1_Compliant OrElse b_Rule_RG1_NonCompliant OrElse b_Rule_RG2_IX_Y OrElse b_Rule_RG2_IX_N_Compliant OrElse b_Rule_RG2_IX_N_NonCompliant, "Positive", "Negative")]</InArgument>
       </Assign.Value>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
     </Assign>
   </Sequence>
 </Activity>

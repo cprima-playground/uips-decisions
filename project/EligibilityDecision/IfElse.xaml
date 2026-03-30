@@ -1,9 +1,13 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="IfElse" VisualBasic.Settings="{x:Null}" sap2010:WorkflowViewState.IdRef="IfElse_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="IfElse" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
     <x:Property Name="in_TransactionItem" Type="InArgument(ui:QueueItem)" />
     <x:Property Name="out_DecisionValue" Type="OutArgument(x:String)" />
   </x:Members>
+  <VisualBasic.Settings>
+    <x:Null />
+  </VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>IfElse_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
       <x:String>System.Activities</x:String>
@@ -57,7 +61,7 @@
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="IfElse" sap2010:Annotation.AnnotationText="Pattern: IfElse&#xD;&#xA;Each branch tests one predicate; the matched leaf assigns the output.&#xD;&#xA;Inputs  (from in_TransactionItem.SpecificContent):&#xD;&#xA;  in_CaseCategory, in_ComplianceAssessment&#xD;&#xA;  in_Attribute_A, in_Attribute_B, in_Attribute_C&#xD;&#xA;  in_Indicator_X, in_Detail_X, in_SecondaryIndicator (Boolean)&#xD;&#xA;Output: out_DecisionValue &#x2014; Positive | Negative" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Pattern: IfElse&#xA;Each branch tests one predicate; the matched leaf assigns the output.&#xA;Inputs  (from in_TransactionItem.SpecificContent):&#xA;  in_CaseCategory, in_ComplianceAssessment&#xA;  in_Attribute_A, in_Attribute_B, in_Attribute_C&#xA;  in_Indicator_X, in_Detail_X, in_SecondaryIndicator (Boolean)&#xA;Output: out_DecisionValue — Positive | Negative" DisplayName="IfElse" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="v_CaseCategory" />
       <Variable x:TypeArguments="x:String" Name="v_ComplianceAssessment" />
@@ -74,7 +78,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:MultipleAssign DisplayName="Extract from SpecificContent" sap2010:Annotation.AnnotationText="Extracts all typed inputs from SpecificContent into local variables.&#xD;&#xA;SecondaryIndicator is stored as Boolean; all others as String." sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+    <ui:MultipleAssign sap2010:Annotation.AnnotationText="Extracts all typed inputs from SpecificContent into local variables.&#xA;SecondaryIndicator is stored as Boolean; all others as String." DisplayName="Extract from SpecificContent" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="8">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -144,233 +148,209 @@
         </scg:List>
       </ui:MultipleAssign.AssignOperations>
     </ui:MultipleAssign>
-
-    <!-- SecondaryIndicator overrides everything -->
-    <If DisplayName="SecondaryIndicator = True?" sap2010:Annotation.AnnotationText="Universal override: SecondaryIndicator = True &#x2192; always Positive,&#xD;&#xA;regardless of CaseCategory or any other field.&#xD;&#xA;Evaluated first so it short-circuits both rule groups." sap2010:WorkflowViewState.IdRef="If_Secondary">
-      <If.Condition>
-        <InArgument x:TypeArguments="x:Boolean">[v_SecondaryIndicator]</InArgument>
-      </If.Condition>
+    <If sap2010:Annotation.AnnotationText="[RULE]&#xA;Universal override: SecondaryIndicator = True → always Positive,&#xA;regardless of CaseCategory or any other field.&#xA;Evaluated first so it short-circuits both rule groups." Condition="[v_SecondaryIndicator]" DisplayName="SecondaryIndicator = True?" sap2010:WorkflowViewState.IdRef="If_Secondary">
       <If.Then>
-        <Assign DisplayName="Positive" sap2010:Annotation.AnnotationText="SecondaryIndicator override fires &#x2192; Positive." sap2010:WorkflowViewState.IdRef="Assign_Secondary_Pos">
-          <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
-          <Assign.Value><InArgument x:TypeArguments="x:String">["Positive"]</InArgument></Assign.Value>
+        <Assign sap2010:Annotation.AnnotationText="SecondaryIndicator override fires → Positive." DisplayName="Positive" sap2010:WorkflowViewState.IdRef="Assign_Secondary_Pos">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">["Positive"]</InArgument>
+          </Assign.Value>
         </Assign>
       </If.Then>
       <If.Else>
-
-        <!-- Route by CaseCategory -->
-        <If DisplayName="CaseCategory = Event_A or Event_B?" sap2010:Annotation.AnnotationText="Dispatch: CaseCategory &#x2208; {Event_A, Event_B} &#x2192; Rule Group 1 branch." sap2010:WorkflowViewState.IdRef="If_RG1">
-          <If.Condition>
-            <InArgument x:TypeArguments="x:Boolean">[v_CaseCategory = "Event_A" OrElse v_CaseCategory = "Event_B"]</InArgument>
-          </If.Condition>
+        <If sap2010:Annotation.AnnotationText="Dispatch: CaseCategory ∈ {Event_A, Event_B} → Rule Group 1 branch." Condition="[v_CaseCategory = &quot;Event_A&quot; OrElse v_CaseCategory = &quot;Event_B&quot;]" DisplayName="CaseCategory = Event_A or Event_B?" sap2010:WorkflowViewState.IdRef="If_RG1">
           <If.Then>
-
-            <!-- RG1: ComplianceAssessment = Compliant or empty? -->
-            <If DisplayName="ComplianceAssessment = Compliant or empty?" sap2010:Annotation.AnnotationText="RG1 positive path: ComplianceAssessment = Compliant OR empty.&#xD;&#xA;Empty string is a sentinel meaning &quot;assessment not yet available&quot; &#x2014; treated as Positive." sap2010:WorkflowViewState.IdRef="If_RG1_CA_Pos">
-              <If.Condition>
-                <InArgument x:TypeArguments="x:Boolean">[v_ComplianceAssessment = "Compliant" OrElse String.IsNullOrEmpty(v_ComplianceAssessment)]</InArgument>
-              </If.Condition>
+            <If sap2010:Annotation.AnnotationText="[SENTINEL]&#xA;RG1 positive path: ComplianceAssessment = Compliant OR empty.&#xA;Empty string is a sentinel meaning &quot;assessment not yet available&quot; — treated as Positive." Condition="[v_ComplianceAssessment = &quot;Compliant&quot; OrElse String.IsNullOrEmpty(v_ComplianceAssessment)]" DisplayName="ComplianceAssessment = Compliant or empty?" sap2010:WorkflowViewState.IdRef="If_RG1_CA_Pos">
               <If.Then>
-                <Assign DisplayName="Positive" sap2010:Annotation.AnnotationText="RG1: Compliant or empty ComplianceAssessment &#x2192; Positive." sap2010:WorkflowViewState.IdRef="Assign_RG1_CA_Pos">
-                  <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
-                  <Assign.Value><InArgument x:TypeArguments="x:String">["Positive"]</InArgument></Assign.Value>
+                <Assign sap2010:Annotation.AnnotationText="RG1: Compliant or empty ComplianceAssessment → Positive." DisplayName="Positive" sap2010:WorkflowViewState.IdRef="Assign_RG1_CA_Pos">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">["Positive"]</InArgument>
+                  </Assign.Value>
                 </Assign>
               </If.Then>
               <If.Else>
-
-                <!-- RG1: ComplianceAssessment = Non_Compliant? -->
-                <If DisplayName="ComplianceAssessment = Non_Compliant?" sap2010:Annotation.AnnotationText="RG1: ComplianceAssessment = Non_Compliant &#x2014; enter attribute evaluation." sap2010:WorkflowViewState.IdRef="If_RG1_NonCompliant">
-                  <If.Condition>
-                    <InArgument x:TypeArguments="x:Boolean">[v_ComplianceAssessment = "Non_Compliant"]</InArgument>
-                  </If.Condition>
+                <If sap2010:Annotation.AnnotationText="RG1: ComplianceAssessment = Non_Compliant — enter attribute evaluation." Condition="[v_ComplianceAssessment = &quot;Non_Compliant&quot;]" DisplayName="ComplianceAssessment = Non_Compliant?" sap2010:WorkflowViewState.IdRef="If_RG1_NonCompliant">
                   <If.Then>
-
-                    <!-- RG1: Attribute_A in allowed set? -->
-                    <If DisplayName="Attribute_A = Verif_NA or Special_case?" sap2010:Annotation.AnnotationText="RG1 Non_Compliant: Attribute_A must be one of two special values&#xD;&#xA;that indicate mitigating circumstances:&#xD;&#xA;  Verification_not_available&#xD;&#xA;  Special_case_without_certified_component" sap2010:WorkflowViewState.IdRef="If_RG1_AttrA">
-                      <If.Condition>
-                        <InArgument x:TypeArguments="x:Boolean">[v_Attribute_A = "Verification_not_available" OrElse v_Attribute_A = "Special_case_without_certified_component"]</InArgument>
-                      </If.Condition>
+                    <If sap2010:Annotation.AnnotationText="[RULE]&#xA;RG1 Non_Compliant: Attribute_A must be one of two special values&#xA;that indicate mitigating circumstances:&#xA;  Verification_not_available&#xA;  Special_case_without_certified_component" Condition="[v_Attribute_A = &quot;Verification_not_available&quot; OrElse v_Attribute_A = &quot;Special_case_without_certified_component&quot;]" DisplayName="Attribute_A = Verif_NA or Special_case?" sap2010:WorkflowViewState.IdRef="If_RG1_AttrA">
                       <If.Then>
-
-                        <!-- RG1: Attribute_B or Attribute_C = No_or_low_impact? -->
-                        <If DisplayName="Attribute_B or Attribute_C = No_or_low_impact?" sap2010:Annotation.AnnotationText="[NEEDLE &#x2014; deepest decision point in RG1]&#xD;&#xA;RG1 Non_Compliant + special Attribute_A:&#xD;&#xA;  Positive if Attribute_B = No_or_low_impact&#xD;&#xA;           OR Attribute_C = No_or_low_impact&#xD;&#xA;Open question #1: is this OR or AND? Currently implemented as OR.&#xD;&#xA;&#xD;&#xA;#cb39fe" sap2010:WorkflowViewState.IdRef="If_RG1_AttrBC">
-                          <If.Condition>
-                            <InArgument x:TypeArguments="x:Boolean">[v_Attribute_B = "No_or_low_impact" OrElse v_Attribute_C = "No_or_low_impact"]</InArgument>
-                          </If.Condition>
+                        <If sap2010:Annotation.AnnotationText="[OPEN]&#xA;RG1 Non_Compliant + special Attribute_A:&#xA;  Positive if Attribute_B = No_or_low_impact&#xA;           OR Attribute_C = No_or_low_impact&#xA;Open question #1: is this OR or AND? Currently implemented as OR." Condition="[v_Attribute_B = &quot;No_or_low_impact&quot; OrElse v_Attribute_C = &quot;No_or_low_impact&quot;]" DisplayName="Attribute_B or Attribute_C = No_or_low_impact?" sap2010:WorkflowViewState.IdRef="If_RG1_AttrBC">
                           <If.Then>
-                            <Assign DisplayName="Positive" sap2010:Annotation.AnnotationText="RG1 Non_Compliant + special Attribute_A + low-impact Attribute_BC &#x2192; Positive." sap2010:WorkflowViewState.IdRef="Assign_RG1_AttrBC_Pos">
-                              <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
-                              <Assign.Value><InArgument x:TypeArguments="x:String">["Positive"]</InArgument></Assign.Value>
+                            <Assign sap2010:Annotation.AnnotationText="RG1 Non_Compliant + special Attribute_A + low-impact Attribute_BC → Positive." DisplayName="Positive" sap2010:WorkflowViewState.IdRef="Assign_RG1_AttrBC_Pos">
+                              <Assign.To>
+                                <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
+                              </Assign.To>
+                              <Assign.Value>
+                                <InArgument x:TypeArguments="x:String">["Positive"]</InArgument>
+                              </Assign.Value>
                             </Assign>
                           </If.Then>
                           <If.Else>
-                            <Assign DisplayName="Negative" sap2010:Annotation.AnnotationText="RG1 Non_Compliant + special Attribute_A + NO low-impact Attribute_BC &#x2192; Negative." sap2010:WorkflowViewState.IdRef="Assign_RG1_AttrBC_Neg">
-                              <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
-                              <Assign.Value><InArgument x:TypeArguments="x:String">["Negative"]</InArgument></Assign.Value>
+                            <Assign sap2010:Annotation.AnnotationText="RG1 Non_Compliant + special Attribute_A + NO low-impact Attribute_BC → Negative." DisplayName="Negative" sap2010:WorkflowViewState.IdRef="Assign_RG1_AttrBC_Neg">
+                              <Assign.To>
+                                <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
+                              </Assign.To>
+                              <Assign.Value>
+                                <InArgument x:TypeArguments="x:String">["Negative"]</InArgument>
+                              </Assign.Value>
                             </Assign>
                           </If.Else>
                         </If>
-
                       </If.Then>
                       <If.Else>
-                        <Assign DisplayName="Negative" sap2010:Annotation.AnnotationText="RG1 Non_Compliant + Attribute_A NOT in special values &#x2192; Negative." sap2010:WorkflowViewState.IdRef="Assign_RG1_AttrA_Neg">
-                          <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
-                          <Assign.Value><InArgument x:TypeArguments="x:String">["Negative"]</InArgument></Assign.Value>
+                        <Assign sap2010:Annotation.AnnotationText="RG1 Non_Compliant + Attribute_A NOT in special values → Negative." DisplayName="Negative" sap2010:WorkflowViewState.IdRef="Assign_RG1_AttrA_Neg">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:String">["Negative"]</InArgument>
+                          </Assign.Value>
                         </Assign>
                       </If.Else>
                     </If>
-
                   </If.Then>
                   <If.Else>
-                    <Assign DisplayName="Negative" sap2010:Annotation.AnnotationText="RG1: ComplianceAssessment is not Compliant, empty, or Non_Compliant&#xD;&#xA;(unexpected value) &#x2192; Negative." sap2010:WorkflowViewState.IdRef="Assign_RG1_CA_Neg">
-                      <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
-                      <Assign.Value><InArgument x:TypeArguments="x:String">["Negative"]</InArgument></Assign.Value>
+                    <Assign sap2010:Annotation.AnnotationText="RG1: ComplianceAssessment is not Compliant, empty, or Non_Compliant&#xA;(unexpected value) → Negative." DisplayName="Negative" sap2010:WorkflowViewState.IdRef="Assign_RG1_CA_Neg">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">["Negative"]</InArgument>
+                      </Assign.Value>
                     </Assign>
                   </If.Else>
                 </If>
-
               </If.Else>
             </If>
-
           </If.Then>
           <If.Else>
-
-            <!-- Route: Event_C or Event_D? -->
-            <If DisplayName="CaseCategory = Event_C or Event_D?" sap2010:Annotation.AnnotationText="Dispatch: CaseCategory &#x2208; {Event_C, Event_D} &#x2192; Rule Group 2 branch." sap2010:WorkflowViewState.IdRef="If_RG2">
-              <If.Condition>
-                <InArgument x:TypeArguments="x:Boolean">[v_CaseCategory = "Event_C" OrElse v_CaseCategory = "Event_D"]</InArgument>
-              </If.Condition>
+            <If sap2010:Annotation.AnnotationText="Dispatch: CaseCategory ∈ {Event_C, Event_D} → Rule Group 2 branch." Condition="[v_CaseCategory = &quot;Event_C&quot; OrElse v_CaseCategory = &quot;Event_D&quot;]" DisplayName="CaseCategory = Event_C or Event_D?" sap2010:WorkflowViewState.IdRef="If_RG2">
               <If.Then>
-
-                <!-- RG2: Indicator_X = Y? -->
-                <If DisplayName="Indicator_X = Y?" sap2010:Annotation.AnnotationText="RG2: Indicator_X = Y &#x2192; evaluate Detail_X." sap2010:WorkflowViewState.IdRef="If_RG2_IX_Y">
-                  <If.Condition>
-                    <InArgument x:TypeArguments="x:Boolean">[v_Indicator_X = "Y"]</InArgument>
-                  </If.Condition>
+                <If sap2010:Annotation.AnnotationText="RG2: Indicator_X = Y → evaluate Detail_X." Condition="[v_Indicator_X = &quot;Y&quot;]" DisplayName="Indicator_X = Y?" sap2010:WorkflowViewState.IdRef="If_RG2_IX_Y">
                   <If.Then>
-
-                    <!-- RG2: Detail_X = Noticeable_irregularity or empty? -->
-                    <If DisplayName="Detail_X = Noticeable_irregularity or empty?" sap2010:Annotation.AnnotationText="RG2 Indicator_X=Y: Positive if Detail_X = Noticeable_irregularity OR empty.&#xD;&#xA;Empty Detail_X is a sentinel meaning &quot;irregularity present but not yet classified&quot;." sap2010:WorkflowViewState.IdRef="If_RG2_DX">
-                      <If.Condition>
-                        <InArgument x:TypeArguments="x:Boolean">[v_Detail_X = "Noticeable_irregularity" OrElse String.IsNullOrEmpty(v_Detail_X)]</InArgument>
-                      </If.Condition>
+                    <If sap2010:Annotation.AnnotationText="[SENTINEL]&#xA;RG2 Indicator_X=Y: Positive if Detail_X = Noticeable_irregularity OR empty.&#xA;Empty Detail_X is a sentinel meaning &quot;irregularity present but not yet classified&quot;." Condition="[v_Detail_X = &quot;Noticeable_irregularity&quot; OrElse String.IsNullOrEmpty(v_Detail_X)]" DisplayName="Detail_X = Noticeable_irregularity or empty?" sap2010:WorkflowViewState.IdRef="If_RG2_DX">
                       <If.Then>
-                        <Assign DisplayName="Positive" sap2010:Annotation.AnnotationText="RG2 Indicator_X=Y + acceptable Detail_X &#x2192; Positive." sap2010:WorkflowViewState.IdRef="Assign_RG2_DX_Pos">
-                          <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
-                          <Assign.Value><InArgument x:TypeArguments="x:String">["Positive"]</InArgument></Assign.Value>
+                        <Assign sap2010:Annotation.AnnotationText="RG2 Indicator_X=Y + acceptable Detail_X → Positive." DisplayName="Positive" sap2010:WorkflowViewState.IdRef="Assign_RG2_DX_Pos">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:String">["Positive"]</InArgument>
+                          </Assign.Value>
                         </Assign>
                       </If.Then>
                       <If.Else>
-                        <Assign DisplayName="Negative" sap2010:Annotation.AnnotationText="RG2 Indicator_X=Y + unrecognised Detail_X &#x2192; Negative." sap2010:WorkflowViewState.IdRef="Assign_RG2_DX_Neg">
-                          <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
-                          <Assign.Value><InArgument x:TypeArguments="x:String">["Negative"]</InArgument></Assign.Value>
+                        <Assign sap2010:Annotation.AnnotationText="RG2 Indicator_X=Y + unrecognised Detail_X → Negative." DisplayName="Negative" sap2010:WorkflowViewState.IdRef="Assign_RG2_DX_Neg">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:String">["Negative"]</InArgument>
+                          </Assign.Value>
                         </Assign>
                       </If.Else>
                     </If>
-
                   </If.Then>
                   <If.Else>
-
-                    <!-- RG2: Indicator_X = N? -->
-                    <If DisplayName="Indicator_X = N?" sap2010:Annotation.AnnotationText="RG2: Indicator_X = N &#x2192; apply same compliance logic as Rule Group 1." sap2010:WorkflowViewState.IdRef="If_RG2_IX_N">
-                      <If.Condition>
-                        <InArgument x:TypeArguments="x:Boolean">[v_Indicator_X = "N"]</InArgument>
-                      </If.Condition>
+                    <If sap2010:Annotation.AnnotationText="RG2: Indicator_X = N → apply same compliance logic as Rule Group 1." Condition="[v_Indicator_X = &quot;N&quot;]" DisplayName="Indicator_X = N?" sap2010:WorkflowViewState.IdRef="If_RG2_IX_N">
                       <If.Then>
-
-                        <!-- RG2/N: ComplianceAssessment = Compliant or empty? -->
-                        <If DisplayName="ComplianceAssessment = Compliant or empty?" sap2010:Annotation.AnnotationText="RG2 Indicator_X=N: ComplianceAssessment = Compliant or empty &#x2192; Positive." sap2010:WorkflowViewState.IdRef="If_RG2_CA_Pos">
-                          <If.Condition>
-                            <InArgument x:TypeArguments="x:Boolean">[v_ComplianceAssessment = "Compliant" OrElse String.IsNullOrEmpty(v_ComplianceAssessment)]</InArgument>
-                          </If.Condition>
+                        <If sap2010:Annotation.AnnotationText="RG2 Indicator_X=N: ComplianceAssessment = Compliant or empty → Positive." Condition="[v_ComplianceAssessment = &quot;Compliant&quot; OrElse String.IsNullOrEmpty(v_ComplianceAssessment)]" DisplayName="ComplianceAssessment = Compliant or empty?" sap2010:WorkflowViewState.IdRef="If_RG2_CA_Pos">
                           <If.Then>
-                            <Assign DisplayName="Positive" sap2010:Annotation.AnnotationText="RG2 Indicator_X=N + Compliant or empty &#x2192; Positive." sap2010:WorkflowViewState.IdRef="Assign_RG2_CA_Pos">
-                              <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
-                              <Assign.Value><InArgument x:TypeArguments="x:String">["Positive"]</InArgument></Assign.Value>
+                            <Assign sap2010:Annotation.AnnotationText="RG2 Indicator_X=N + Compliant or empty → Positive." DisplayName="Positive" sap2010:WorkflowViewState.IdRef="Assign_RG2_CA_Pos">
+                              <Assign.To>
+                                <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
+                              </Assign.To>
+                              <Assign.Value>
+                                <InArgument x:TypeArguments="x:String">["Positive"]</InArgument>
+                              </Assign.Value>
                             </Assign>
                           </If.Then>
                           <If.Else>
-
-                            <!-- RG2/N: ComplianceAssessment = Non_Compliant? -->
-                            <If DisplayName="ComplianceAssessment = Non_Compliant?" sap2010:Annotation.AnnotationText="RG2 Indicator_X=N: Non_Compliant &#x2014; enter attribute evaluation (mirrors RG1)." sap2010:WorkflowViewState.IdRef="If_RG2_NonCompliant">
-                              <If.Condition>
-                                <InArgument x:TypeArguments="x:Boolean">[v_ComplianceAssessment = "Non_Compliant"]</InArgument>
-                              </If.Condition>
+                            <If sap2010:Annotation.AnnotationText="RG2 Indicator_X=N: Non_Compliant — enter attribute evaluation (mirrors RG1)." Condition="[v_ComplianceAssessment = &quot;Non_Compliant&quot;]" DisplayName="ComplianceAssessment = Non_Compliant?" sap2010:WorkflowViewState.IdRef="If_RG2_NonCompliant">
                               <If.Then>
-
-                                <!-- RG2/N: Attribute_A in allowed set? -->
-                                <If DisplayName="Attribute_A = Verif_NA or Special_case?" sap2010:Annotation.AnnotationText="RG2 Non_Compliant: Attribute_A must be one of the two special values&#xD;&#xA;(same condition as RG1)." sap2010:WorkflowViewState.IdRef="If_RG2_AttrA">
-                                  <If.Condition>
-                                    <InArgument x:TypeArguments="x:Boolean">[v_Attribute_A = "Verification_not_available" OrElse v_Attribute_A = "Special_case_without_certified_component"]</InArgument>
-                                  </If.Condition>
+                                <If sap2010:Annotation.AnnotationText="[RULE]&#xA;RG2 Non_Compliant: Attribute_A must be one of the two special values&#xA;(same condition as RG1)." Condition="[v_Attribute_A = &quot;Verification_not_available&quot; OrElse v_Attribute_A = &quot;Special_case_without_certified_component&quot;]" DisplayName="Attribute_A = Verif_NA or Special_case?" sap2010:WorkflowViewState.IdRef="If_RG2_AttrA">
                                   <If.Then>
-
-                                    <!-- RG2/N: Attribute_B or Attribute_C = No_or_low_impact? -->
-                                    <If DisplayName="Attribute_B or Attribute_C = No_or_low_impact?" sap2010:Annotation.AnnotationText="RG2 Non_Compliant + special Attribute_A:&#xD;&#xA;  Positive if Attribute_B = No_or_low_impact OR Attribute_C = No_or_low_impact.&#xD;&#xA;Open question #1: OR or AND? Currently implemented as OR." sap2010:WorkflowViewState.IdRef="If_RG2_AttrBC">
-                                      <If.Condition>
-                                        <InArgument x:TypeArguments="x:Boolean">[v_Attribute_B = "No_or_low_impact" OrElse v_Attribute_C = "No_or_low_impact"]</InArgument>
-                                      </If.Condition>
+                                    <If sap2010:Annotation.AnnotationText="[OPEN]&#xA;RG2 Non_Compliant + special Attribute_A:&#xA;  Positive if Attribute_B = No_or_low_impact OR Attribute_C = No_or_low_impact.&#xA;Open question #1: OR or AND? Currently implemented as OR." Condition="[v_Attribute_B = &quot;No_or_low_impact&quot; OrElse v_Attribute_C = &quot;No_or_low_impact&quot;]" DisplayName="Attribute_B or Attribute_C = No_or_low_impact?" sap2010:WorkflowViewState.IdRef="If_RG2_AttrBC">
                                       <If.Then>
-                                        <Assign DisplayName="Positive" sap2010:Annotation.AnnotationText="RG2 Non_Compliant + special Attribute_A + low-impact Attribute_BC &#x2192; Positive." sap2010:WorkflowViewState.IdRef="Assign_RG2_AttrBC_Pos">
-                                          <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
-                                          <Assign.Value><InArgument x:TypeArguments="x:String">["Positive"]</InArgument></Assign.Value>
+                                        <Assign sap2010:Annotation.AnnotationText="RG2 Non_Compliant + special Attribute_A + low-impact Attribute_BC → Positive." DisplayName="Positive" sap2010:WorkflowViewState.IdRef="Assign_RG2_AttrBC_Pos">
+                                          <Assign.To>
+                                            <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
+                                          </Assign.To>
+                                          <Assign.Value>
+                                            <InArgument x:TypeArguments="x:String">["Positive"]</InArgument>
+                                          </Assign.Value>
                                         </Assign>
                                       </If.Then>
                                       <If.Else>
-                                        <Assign DisplayName="Negative" sap2010:Annotation.AnnotationText="RG2 Non_Compliant + special Attribute_A + NO low-impact Attribute_BC &#x2192; Negative." sap2010:WorkflowViewState.IdRef="Assign_RG2_AttrBC_Neg">
-                                          <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
-                                          <Assign.Value><InArgument x:TypeArguments="x:String">["Negative"]</InArgument></Assign.Value>
+                                        <Assign sap2010:Annotation.AnnotationText="RG2 Non_Compliant + special Attribute_A + NO low-impact Attribute_BC → Negative." DisplayName="Negative" sap2010:WorkflowViewState.IdRef="Assign_RG2_AttrBC_Neg">
+                                          <Assign.To>
+                                            <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
+                                          </Assign.To>
+                                          <Assign.Value>
+                                            <InArgument x:TypeArguments="x:String">["Negative"]</InArgument>
+                                          </Assign.Value>
                                         </Assign>
                                       </If.Else>
                                     </If>
-
                                   </If.Then>
                                   <If.Else>
-                                    <Assign DisplayName="Negative" sap2010:Annotation.AnnotationText="RG2 Non_Compliant + Attribute_A NOT in special values &#x2192; Negative." sap2010:WorkflowViewState.IdRef="Assign_RG2_AttrA_Neg">
-                                      <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
-                                      <Assign.Value><InArgument x:TypeArguments="x:String">["Negative"]</InArgument></Assign.Value>
+                                    <Assign sap2010:Annotation.AnnotationText="RG2 Non_Compliant + Attribute_A NOT in special values → Negative." DisplayName="Negative" sap2010:WorkflowViewState.IdRef="Assign_RG2_AttrA_Neg">
+                                      <Assign.To>
+                                        <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
+                                      </Assign.To>
+                                      <Assign.Value>
+                                        <InArgument x:TypeArguments="x:String">["Negative"]</InArgument>
+                                      </Assign.Value>
                                     </Assign>
                                   </If.Else>
                                 </If>
-
                               </If.Then>
                               <If.Else>
-                                <Assign DisplayName="Negative" sap2010:Annotation.AnnotationText="RG2 Indicator_X=N + unexpected ComplianceAssessment value &#x2192; Negative." sap2010:WorkflowViewState.IdRef="Assign_RG2_CA_Neg">
-                                  <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
-                                  <Assign.Value><InArgument x:TypeArguments="x:String">["Negative"]</InArgument></Assign.Value>
+                                <Assign sap2010:Annotation.AnnotationText="RG2 Indicator_X=N + unexpected ComplianceAssessment value → Negative." DisplayName="Negative" sap2010:WorkflowViewState.IdRef="Assign_RG2_CA_Neg">
+                                  <Assign.To>
+                                    <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
+                                  </Assign.To>
+                                  <Assign.Value>
+                                    <InArgument x:TypeArguments="x:String">["Negative"]</InArgument>
+                                  </Assign.Value>
                                 </Assign>
                               </If.Else>
                             </If>
-
                           </If.Else>
                         </If>
-
                       </If.Then>
                       <If.Else>
-                        <Assign DisplayName="Negative" sap2010:Annotation.AnnotationText="RG2: Indicator_X is neither Y nor N (unexpected value) &#x2192; Negative." sap2010:WorkflowViewState.IdRef="Assign_RG2_IX_Neg">
-                          <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
-                          <Assign.Value><InArgument x:TypeArguments="x:String">["Negative"]</InArgument></Assign.Value>
+                        <Assign sap2010:Annotation.AnnotationText="RG2: Indicator_X is neither Y nor N (unexpected value) → Negative." DisplayName="Negative" sap2010:WorkflowViewState.IdRef="Assign_RG2_IX_Neg">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:String">["Negative"]</InArgument>
+                          </Assign.Value>
                         </Assign>
                       </If.Else>
                     </If>
-
                   </If.Else>
                 </If>
-
               </If.Then>
               <If.Else>
-                <Assign DisplayName="Negative" sap2010:Annotation.AnnotationText="CaseCategory is not Event_A, B, C, or D (unexpected value) &#x2192; Negative.&#xD;&#xA;Default-deny: unrecognised categories do not produce Positive." sap2010:WorkflowViewState.IdRef="Assign_UnknownCategory">
-                  <Assign.To><OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument></Assign.To>
-                  <Assign.Value><InArgument x:TypeArguments="x:String">["Negative"]</InArgument></Assign.Value>
+                <Assign sap2010:Annotation.AnnotationText="[RULE]&#xA;CaseCategory is not Event_A, B, C, or D (unexpected value) → Negative.&#xA;Default-deny: unrecognised categories do not produce Positive." DisplayName="Negative" sap2010:WorkflowViewState.IdRef="Assign_UnknownCategory">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">["Negative"]</InArgument>
+                  </Assign.Value>
                 </Assign>
               </If.Else>
             </If>
-
           </If.Else>
         </If>
-
       </If.Else>
     </If>
-
   </Sequence>
 </Activity>

@@ -64,7 +64,7 @@
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-    <If DisplayName="Channel_A if all conditions met else Channel_B" sap2010:Annotation.AnnotationText="[NEEDLE]&#xD;&#xA;Rule: all three conditions must be True for Channel_A.&#xD;&#xA;Any single False → Channel_B.&#xD;&#xA;Short-circuits on first False (AndAlso).&#xD;&#xA;&#xD;&#xA;#cb39fe" sap2010:WorkflowViewState.IdRef="If_1">
+    <If DisplayName="Channel_A if all conditions met else Channel_B" sap2010:Annotation.AnnotationText="[RULE]&#xD;&#xA;Rule: all three conditions must be True for Channel_A.&#xD;&#xA;Any single False → Channel_B.&#xD;&#xA;Short-circuits on first False (AndAlso)." sap2010:WorkflowViewState.IdRef="If_1">
       <If.Condition>
         <InArgument x:TypeArguments="x:Boolean">[in_HasRegistryId AndAlso in_RegistryParticipantExists AndAlso in_DocumentTypesAccepted]</InArgument>
       </If.Condition>

@@ -61,7 +61,7 @@
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Pattern: Pipeline&#xD;&#xA;Sub-decisions execute in order; each result is a local variable&#xD;&#xA;threaded into the next step that needs it.&#xD;&#xA;&#xD;&#xA;Inputs  (from in_TransactionItem.SpecificContent):&#xD;&#xA;  in_HasRegistryId, in_RegistryParticipantExists, in_DocumentTypesAccepted&#xD;&#xA;  in_RegistryId, in_VatId&#xD;&#xA;  in_CustomerExists, in_IsSegmentP&#xD;&#xA;  in_HasCustomerErrors, in_HasInternalErrors&#xD;&#xA;&#xD;&#xA;Output: out_RoutingDecision&#xD;&#xA;  HAPPY_PATH | ROUTE_TO_CUSTOMER | ROUTE_TO_INTERNAL | OPEN&#xD;&#xA;&#xD;&#xA;Open question #1: precedence when both error types present &#x2192; OPEN sentinel" DisplayName="Pipeline" sap:VirtualizedContainerService.HintSize="514.8000000000001,1919.2" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Pattern: Pipeline&#xA;Sub-decisions execute in order; each result is a local variable&#xA;threaded into the next step that needs it.&#xA;&#xA;Inputs  (from in_TransactionItem.SpecificContent):&#xA;  in_HasRegistryId, in_RegistryParticipantExists, in_DocumentTypesAccepted&#xA;  in_RegistryId, in_VatId&#xA;  in_CustomerExists, in_IsSegmentP&#xA;  in_HasCustomerErrors, in_HasInternalErrors&#xA;&#xA;Output: out_RoutingDecision&#xA;  HAPPY_PATH | ROUTE_TO_CUSTOMER | ROUTE_TO_INTERNAL | OPEN&#xA;&#xA;Open question #1: precedence when both error types present → OPEN sentinel" DisplayName="Pipeline" sap:VirtualizedContainerService.HintSize="478.6666666666667,1936.6666666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:Boolean" Name="v_HasRegistryId" />
       <Variable x:TypeArguments="x:Boolean" Name="v_RegistryParticipantExists" />
@@ -86,7 +86,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:MultipleAssign DisplayName="Extract from SpecificContent" sap:VirtualizedContainerService.HintSize="478.4,399.2" sap2010:Annotation.AnnotationText="Extracts all typed inputs from SpecificContent into local variables.&#xD;&#xA;CBool() / CStr() cast Object → Boolean / String.&#xD;&#xA;All subsequent steps use local variables, not SpecificContent directly." sap2010:WorkflowViewState.IdRef="MultipleAssign_Extract">
+    <ui:MultipleAssign sap2010:Annotation.AnnotationText="Extracts all typed inputs from SpecificContent into local variables.&#xA;CBool() / CStr() cast Object → Boolean / String.&#xA;All subsequent steps use local variables, not SpecificContent directly." DisplayName="Extract from SpecificContent" sap:VirtualizedContainerService.HintSize="478.4,399.2" sap2010:WorkflowViewState.IdRef="MultipleAssign_Extract">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="16">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AO_HasRegistryId">
@@ -164,7 +164,7 @@
         </scg:List>
       </ui:MultipleAssign.AssignOperations>
     </ui:MultipleAssign>
-    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Step 1 — DetermineChannel" sap:VirtualizedContainerService.HintSize="478.4,206.4" sap2010:Annotation.AnnotationText="Rule: HasRegistryId AND RegistryParticipantExists AND DocumentTypesAccepted&#xD;&#xA;      → Channel_A&#xD;&#xA;      otherwise → Channel_B&#xD;&#xA;Result stored in v_Channel (not consumed by DetermineRouting)." sap2010:WorkflowViewState.IdRef="IWF_DetermineChannel" UnSafe="False" WorkflowFileName="RoutingPipeline\DetermineChannel.xaml">
+    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="[RULE]&#xA;Rule: HasRegistryId AND RegistryParticipantExists AND DocumentTypesAccepted&#xA;      → Channel_A&#xA;      otherwise → Channel_B&#xA;Result stored in v_Channel (not consumed by DetermineRouting)." DisplayName="Step 1 — DetermineChannel" sap:VirtualizedContainerService.HintSize="478.4,206.4" sap2010:WorkflowViewState.IdRef="IWF_DetermineChannel" UnSafe="False" WorkflowFileName="RoutingPipeline\DetermineChannel.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="x:Boolean" x:Key="in_HasRegistryId">[v_HasRegistryId]</InArgument>
         <InArgument x:TypeArguments="x:Boolean" x:Key="in_RegistryParticipantExists">[v_RegistryParticipantExists]</InArgument>
@@ -172,31 +172,31 @@
         <OutArgument x:TypeArguments="x:String" x:Key="out_Channel">[v_Channel]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Step 2 — IsPublicSectorRelevant" sap:VirtualizedContainerService.HintSize="478.4,206.4" sap2010:Annotation.AnnotationText="Rule: RegistryId starts with &quot;PS-&quot; → IsPublicSector = True&#xD;&#xA;Result stored in v_IsPublicSector (contextual, not consumed by DetermineRouting)." sap2010:WorkflowViewState.IdRef="IWF_IsPublicSector" UnSafe="False" WorkflowFileName="RoutingPipeline\IsPublicSectorRelevant.xaml">
+    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="[RULE]&#xA;Rule: RegistryId starts with &quot;PS-&quot; → IsPublicSector = True&#xA;Result stored in v_IsPublicSector (contextual, not consumed by DetermineRouting)." DisplayName="Step 2 — IsPublicSectorRelevant" sap:VirtualizedContainerService.HintSize="478.4,206.4" sap2010:WorkflowViewState.IdRef="IWF_IsPublicSector" UnSafe="False" WorkflowFileName="RoutingPipeline\IsPublicSectorRelevant.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="x:String" x:Key="in_RegistryId">[v_RegistryId]</InArgument>
         <OutArgument x:TypeArguments="x:Boolean" x:Key="out_IsPublicSector">[v_IsPublicSector]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Step 3 — DetermineVatClassification" sap:VirtualizedContainerService.HintSize="478.4,206.4" sap2010:Annotation.AnnotationText="Rule: VatId starts with &quot;DOM-&quot; → NATIONAL, otherwise INTERNATIONAL&#xD;&#xA;Result stored in v_VatClassification (contextual, not consumed by DetermineRouting)." sap2010:WorkflowViewState.IdRef="IWF_DetermineVat" UnSafe="False" WorkflowFileName="RoutingPipeline\DetermineVatClassification.xaml">
+    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="[RULE]&#xA;Rule: VatId starts with &quot;DOM-&quot; → NATIONAL, otherwise INTERNATIONAL&#xA;Result stored in v_VatClassification (contextual, not consumed by DetermineRouting)." DisplayName="Step 3 — DetermineVatClassification" sap:VirtualizedContainerService.HintSize="478.4,206.4" sap2010:WorkflowViewState.IdRef="IWF_DetermineVat" UnSafe="False" WorkflowFileName="RoutingPipeline\DetermineVatClassification.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="x:String" x:Key="in_VatId">[v_VatId]</InArgument>
         <OutArgument x:TypeArguments="x:String" x:Key="out_VatClassification">[v_VatClassification]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Step 4 — DetermineCustomerStatus" sap:VirtualizedContainerService.HintSize="478.4,206.4" sap2010:Annotation.AnnotationText="Rule: CustomerExists = True → EXISTING, otherwise NEW&#xD;&#xA;Result stored in v_CustomerStatus (contextual, not consumed by DetermineRouting)." sap2010:WorkflowViewState.IdRef="IWF_DetermineCustomer" UnSafe="False" WorkflowFileName="RoutingPipeline\DetermineCustomerStatus.xaml">
+    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="[RULE]&#xA;Rule: CustomerExists = True → EXISTING, otherwise NEW&#xA;Result stored in v_CustomerStatus (contextual, not consumed by DetermineRouting)." DisplayName="Step 4 — DetermineCustomerStatus" sap:VirtualizedContainerService.HintSize="478.4,206.4" sap2010:WorkflowViewState.IdRef="IWF_DetermineCustomer" UnSafe="False" WorkflowFileName="RoutingPipeline\DetermineCustomerStatus.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="x:Boolean" x:Key="in_CustomerExists">[v_CustomerExists]</InArgument>
         <OutArgument x:TypeArguments="x:String" x:Key="out_CustomerStatus">[v_CustomerStatus]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Step 5 — IsSegment_P_Customer" sap:VirtualizedContainerService.HintSize="478.4,206.4" sap2010:Annotation.AnnotationText="Rule: IsSegmentP = True → fire-and-continue notification + return True&#xD;&#xA;Side effect: LogMessage fires when True; execution continues regardless.&#xD;&#xA;Result stored in v_IsSegmentP_out (not consumed by DetermineRouting)." sap2010:WorkflowViewState.IdRef="IWF_IsSegmentP" UnSafe="False" WorkflowFileName="RoutingPipeline\IsSegment_P_Customer.xaml">
+    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="[RULE]&#xA;Rule: IsSegmentP = True → fire-and-continue notification + return True&#xA;Side effect: LogMessage fires when True; execution continues regardless.&#xA;Result stored in v_IsSegmentP_out (not consumed by DetermineRouting)." DisplayName="Step 5 — IsSegment_P_Customer" sap:VirtualizedContainerService.HintSize="478.4,206.4" sap2010:WorkflowViewState.IdRef="IWF_IsSegmentP" UnSafe="False" WorkflowFileName="RoutingPipeline\IsSegment_P_Customer.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="x:Boolean" x:Key="in_IsSegmentP">[v_IsSegmentP]</InArgument>
         <OutArgument x:TypeArguments="x:Boolean" x:Key="out_IsSegmentP">[v_IsSegmentP_out]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Step 6 — AggregateErrors" sap:VirtualizedContainerService.HintSize="478.4,206.4" sap2010:Annotation.AnnotationText="Classifies errors into two buckets: customer-attributable vs internal.&#xD;&#xA;In this implementation: direct passthrough of in_HasCustomerErrors / in_HasInternalErrors.&#xD;&#xA;Extension point: replace with real aggregation logic without changing Pipeline.xaml." sap2010:WorkflowViewState.IdRef="IWF_AggregateErrors" UnSafe="False" WorkflowFileName="RoutingPipeline\AggregateErrors.xaml">
+    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Classifies errors into two buckets: customer-attributable vs internal.&#xA;In this implementation: direct passthrough of in_HasCustomerErrors / in_HasInternalErrors.&#xA;Extension point: replace with real aggregation logic without changing Pipeline.xaml." DisplayName="Step 6 — AggregateErrors" sap:VirtualizedContainerService.HintSize="478.4,206.4" sap2010:WorkflowViewState.IdRef="IWF_AggregateErrors" UnSafe="False" WorkflowFileName="RoutingPipeline\AggregateErrors.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="x:Boolean" x:Key="in_HasCustomerErrors">[v_HasCustomerErrors]</InArgument>
         <InArgument x:TypeArguments="x:Boolean" x:Key="in_HasInternalErrors">[v_HasInternalErrors]</InArgument>
@@ -204,17 +204,17 @@
         <OutArgument x:TypeArguments="x:Boolean" x:Key="out_InternalErrors">[v_InternalErrors]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Step 7 — DetermineRouting" sap:VirtualizedContainerService.HintSize="478.4,197.6" sap2010:Annotation.AnnotationText="[NEEDLE — consequential decision]&#xD;&#xA;Rule:&#xD;&#xA;  no errors              → HAPPY_PATH&#xD;&#xA;  customer errors only   → ROUTE_TO_CUSTOMER&#xD;&#xA;  internal errors only   → ROUTE_TO_INTERNAL&#xD;&#xA;  both errors            → OPEN  (open question #1 — precedence unresolved)&#xD;&#xA;&#xD;&#xA;Pattern: BitmaskLookup&#xD;&#xA;  CustomerErrors × 1 + InternalErrors × 2 → integer index 0–3&#xD;&#xA;  Each index maps to exactly one routing outcome.&#xD;&#xA;&#xD;&#xA;#cb39fe" sap2010:WorkflowViewState.IdRef="IWF_DetermineRouting" UnSafe="False" WorkflowFileName="RoutingPipeline\DetermineRouting.xaml">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
+    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="[RULE]&#xA;Rule:&#xA;  no errors              → HAPPY_PATH&#xA;  customer errors only   → ROUTE_TO_CUSTOMER&#xA;  internal errors only   → ROUTE_TO_INTERNAL&#xA;  both errors            → OPEN  (open question #1 — precedence unresolved)&#xA;&#xA;Pattern: BitmaskLookup&#xA;  CustomerErrors × 1 + InternalErrors × 2 → integer index 0–3&#xA;  Each index maps to exactly one routing outcome." DisplayName="Step 7 — DetermineRouting" sap:VirtualizedContainerService.HintSize="478.4,197.6" sap2010:WorkflowViewState.IdRef="IWF_DetermineRouting" UnSafe="False" WorkflowFileName="RoutingPipeline\DetermineRouting.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="x:Boolean" x:Key="in_CustomerErrors">[v_CustomerErrors]</InArgument>
         <InArgument x:TypeArguments="x:Boolean" x:Key="in_InternalErrors">[v_InternalErrors]</InArgument>
         <OutArgument x:TypeArguments="x:String" x:Key="out_RoutingDecision">[out_RoutingDecision]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
     </ui:InvokeWorkflowFile>
   </Sequence>
 </Activity>

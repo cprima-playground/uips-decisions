@@ -1,9 +1,13 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="DecisionTable" VisualBasic.Settings="{x:Null}" sap2010:WorkflowViewState.IdRef="DecisionTable_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="DecisionTable" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
     <x:Property Name="in_TransactionItem" Type="InArgument(ui:QueueItem)" />
     <x:Property Name="out_DecisionValue" Type="OutArgument(x:String)" />
   </x:Members>
+  <VisualBasic.Settings>
+    <x:Null />
+  </VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>DecisionTable_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
       <x:String>System.Activities</x:String>
@@ -57,7 +61,7 @@
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="DecisionTable" sap2010:Annotation.AnnotationText="Pattern: DecisionTable&#xD;&#xA;Rules encoded as rows in an inline List(Of String()) with wildcard &quot;*&quot; cells.&#xD;&#xA;LINQ .Any() scans rows top-to-bottom; first match wins → Positive.&#xD;&#xA;No match → Negative.&#xD;&#xA;Inputs / Output: same as IfElse.xaml.&#xD;&#xA;&#xD;&#xA;Column index mapping:&#xD;&#xA;  [0] SecondaryIndicator  (&quot;True&quot; / &quot;*&quot;)&#xD;&#xA;  [1] CaseGroup           (&quot;RG1&quot; / &quot;RG2&quot; / &quot;*&quot;)&#xD;&#xA;  [2] ComplianceAssessment&#xD;&#xA;  [3] Attribute_A&#xD;&#xA;  [4] Attribute_BC        (&quot;Yes&quot; = Attribute_B OR Attribute_C = No_or_low_impact)&#xD;&#xA;  [5] Indicator_X&#xD;&#xA;  [6] Detail_X" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Pattern: DecisionTable&#xA;Rules encoded as rows in an inline List(Of String()) with wildcard &quot;*&quot; cells.&#xA;LINQ .Any() scans rows top-to-bottom; first match wins → Positive.&#xA;No match → Negative.&#xA;Inputs / Output: same as IfElse.xaml.&#xA;&#xA;Column index mapping:&#xA;  [0] SecondaryIndicator  (&quot;True&quot; / &quot;*&quot;)&#xA;  [1] CaseGroup           (&quot;RG1&quot; / &quot;RG2&quot; / &quot;*&quot;)&#xA;  [2] ComplianceAssessment&#xA;  [3] Attribute_A&#xA;  [4] Attribute_BC        (&quot;Yes&quot; = Attribute_B OR Attribute_C = No_or_low_impact)&#xA;  [5] Indicator_X&#xA;  [6] Detail_X" DisplayName="DecisionTable" sap:VirtualizedContainerService.HintSize="575,979.6566666666666" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="v_CaseCategory" />
       <Variable x:TypeArguments="x:String" Name="v_ComplianceAssessment" />
@@ -75,7 +79,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:MultipleAssign DisplayName="Extract from SpecificContent" sap2010:Annotation.AnnotationText="Extracts all typed inputs from SpecificContent into local variables." sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+    <ui:MultipleAssign sap2010:Annotation.AnnotationText="Extracts all typed inputs from SpecificContent into local variables." DisplayName="Extract from SpecificContent" sap:VirtualizedContainerService.HintSize="478,366" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
       <ui:MultipleAssign.AssignOperations>
         <scg:List x:TypeArguments="ui:AssignOperation" Capacity="8">
           <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -145,9 +149,7 @@
         </scg:List>
       </ui:MultipleAssign.AssignOperations>
     </ui:MultipleAssign>
-    <!-- Columns: [0]=SecondaryIndicator(True/*), [1]=CaseGroup(RG1/RG2/*), [2]=ComplianceAssessment, [3]=Attribute_A, [4]=AttributeBC(Yes/*), [5]=Indicator_X, [6]=Detail_X -->
-    <!-- "*" = wildcard. All rows represent Positive outcomes; no match = Negative. Table built and matched inline. -->
-    <Assign DisplayName="Match: first Positive rule fires?" sap2010:Annotation.AnnotationText="[NEEDLE]&#xD;&#xA;Inline table + LINQ .Any() match in one expression.&#xD;&#xA;Each row is a String array; &quot;*&quot; in a cell means &quot;don't care&quot; for that column.&#xD;&#xA;Match predicate per column:&#xD;&#xA;  r(n) = &quot;*&quot;  → always matches&#xD;&#xA;  r(n) = val  → must equal the corresponding input variable&#xD;&#xA;Column [4] (Attribute_BC): r(4)=&quot;Yes&quot; matches when&#xD;&#xA;  Attribute_B = No_or_low_impact OR Attribute_C = No_or_low_impact.&#xD;&#xA;Open question #1: OR vs AND — currently OR.&#xD;&#xA;&#xD;&#xA;Implementation note: the entire List(Of String()) must be inline&#xD;&#xA;(cannot be stored in a typed XAML variable — scg:List(x:String())&#xD;&#xA;is not valid as a XAML type argument).&#xD;&#xA;&#xD;&#xA;#cb39fe" sap2010:WorkflowViewState.IdRef="Assign_Match">
+    <Assign sap2010:Annotation.AnnotationText="[RULE]&#xA;Inline table + LINQ .Any() match in one expression.&#xA;Each row is a String array; &quot;*&quot; in a cell means &quot;don't care&quot; for that column.&#xA;Match predicate per column:&#xA;  r(n) = &quot;*&quot;  → always matches&#xA;  r(n) = val  → must equal the corresponding input variable&#xA;Column [4] (Attribute_BC): r(4)=&quot;Yes&quot; matches when&#xA;  Attribute_B = No_or_low_impact OR Attribute_C = No_or_low_impact.&#xA;Open question #1: OR vs AND — currently OR.&#xA;&#xA;Implementation note: the entire List(Of String()) must be inline&#xA;(cannot be stored in a typed XAML variable — scg:List(x:String())&#xA;is not valid as a XAML type argument)." DisplayName="Match: first Positive rule fires?" sap:VirtualizedContainerService.HintSize="478,175" sap2010:WorkflowViewState.IdRef="Assign_Match">
       <Assign.To>
         <OutArgument x:TypeArguments="x:Boolean">[v_MatchFound]</OutArgument>
       </Assign.To>
@@ -155,7 +157,7 @@
         <InArgument x:TypeArguments="x:Boolean">[New List(Of String()) From {New String() {"True","*","*","*","*","*","*"},New String() {"*","RG1","Compliant","*","*","*","*"},New String() {"*","RG1","","*","*","*","*"},New String() {"*","RG1","Non_Compliant","Verification_not_available","Yes","*","*"},New String() {"*","RG1","Non_Compliant","Special_case_without_certified_component","Yes","*","*"},New String() {"*","RG2","*","*","*","Y","Noticeable_irregularity"},New String() {"*","RG2","*","*","*","Y",""},New String() {"*","RG2","Compliant","*","*","N","*"},New String() {"*","RG2","","*","*","N","*"},New String() {"*","RG2","Non_Compliant","Verification_not_available","Yes","N","*"},New String() {"*","RG2","Non_Compliant","Special_case_without_certified_component","Yes","N","*"}}.Any(Function(r) (r(0)="*" OrElse (r(0)="True" AndAlso v_SecondaryIndicator)) AndAlso (r(1)="*" OrElse (r(1)="RG1" AndAlso (v_CaseCategory="Event_A" OrElse v_CaseCategory="Event_B")) OrElse (r(1)="RG2" AndAlso (v_CaseCategory="Event_C" OrElse v_CaseCategory="Event_D"))) AndAlso (r(2)="*" OrElse r(2)=v_ComplianceAssessment) AndAlso (r(3)="*" OrElse r(3)=v_Attribute_A) AndAlso (r(4)="*" OrElse (r(4)="Yes" AndAlso (v_Attribute_B="No_or_low_impact" OrElse v_Attribute_C="No_or_low_impact"))) AndAlso (r(5)="*" OrElse r(5)=v_Indicator_X) AndAlso (r(6)="*" OrElse r(6)=v_Detail_X))]</InArgument>
       </Assign.Value>
     </Assign>
-    <Assign DisplayName="Set DecisionValue" sap2010:Annotation.AnnotationText="Converts Boolean match result to String output:&#xD;&#xA;  True  → &quot;Positive&quot;&#xD;&#xA;  False → &quot;Negative&quot;" sap2010:WorkflowViewState.IdRef="Assign_Output">
+    <Assign sap2010:Annotation.AnnotationText="Converts Boolean match result to String output:&#xA;  True  → &quot;Positive&quot;&#xA;  False → &quot;Negative&quot;" DisplayName="Set DecisionValue" sap:VirtualizedContainerService.HintSize="478,166" sap2010:WorkflowViewState.IdRef="Assign_Output">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[out_DecisionValue]</OutArgument>
       </Assign.To>

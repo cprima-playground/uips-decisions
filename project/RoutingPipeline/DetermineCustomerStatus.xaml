@@ -62,7 +62,7 @@
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-    <Assign DisplayName="EXISTING or NEW" sap2010:Annotation.AnnotationText="[NEEDLE]&#xD;&#xA;Expression: If(in_CustomerExists, &quot;EXISTING&quot;, &quot;NEW&quot;)&#xD;&#xA;In production: in_CustomerExists would be set by an ExternalRegistry_X lookup&#xD;&#xA;upstream of this workflow. Here it is provided directly as an input.&#xD;&#xA;&#xD;&#xA;#cb39fe" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <Assign DisplayName="EXISTING or NEW" sap2010:Annotation.AnnotationText="[RULE]&#xD;&#xA;Expression: If(in_CustomerExists, &quot;EXISTING&quot;, &quot;NEW&quot;)&#xD;&#xA;In production: in_CustomerExists would be set by an ExternalRegistry_X lookup&#xD;&#xA;upstream of this workflow. Here it is provided directly as an input." sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To><OutArgument x:TypeArguments="x:String">[out_CustomerStatus]</OutArgument></Assign.To>
       <Assign.Value><InArgument x:TypeArguments="x:String">[If(in_CustomerExists, "EXISTING", "NEW")]</InArgument></Assign.Value>
     </Assign>
