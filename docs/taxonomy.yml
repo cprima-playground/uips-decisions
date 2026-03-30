@@ -1,0 +1,143 @@
+# taxonomy.yml
+# Controlled vocabulary for curriculum levels, business decision archetypes,
+# and technology-agnostic implementation patterns.
+
+version: 1
+kind: taxonomy
+
+levels:
+  - id: "101"
+    label: Foundations
+    summary: Single-step decisions with low structural overhead
+    typical_patterns:
+      - expression
+      - if_else
+      - switch_case
+      - decision_table
+    teaching_goal: Learn to locate the decisive logic and compare simple encodings
+
+  - id: "201"
+    label: Composed Decisions
+    summary: Decisions assembled from sub-decisions, rules, or tables
+    typical_patterns:
+      - decision_table
+      - rule_based
+      - pipeline
+      - switch_case
+    teaching_goal: Learn to separate business structure from control-flow noise
+
+  - id: "301"
+    label: Stateful and Governed Decisions
+    summary: Decisions where state, precedence, and change governance are first-class
+    typical_patterns:
+      - state_machine
+      - rule_based
+      - decision_table
+    teaching_goal: Learn when explicit state or stronger governance beats local simplicity
+
+business_archetypes:
+  - id: eligibility
+    label: Eligibility / Gate
+    summary: Decide whether a case may proceed
+    common_outputs: [allow, deny]
+    common_bpmn_shape: xor_gateway
+    candidate_for_repo: true
+
+  - id: routing
+    label: Routing / Triage
+    summary: Choose exactly one destination, lane, or next owner
+    common_outputs: [route_a, route_b, manual_review]
+    common_bpmn_shape: xor_gateway
+    candidate_for_repo: true
+
+  - id: approval_matrix
+    label: Approval Matrix
+    summary: Select approver or approval path from amount, risk, role, or region
+    common_outputs: [auto_approve, manager, director, committee]
+    common_bpmn_shape: xor_gateway
+    candidate_for_repo: true
+
+  - id: required_actions
+    label: Required Actions
+    summary: Determine one or more actions that must all be triggered
+    common_outputs: [notify, enrich, request_document, create_task]
+    common_bpmn_shape: inclusive_gateway
+    candidate_for_repo: true
+
+  - id: escalation
+    label: Escalation / Exception Handling
+    summary: Decide retry, manual review, reroute, or open issue when normal flow fails
+    common_outputs: [retry, route_to_customer, route_internal, open]
+    common_bpmn_shape: xor_gateway
+    candidate_for_repo: true
+
+implementation_patterns:
+  - id: expression
+    label: Expression
+    family: local_logic
+    textbook_rank: 1
+    summary: One expression computes the answer directly
+    fit_levels: ["101"]
+    status: active
+    has_pattern_doc: true
+
+  - id: if_else
+    label: If / Else
+    family: branching
+    textbook_rank: 2
+    summary: Nested branches encode the decision tree explicitly
+    fit_levels: ["101", "201"]
+    status: active
+    has_pattern_doc: true
+
+  - id: switch_case
+    label: Switch / Case
+    family: branching
+    textbook_rank: 3
+    summary: One discriminator selects exactly one branch
+    fit_levels: ["101", "201"]
+    status: planned
+    has_pattern_doc: false
+
+  - id: decision_table
+    label: Decision Table
+    family: table_driven
+    textbook_rank: 4
+    summary: Conditions and outcomes are represented as rows in data
+    fit_levels: ["101", "201", "301"]
+    status: active
+    has_pattern_doc: true
+
+  - id: state_machine
+    label: State Machine
+    family: stateful
+    textbook_rank: 5
+    summary: Explicit states and transitions encode behavior over time
+    fit_levels: ["301"]
+    status: active
+    has_pattern_doc: true
+
+  - id: rule_based
+    label: Rule-Based
+    family: compositional
+    summary: Named rules are evaluated independently and then combined
+    fit_levels: ["201", "301"]
+    status: active
+    has_pattern_doc: true
+
+  - id: pipeline
+    label: Pipeline
+    family: compositional
+    summary: Sub-decisions execute in sequence and feed a later final decision
+    fit_levels: ["201"]
+    status: active
+    has_pattern_doc: true
+
+  - id: bitmask_lookup
+    label: Bitmask Lookup
+    family: lookup
+    summary: Multiple booleans are compressed into an index for table lookup
+    fit_levels: ["201"]
+    status: active
+    has_pattern_doc: true
+    note: Useful idiom, but not a curriculum pillar on the level of the top five textbook patterns
