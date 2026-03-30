@@ -1,0 +1,45 @@
+{
+  "DisplayName": "IfElse",
+  "Tooltip": "Pattern: IfElse\nEach branch tests one predicate; the matched leaf assigns the output.\nInputs  (from in_TransactionItem.SpecificContent):\n  in_CaseCategory, in_ComplianceAssessment\n  in_Attribute_A, in_Attribute_B, in_Attribute_C\n  in_Indicator_X, in_Detail_X, in_SecondaryIndicator (Boolean)\nOutput: out_DecisionValue — Positive | Negative",
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "in_Config",
+      "DisplayName": "in_Config",
+      "Category": null,
+      "Tooltip": null,
+      "Placeholder": null,
+      "Widget": "Dictionary",
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "in_TransactionItem",
+      "DisplayName": "in_TransactionItem",
+      "Category": null,
+      "Tooltip": null,
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "out_DecisionValue",
+      "DisplayName": "out_DecisionValue",
+      "Category": null,
+      "Tooltip": null,
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

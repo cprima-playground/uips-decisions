@@ -1,0 +1,45 @@
+{
+  "DisplayName": "RuleBased",
+  "Tooltip": "Pattern: RuleBased\nEach business rule is evaluated into a named Boolean variable.\nA final combine step fires if any rule flag is True.\nInputs / Output: same as IfElse.xaml.\n\nNamed rule flags:\n  b_Rule_Override           — SecondaryIndicator override\n  b_Rule_RG1_Compliant      — RG1: Compliant or empty\n  b_Rule_RG1_NonCompliant   — RG1: Non_Compliant + special Attribute_A + low-impact BC\n  b_Rule_RG2_IX_Y           — RG2: Indicator_X=Y + acceptable Detail_X\n  b_Rule_RG2_IX_N_Compliant — RG2: Indicator_X=N + Compliant or empty\n  b_Rule_RG2_IX_N_NonCompliant — RG2: Indicator_X=N + Non_Compliant + attrs",
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "in_Config",
+      "DisplayName": "in_Config",
+      "Category": null,
+      "Tooltip": null,
+      "Placeholder": null,
+      "Widget": "Dictionary",
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "in_TransactionItem",
+      "DisplayName": "in_TransactionItem",
+      "Category": null,
+      "Tooltip": null,
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "out_DecisionValue",
+      "DisplayName": "out_DecisionValue",
+      "Category": null,
+      "Tooltip": null,
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}

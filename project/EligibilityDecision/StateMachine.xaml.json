@@ -1,0 +1,45 @@
+{
+  "DisplayName": "StateMachine",
+  "Tooltip": "Pattern: StateMachine\nWF4 StateMachine models the decision as an explicit state graph.\nVariables are declared on the outer Sequence (not inside StateMachine)\nso they are accessible across all states.\nInputs / Output: same as IfElse.xaml.\n\nState graph:\n  Extract → Route → RG1 ──→ Positive → Final\n                 → RG2 ──→ Negative → Final\n                 → Positive (SecondaryIndicator override)\n                 → Negative (unknown CaseCategory)",
+  "HelpLink": null,
+  "Color": null,
+  "OriginalIconFileName": null,
+  "Arguments": [
+    {
+      "Name": "in_Config",
+      "DisplayName": "in_Config",
+      "Category": null,
+      "Tooltip": null,
+      "Placeholder": null,
+      "Widget": "Dictionary",
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "in_TransactionItem",
+      "DisplayName": "in_TransactionItem",
+      "Category": null,
+      "Tooltip": null,
+      "Placeholder": null,
+      "Widget": null,
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    },
+    {
+      "Name": "out_DecisionValue",
+      "DisplayName": "out_DecisionValue",
+      "Category": null,
+      "Tooltip": null,
+      "Placeholder": null,
+      "Widget": "TextComposer",
+      "IsRequired": false,
+      "IsPrincipal": true,
+      "ArgumentType": 0,
+      "DataSourceItems": null
+    }
+  ]
+}
