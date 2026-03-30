@@ -15,10 +15,18 @@ Status vocabulary (DevOps phases):
   test    — implementation complete, test cases running
   done    — verified against outcome.md test matrix
 
-File naming: ScenarioId_Category.xaml
-Location:    project/Decisions/Category/
-Example:     project/Decisions/TableDriven/SystemA_TableDriven.xaml
+Repo layout:
+  project/<ScenarioName>/<Approach>.xaml
+  project/Tests/<ScenarioName>/TestCase_<ScenarioName>_<Approach>.xaml
+  project/Tests/<ScenarioName>/Workflow_<ScenarioName>_<Approach>.xaml
 -->
+
+## Scenario Metadata
+
+- **Scenario ID:** `ExampleScenario`
+- **Archetype:** `eligibility | routing | approval_matrix | required_actions | escalation`
+- **Target level:** `101 | 201 | 301`
+- **Manifest status:** `proposed | active`
 
 ## Open Questions
 
@@ -28,8 +36,27 @@ Example:     project/Decisions/TableDriven/SystemA_TableDriven.xaml
 
 ## Planned Implementations
 
-| Category | File | Status |
-|----------|------|--------|
-| Binary | project/Decisions/Binary/Template_Binary.xaml | planned |
-| Hierarchical | project/Decisions/Hierarchical/Template_Hierarchical.xaml | planned |
-| TableDriven | project/Decisions/TableDriven/Template_TableDriven.xaml | planned |
+| Approach | Workflow File | Test Wrapper | Test Case | Status |
+|----------|---------------|--------------|-----------|--------|
+| IfElse | `project/ExampleScenario/IfElse.xaml` | `project/Tests/ExampleScenario/Workflow_ExampleScenario_IfElse.xaml` | `project/Tests/ExampleScenario/TestCase_ExampleScenario_IfElse.xaml` | planned |
+| DecisionTable | `project/ExampleScenario/DecisionTable.xaml` | `project/Tests/ExampleScenario/Workflow_ExampleScenario_DecisionTable.xaml` | `project/Tests/ExampleScenario/TestCase_ExampleScenario_DecisionTable.xaml` | planned |
+| RuleBased | `project/ExampleScenario/RuleBased.xaml` | `project/Tests/ExampleScenario/Workflow_ExampleScenario_RuleBased.xaml` | `project/Tests/ExampleScenario/TestCase_ExampleScenario_RuleBased.xaml` | planned |
+
+## Candidate Patterns
+
+List the implementation patterns worth comparing for this scenario.
+Use IDs from `docs/taxonomy.yml`.
+
+- `if_else`
+- `decision_table`
+- `rule_based`
+
+## Promotion Criteria
+
+State what must be true before the scenario moves from roadmap candidate to
+active teaching scenario.
+
+- `brief.md`, `design.md`, and `outcome.md` are scenario-specific and stable
+- at least one implementation exists
+- the test matrix covers the consequential rules
+- open questions are explicit rather than buried in prose

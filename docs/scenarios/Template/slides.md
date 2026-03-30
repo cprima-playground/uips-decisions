@@ -5,31 +5,34 @@ template: slides.tmpl
 ---
 
 # Template Scenario
-## How to use this repo
+## Scenario Authoring Template
 
 ---
 
-## Each scenario has four files
+## Each scenario starts as documentation
 
 | File | DevOps phase | Purpose |
 |------|-------------|---------|
-| `brief.md` | Plan | Learning objectives, context |
-| `design.md` | Plan | Formal decision logic |
-| `outcome.md` | Plan → Test | Acceptance criteria, test matrix |
-| `roadmap.md` | Plan | Open questions, implementation status |
+| `brief.md` | Plan | Scenario entry point, context, learning objectives |
+| `design.md` | Plan | Technology-agnostic decision logic |
+| `outcome.md` | Plan -> Test | Acceptance criteria, test matrix |
+| `roadmap.md` | Plan -> Code | Open questions, candidate patterns, implementation status |
+| `slides.md` | Optional | Teaching deck for the scenario |
 
 ---
 
-## The decision pipeline
+## Authoring flow
 
 ```
 brief.md        ← start here
     ↓
-design.md       ← understand the logic
+design.md       ← formalize the decision
     ↓
-project/Decisions/   ← implement
+outcome.md      ← define expected behavior
     ↓
-outcome.md      ← verify
+roadmap.md      ← choose patterns and track open questions
+    ↓
+project/<ScenarioName>/   ← implement when stable
 ```
 
 ---
@@ -46,14 +49,13 @@ The original source is **never** stored in this repo.
 
 ---
 
-## Open questions belong in roadmap.md
+## Output shapes
 
-```
-AND Attribute_B = Low
-AND/OR Attribute_C = Low   ← ambiguous
-```
+This template is not limited to binary gates.
 
-Log it. Send the test matrix to the requestor. Wait for the answer.
+- Binary: `Allow | Deny`
+- Multi-outcome: `QUEUE_A | QUEUE_B | OPEN`
+- Multi-action: `NotifyOwner | RequestDocument | Escalate`
 
 ---
 
@@ -62,4 +64,4 @@ Log it. Send the test matrix to the requestor. Wait for the answer.
 - Design before code
 - Pseudonymize before storing
 - Test matrix surfaces ambiguities
-- Multiple implementations, one test matrix
+- One scenario can support several implementation styles

@@ -8,23 +8,36 @@ Purpose: Entry point for tutor and learner. Written BEFORE any implementation be
 Audience: Tutor writing the scenario + learner reading it for the first time.
 Tone: Direct. Tell the learner what they will do and why it matters.
 When copying: replace all example content below with scenario-specific content.
-Learning Objectives must be actionable — use verbs: implement, compare, explain, identify.
-Keep Context to one paragraph: one real-world situation where this pattern appears.
+
+This template is intentionally generic:
+- It may describe a binary gate, a multi-outcome routing decision, or a
+  multi-action determination.
+- It may fit level 101, 201, or 301.
+- It should describe the business decision first, not the implementation style.
+
+Keep this file short. It is the front door, not the full specification.
 -->
+
+## Scenario Snapshot
+
+- **Scenario ID:** `ExampleScenario`
+- **Archetype:** `eligibility | routing | approval_matrix | required_actions | escalation`
+- **Target level(s):** `101 | 201 | 301`
+- **Primary output shape:** `binary | multi_outcome | multi_action`
 
 ## Learning Objectives
 
 After completing this scenario, the learner will be able to:
 
-- Implement a named decision pattern using at least two different UiPath Studio approaches
-- Compare the readability and maintainability of each implementation
-- Identify which implementation approach fits a given volatility requirement
-- Write a UiPath test case that verifies decision output against a test matrix
+- Explain the business decision in technology-agnostic terms
+- Implement the scenario using at least two different approaches
+- Compare which approach best fits the scenario's expected rate of change
+- Read the test matrix as the executable specification of the scenario
 
 ## Target Audience
 
 UiPath developer with basic Sequence and If activity knowledge.
-No prior experience with Flowcharts or decision tables required.
+Prior exposure to the repo's 101 material is recommended for 201 and 301 scenarios.
 
 ## Prerequisites
 
@@ -34,11 +47,23 @@ No prior experience with Flowcharts or decision tables required.
 
 ## Context
 
-In process automation, a case management system must route work items based on
-a combination of category flags and assessment results. The routing logic is
-stable for months at a time but changes when regulations are updated — making
-maintainability a key concern alongside initial correctness.
+Describe one realistic automation situation where this decision appears.
+Keep it to one paragraph. Focus on the operational problem, not the chosen
+implementation pattern.
 
-This scenario presents a single binary output decision (Positive / Negative)
-driven by a hierarchy of conditions. It is a realistic representative of the
-class of compliance-gating decisions common in back-office automation.
+Typical examples:
+
+- A case is eligible or ineligible for further processing
+- A request is routed to exactly one queue or owner
+- A case requires several follow-up actions, not just one
+- An approval path depends on amount, role, geography, or risk
+- A timeout or failure triggers escalation, retry, or manual review
+
+## Why This Scenario Matters
+
+State why this scenario deserves a place in the repo:
+
+- common in business process automation
+- easy to test with a matrix
+- suitable for multiple implementation styles
+- exposes one important trade-off learners should discuss

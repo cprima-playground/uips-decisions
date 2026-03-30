@@ -1,35 +1,92 @@
 # manifest.yml
-# Tutor inventory — lightweight index. Details in docs/scenarios/*/
-# Companion files:
-#   docs/scenarios/<id>/brief.md
-#   docs/scenarios/<id>/design.md
-#   docs/scenarios/<id>/outcome.md
-#   docs/scenarios/<id>/roadmap.md
+# Short repo entrypoint / index.
+# This file answers:
+#   - what the repo teaches
+#   - where to start
+#   - which scenarios are active or planned
+# Controlled vocabulary lives in docs/taxonomy.yml.
+
+version: 1
+kind: curriculum_manifest
+
+entrypoints:
+  landing: docs/index.md
+  tutor_guide: docs/tutor_guide.md
+  conventions: docs/conventions.md
+  taxonomy: docs/taxonomy.yml
+
+curriculum:
+  - id: "101"
+    label: Foundations
+    focus: Single-step and easy-to-localize decisions
+    start_here: true
+
+  - id: "201"
+    label: Composed Decisions
+    focus: Multi-step and table/rule-oriented business decisions
+
+  - id: "301"
+    label: Stateful and Governed Decisions
+    focus: Explicit state, precedence, and higher change-management needs
 
 scenarios:
   - id: EligibilityDecision
-    decision_type:
-      - hierarchical
-      - binary
-    status: plan
+    archetype: eligibility
+    levels: ["101", "201", "301"]
+    starter_implementation: if_else
+    implementations:
+      - if_else
+      - expression
+      - decision_table
+      - rule_based
+      - state_machine
+    status: active
+    docs:
+      brief: docs/scenarios/EligibilityDecision/brief.md
+      design: docs/scenarios/EligibilityDecision/design.md
+      outcome: docs/scenarios/EligibilityDecision/outcome.md
+      roadmap: docs/scenarios/EligibilityDecision/roadmap.md
 
   - id: RoutingPipeline
-    decision_type:
+    archetype: routing
+    levels: ["201"]
+    starter_implementation: pipeline
+    implementations:
       - pipeline
-      - multi_outcome
-      - rule_based
-    status: plan
+    supporting_patterns:
+      - expression
+      - bitmask_lookup
+    status: active
+    docs:
+      brief: docs/scenarios/RoutingPipeline/brief.md
+      design: docs/scenarios/RoutingPipeline/design.md
+      outcome: docs/scenarios/RoutingPipeline/outcome.md
+      roadmap: docs/scenarios/RoutingPipeline/roadmap.md
 
-decision_categories:
-  - id: Binary
-    path: project/Decisions/Binary/
-  - id: MultiOutcome
-    path: project/Decisions/MultiOutcome/
-  - id: RuleBased
-    path: project/Decisions/RuleBased/
-  - id: TableDriven
-    path: project/Decisions/TableDriven/
-  - id: Hierarchical
-    path: project/Decisions/Hierarchical/
-  - id: StateMachine
-    path: project/Decisions/StateMachine/
+roadmap:
+  - id: ApprovalMatrix
+    archetype: approval_matrix
+    target_level: "201"
+    candidate_patterns:
+      - switch_case
+      - decision_table
+      - rule_based
+    status: proposed
+
+  - id: RequiredActionsDecision
+    archetype: required_actions
+    target_level: "201"
+    candidate_patterns:
+      - decision_table
+      - rule_based
+      - pipeline
+    status: proposed
+
+  - id: EscalationDecision
+    archetype: escalation
+    target_level: "301"
+    candidate_patterns:
+      - if_else
+      - decision_table
+      - state_machine
+    status: proposed
