@@ -1,0 +1,1227 @@
+{
+  "ProjectName": "Decisions",
+  "Conditions": [
+    {
+      "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+      "NodeId": "30",
+      "DisplayName": "Rule Group 1: Event_A or Event_B",
+      "XamlLine": 159,
+      "SourceText": "(v_CaseCategory = \u0022Event_A\u0022 OrElse v_CaseCategory = \u0022Event_B\u0022) AndAlso (v_SecondaryIndicator OrElse v_ComplianceAssessment = \u0022Compliant\u0022 OrElse String.IsNullOrEmpty(v_ComplianceAssessment) OrElse (v_ComplianceAssessment = \u0022Non_Compliant\u0022 AndAlso (v_Attribute_A = \u0022Verification_not_available\u0022 OrElse v_Attribute_A = \u0022Special_case_without_certified_component\u0022) AndAlso (v_Attribute_B = \u0022No_or_low_impact\u0022 OrElse v_Attribute_C = \u0022No_or_low_impact\u0022)))",
+      "Predicate": null
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+      "NodeId": "32",
+      "DisplayName": "Rule Group 2: Event_C or Event_D",
+      "XamlLine": 171,
+      "SourceText": "(v_CaseCategory = \u0022Event_C\u0022 OrElse v_CaseCategory = \u0022Event_D\u0022) AndAlso (v_SecondaryIndicator OrElse (v_Indicator_X = \u0022Y\u0022 AndAlso (v_Detail_X = \u0022Noticeable_irregularity\u0022 OrElse String.IsNullOrEmpty(v_Detail_X))) OrElse (v_Indicator_X = \u0022N\u0022 AndAlso (v_ComplianceAssessment = \u0022Compliant\u0022 OrElse String.IsNullOrEmpty(v_ComplianceAssessment) OrElse (v_ComplianceAssessment = \u0022Non_Compliant\u0022 AndAlso (v_Attribute_A = \u0022Verification_not_available\u0022 OrElse v_Attribute_A = \u0022Special_case_without_certified_component\u0022) AndAlso (v_Attribute_B = \u0022No_or_low_impact\u0022 OrElse v_Attribute_C = \u0022No_or_low_impact\u0022)))))",
+      "Predicate": null
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "29",
+      "DisplayName": "SecondaryIndicator = True?",
+      "XamlLine": 151,
+      "SourceText": "v_SecondaryIndicator",
+      "Predicate": null
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "31",
+      "DisplayName": "CaseCategory = Event_A or Event_B?",
+      "XamlLine": 163,
+      "SourceText": "v_CaseCategory = \u0022Event_A\u0022 OrElse v_CaseCategory = \u0022Event_B\u0022",
+      "Predicate": {
+        "Kind": "compound-or",
+        "Variable": null,
+        "Operator": null,
+        "Literal": null,
+        "FuncName": null,
+        "Operands": [
+          {
+            "Kind": "equality",
+            "Variable": "v_CaseCategory",
+            "Operator": "=",
+            "Literal": "Event_A",
+            "FuncName": null,
+            "Operands": []
+          },
+          {
+            "Kind": "equality",
+            "Variable": "v_CaseCategory",
+            "Operator": "=",
+            "Literal": "Event_B",
+            "FuncName": null,
+            "Operands": []
+          }
+        ]
+      }
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "32",
+      "DisplayName": "ComplianceAssessment = Compliant or empty?",
+      "XamlLine": 165,
+      "SourceText": "v_ComplianceAssessment = \u0022Compliant\u0022 OrElse String.IsNullOrEmpty(v_ComplianceAssessment)",
+      "Predicate": {
+        "Kind": "compound-or",
+        "Variable": null,
+        "Operator": null,
+        "Literal": null,
+        "FuncName": null,
+        "Operands": [
+          {
+            "Kind": "equality",
+            "Variable": "v_ComplianceAssessment",
+            "Operator": "=",
+            "Literal": "Compliant",
+            "FuncName": null,
+            "Operands": []
+          },
+          {
+            "Kind": "known-function",
+            "Variable": "v_ComplianceAssessment",
+            "Operator": null,
+            "Literal": null,
+            "FuncName": "String.IsNullOrEmpty",
+            "Operands": []
+          }
+        ]
+      }
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "34",
+      "DisplayName": "ComplianceAssessment = Non_Compliant?",
+      "XamlLine": 177,
+      "SourceText": "v_ComplianceAssessment = \u0022Non_Compliant\u0022",
+      "Predicate": {
+        "Kind": "equality",
+        "Variable": "v_ComplianceAssessment",
+        "Operator": "=",
+        "Literal": "Non_Compliant",
+        "FuncName": null,
+        "Operands": []
+      }
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "35",
+      "DisplayName": "Attribute_A = Verif_NA or Special_case?",
+      "XamlLine": 179,
+      "SourceText": "v_Attribute_A = \u0022Verification_not_available\u0022 OrElse v_Attribute_A = \u0022Special_case_without_certified_component\u0022",
+      "Predicate": {
+        "Kind": "compound-or",
+        "Variable": null,
+        "Operator": null,
+        "Literal": null,
+        "FuncName": null,
+        "Operands": [
+          {
+            "Kind": "equality",
+            "Variable": "v_Attribute_A",
+            "Operator": "=",
+            "Literal": "Verification_not_available",
+            "FuncName": null,
+            "Operands": []
+          },
+          {
+            "Kind": "equality",
+            "Variable": "v_Attribute_A",
+            "Operator": "=",
+            "Literal": "Special_case_without_certified_component",
+            "FuncName": null,
+            "Operands": []
+          }
+        ]
+      }
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "36",
+      "DisplayName": "Attribute_B or Attribute_C = No_or_low_impact?",
+      "XamlLine": 181,
+      "SourceText": "v_Attribute_B = \u0022No_or_low_impact\u0022 OrElse v_Attribute_C = \u0022No_or_low_impact\u0022",
+      "Predicate": {
+        "Kind": "compound-or",
+        "Variable": null,
+        "Operator": null,
+        "Literal": null,
+        "FuncName": null,
+        "Operands": [
+          {
+            "Kind": "equality",
+            "Variable": "v_Attribute_B",
+            "Operator": "=",
+            "Literal": "No_or_low_impact",
+            "FuncName": null,
+            "Operands": []
+          },
+          {
+            "Kind": "equality",
+            "Variable": "v_Attribute_C",
+            "Operator": "=",
+            "Literal": "No_or_low_impact",
+            "FuncName": null,
+            "Operands": []
+          }
+        ]
+      }
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "41",
+      "DisplayName": "CaseCategory = Event_C or Event_D?",
+      "XamlLine": 231,
+      "SourceText": "v_CaseCategory = \u0022Event_C\u0022 OrElse v_CaseCategory = \u0022Event_D\u0022",
+      "Predicate": {
+        "Kind": "compound-or",
+        "Variable": null,
+        "Operator": null,
+        "Literal": null,
+        "FuncName": null,
+        "Operands": [
+          {
+            "Kind": "equality",
+            "Variable": "v_CaseCategory",
+            "Operator": "=",
+            "Literal": "Event_C",
+            "FuncName": null,
+            "Operands": []
+          },
+          {
+            "Kind": "equality",
+            "Variable": "v_CaseCategory",
+            "Operator": "=",
+            "Literal": "Event_D",
+            "FuncName": null,
+            "Operands": []
+          }
+        ]
+      }
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "42",
+      "DisplayName": "Indicator_X = Y?",
+      "XamlLine": 233,
+      "SourceText": "v_Indicator_X = \u0022Y\u0022",
+      "Predicate": {
+        "Kind": "equality",
+        "Variable": "v_Indicator_X",
+        "Operator": "=",
+        "Literal": "Y",
+        "FuncName": null,
+        "Operands": []
+      }
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "43",
+      "DisplayName": "Detail_X = Noticeable_irregularity or empty?",
+      "XamlLine": 235,
+      "SourceText": "v_Detail_X = \u0022Noticeable_irregularity\u0022 OrElse String.IsNullOrEmpty(v_Detail_X)",
+      "Predicate": {
+        "Kind": "compound-or",
+        "Variable": null,
+        "Operator": null,
+        "Literal": null,
+        "FuncName": null,
+        "Operands": [
+          {
+            "Kind": "equality",
+            "Variable": "v_Detail_X",
+            "Operator": "=",
+            "Literal": "Noticeable_irregularity",
+            "FuncName": null,
+            "Operands": []
+          },
+          {
+            "Kind": "known-function",
+            "Variable": "v_Detail_X",
+            "Operator": null,
+            "Literal": null,
+            "FuncName": "String.IsNullOrEmpty",
+            "Operands": []
+          }
+        ]
+      }
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "46",
+      "DisplayName": "Indicator_X = N?",
+      "XamlLine": 259,
+      "SourceText": "v_Indicator_X = \u0022N\u0022",
+      "Predicate": {
+        "Kind": "equality",
+        "Variable": "v_Indicator_X",
+        "Operator": "=",
+        "Literal": "N",
+        "FuncName": null,
+        "Operands": []
+      }
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "47",
+      "DisplayName": "ComplianceAssessment = Compliant or empty?",
+      "XamlLine": 165,
+      "SourceText": "v_ComplianceAssessment = \u0022Compliant\u0022 OrElse String.IsNullOrEmpty(v_ComplianceAssessment)",
+      "Predicate": {
+        "Kind": "compound-or",
+        "Variable": null,
+        "Operator": null,
+        "Literal": null,
+        "FuncName": null,
+        "Operands": [
+          {
+            "Kind": "equality",
+            "Variable": "v_ComplianceAssessment",
+            "Operator": "=",
+            "Literal": "Compliant",
+            "FuncName": null,
+            "Operands": []
+          },
+          {
+            "Kind": "known-function",
+            "Variable": "v_ComplianceAssessment",
+            "Operator": null,
+            "Literal": null,
+            "FuncName": "String.IsNullOrEmpty",
+            "Operands": []
+          }
+        ]
+      }
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "49",
+      "DisplayName": "ComplianceAssessment = Non_Compliant?",
+      "XamlLine": 177,
+      "SourceText": "v_ComplianceAssessment = \u0022Non_Compliant\u0022",
+      "Predicate": {
+        "Kind": "equality",
+        "Variable": "v_ComplianceAssessment",
+        "Operator": "=",
+        "Literal": "Non_Compliant",
+        "FuncName": null,
+        "Operands": []
+      }
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "50",
+      "DisplayName": "Attribute_A = Verif_NA or Special_case?",
+      "XamlLine": 179,
+      "SourceText": "v_Attribute_A = \u0022Verification_not_available\u0022 OrElse v_Attribute_A = \u0022Special_case_without_certified_component\u0022",
+      "Predicate": {
+        "Kind": "compound-or",
+        "Variable": null,
+        "Operator": null,
+        "Literal": null,
+        "FuncName": null,
+        "Operands": [
+          {
+            "Kind": "equality",
+            "Variable": "v_Attribute_A",
+            "Operator": "=",
+            "Literal": "Verification_not_available",
+            "FuncName": null,
+            "Operands": []
+          },
+          {
+            "Kind": "equality",
+            "Variable": "v_Attribute_A",
+            "Operator": "=",
+            "Literal": "Special_case_without_certified_component",
+            "FuncName": null,
+            "Operands": []
+          }
+        ]
+      }
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "51",
+      "DisplayName": "Attribute_B or Attribute_C = No_or_low_impact?",
+      "XamlLine": 181,
+      "SourceText": "v_Attribute_B = \u0022No_or_low_impact\u0022 OrElse v_Attribute_C = \u0022No_or_low_impact\u0022",
+      "Predicate": {
+        "Kind": "compound-or",
+        "Variable": null,
+        "Operator": null,
+        "Literal": null,
+        "FuncName": null,
+        "Operands": [
+          {
+            "Kind": "equality",
+            "Variable": "v_Attribute_B",
+            "Operator": "=",
+            "Literal": "No_or_low_impact",
+            "FuncName": null,
+            "Operands": []
+          },
+          {
+            "Kind": "equality",
+            "Variable": "v_Attribute_C",
+            "Operator": "=",
+            "Literal": "No_or_low_impact",
+            "FuncName": null,
+            "Operands": []
+          }
+        ]
+      }
+    },
+    {
+      "WorkflowPath": "Framework\\InitAllSettings.xaml",
+      "NodeId": "9",
+      "DisplayName": "If configuration row is not empty",
+      "XamlLine": 137,
+      "SourceText": "Not String.IsNullOrWhiteSpace(row(\u0022Name\u0022).ToString.Trim)",
+      "Predicate": {
+        "Kind": "negation",
+        "Variable": null,
+        "Operator": null,
+        "Literal": null,
+        "FuncName": null,
+        "Operands": [
+          {
+            "Kind": "known-function",
+            "Variable": "row(\u0022Name\u0022).ToString.Trim",
+            "Operator": null,
+            "Literal": null,
+            "FuncName": "String.IsNullOrWhiteSpace",
+            "Operands": []
+          }
+        ]
+      }
+    },
+    {
+      "WorkflowPath": "Framework\\InitAllSettings.xaml",
+      "NodeId": "19",
+      "DisplayName": "If asset name is specified, but it cannot be retrieved",
+      "XamlLine": 242,
+      "SourceText": "Not String.IsNullOrWhiteSpace(Row(\u0022Name\u0022).ToString.Trim)",
+      "Predicate": {
+        "Kind": "negation",
+        "Variable": null,
+        "Operator": null,
+        "Literal": null,
+        "FuncName": null,
+        "Operands": [
+          {
+            "Kind": "known-function",
+            "Variable": "Row(\u0022Name\u0022).ToString.Trim",
+            "Operator": null,
+            "Literal": null,
+            "FuncName": "String.IsNullOrWhiteSpace",
+            "Operands": []
+          }
+        ]
+      }
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\DetermineChannel.xaml",
+      "NodeId": "3",
+      "DisplayName": "Channel_A if all conditions met else Channel_B",
+      "XamlLine": 67,
+      "SourceText": "in_HasRegistryId AndAlso in_RegistryParticipantExists AndAlso in_DocumentTypesAccepted",
+      "Predicate": null
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\IsSegment_P_Customer.xaml",
+      "NodeId": "4",
+      "DisplayName": "Fire-and-continue: notify if Segment_P",
+      "XamlLine": 69,
+      "SourceText": "in_IsSegmentP",
+      "Predicate": null
+    }
+  ],
+  "Assignments": [
+    {
+      "WorkflowPath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_IfElse.xaml",
+      "NodeId": "8",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "TransactionItem",
+      "Value": "New UiPath.Core.QueueItem With {.SpecificContent = New Dictionary(Of String, Object) From {{\u0022in_CaseCategory\u0022, in_CaseCategory}, {\u0022in_ComplianceAssessment\u0022, in_ComplianceAssessment}, {\u0022in_Attribute_A\u0022, in_Attribute_A}, {\u0022in_Attribute_B\u0022, in_Attribute_B}, {\u0022in_Attribute_C\u0022, in_Attribute_C}, {\u0022in_Indicator_X\u0022, in_Indicator_X}, {\u0022in_Detail_X\u0022, in_Detail_X}, {\u0022in_SecondaryIndicator\u0022, Boolean.Parse(in_SecondaryIndicator)}}}"
+    },
+    {
+      "WorkflowPath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_Expression.xaml",
+      "NodeId": "8",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "TransactionItem",
+      "Value": "New UiPath.Core.QueueItem With {.SpecificContent = New Dictionary(Of String, Object) From {{\u0022in_CaseCategory\u0022, in_CaseCategory}, {\u0022in_ComplianceAssessment\u0022, in_ComplianceAssessment}, {\u0022in_Attribute_A\u0022, in_Attribute_A}, {\u0022in_Attribute_B\u0022, in_Attribute_B}, {\u0022in_Attribute_C\u0022, in_Attribute_C}, {\u0022in_Indicator_X\u0022, in_Indicator_X}, {\u0022in_Detail_X\u0022, in_Detail_X}, {\u0022in_SecondaryIndicator\u0022, Boolean.Parse(in_SecondaryIndicator)}}}"
+    },
+    {
+      "WorkflowPath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_DecisionTable.xaml",
+      "NodeId": "8",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "TransactionItem",
+      "Value": "New UiPath.Core.QueueItem With {.SpecificContent = New Dictionary(Of String, Object) From {{\u0022in_CaseCategory\u0022, in_CaseCategory}, {\u0022in_ComplianceAssessment\u0022, in_ComplianceAssessment}, {\u0022in_Attribute_A\u0022, in_Attribute_A}, {\u0022in_Attribute_B\u0022, in_Attribute_B}, {\u0022in_Attribute_C\u0022, in_Attribute_C}, {\u0022in_Indicator_X\u0022, in_Indicator_X}, {\u0022in_Detail_X\u0022, in_Detail_X}, {\u0022in_SecondaryIndicator\u0022, Boolean.Parse(in_SecondaryIndicator)}}}"
+    },
+    {
+      "WorkflowPath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_RuleBased.xaml",
+      "NodeId": "8",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "TransactionItem",
+      "Value": "New UiPath.Core.QueueItem With {.SpecificContent = New Dictionary(Of String, Object) From {{\u0022in_CaseCategory\u0022, in_CaseCategory}, {\u0022in_ComplianceAssessment\u0022, in_ComplianceAssessment}, {\u0022in_Attribute_A\u0022, in_Attribute_A}, {\u0022in_Attribute_B\u0022, in_Attribute_B}, {\u0022in_Attribute_C\u0022, in_Attribute_C}, {\u0022in_Indicator_X\u0022, in_Indicator_X}, {\u0022in_Detail_X\u0022, in_Detail_X}, {\u0022in_SecondaryIndicator\u0022, Boolean.Parse(in_SecondaryIndicator)}}}"
+    },
+    {
+      "WorkflowPath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_StateMachine.xaml",
+      "NodeId": "8",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "TransactionItem",
+      "Value": "New UiPath.Core.QueueItem With {.SpecificContent = New Dictionary(Of String, Object) From {{\u0022in_CaseCategory\u0022, in_CaseCategory}, {\u0022in_ComplianceAssessment\u0022, in_ComplianceAssessment}, {\u0022in_Attribute_A\u0022, in_Attribute_A}, {\u0022in_Attribute_B\u0022, in_Attribute_B}, {\u0022in_Attribute_C\u0022, in_Attribute_C}, {\u0022in_Indicator_X\u0022, in_Indicator_X}, {\u0022in_Detail_X\u0022, in_Detail_X}, {\u0022in_SecondaryIndicator\u0022, Boolean.Parse(in_SecondaryIndicator)}}}"
+    },
+    {
+      "WorkflowPath": "Tests\\RoutingPipeline\\Workflow_RoutingPipeline_Pipeline.xaml",
+      "NodeId": "8",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "TransactionItem",
+      "Value": "New UiPath.Core.QueueItem With {.SpecificContent = New Dictionary(Of String, Object) From {{\u0022in_HasRegistryId\u0022, Boolean.Parse(in_HasRegistryId)}, {\u0022in_RegistryParticipantExists\u0022, Boolean.Parse(in_RegistryParticipantExists)}, {\u0022in_DocumentTypesAccepted\u0022, Boolean.Parse(in_DocumentTypesAccepted)}, {\u0022in_RegistryId\u0022, in_RegistryId}, {\u0022in_VatId\u0022, in_VatId}, {\u0022in_CustomerExists\u0022, Boolean.Parse(in_CustomerExists)}, {\u0022in_IsSegmentP\u0022, Boolean.Parse(in_IsSegmentP)}, {\u0022in_HasCustomerErrors\u0022, Boolean.Parse(in_HasCustomerErrors)}, {\u0022in_HasInternalErrors\u0022, Boolean.Parse(in_HasInternalErrors)}}}"
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+      "NodeId": "6",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_HasRegistryId",
+      "Value": "CBool(in_TransactionItem.SpecificContent(\u0022in_HasRegistryId\u0022))"
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+      "NodeId": "9",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_RegistryParticipantExists",
+      "Value": "CBool(in_TransactionItem.SpecificContent(\u0022in_RegistryParticipantExists\u0022))"
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+      "NodeId": "12",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_DocumentTypesAccepted",
+      "Value": "CBool(in_TransactionItem.SpecificContent(\u0022in_DocumentTypesAccepted\u0022))"
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+      "NodeId": "15",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_RegistryId",
+      "Value": "CStr(in_TransactionItem.SpecificContent(\u0022in_RegistryId\u0022))"
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+      "NodeId": "18",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_VatId",
+      "Value": "CStr(in_TransactionItem.SpecificContent(\u0022in_VatId\u0022))"
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+      "NodeId": "21",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_CustomerExists",
+      "Value": "CBool(in_TransactionItem.SpecificContent(\u0022in_CustomerExists\u0022))"
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+      "NodeId": "24",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_IsSegmentP",
+      "Value": "CBool(in_TransactionItem.SpecificContent(\u0022in_IsSegmentP\u0022))"
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+      "NodeId": "27",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_HasCustomerErrors",
+      "Value": "CBool(in_TransactionItem.SpecificContent(\u0022in_HasCustomerErrors\u0022))"
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+      "NodeId": "30",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_HasInternalErrors",
+      "Value": "CBool(in_TransactionItem.SpecificContent(\u0022in_HasInternalErrors\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+      "NodeId": "6",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_CaseCategory",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_CaseCategory\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+      "NodeId": "9",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_ComplianceAssessment",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_ComplianceAssessment\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+      "NodeId": "12",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Attribute_A",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_A\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+      "NodeId": "15",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Attribute_B",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_B\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+      "NodeId": "18",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Attribute_C",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_C\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+      "NodeId": "21",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Indicator_X",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Indicator_X\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+      "NodeId": "24",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Detail_X",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Detail_X\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+      "NodeId": "27",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_SecondaryIndicator",
+      "Value": "CBool(in_TransactionItem.SpecificContent(\u0022in_SecondaryIndicator\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+      "NodeId": "29",
+      "DisplayName": "Match: first Positive rule fires?",
+      "XamlLine": 152,
+      "Target": "v_MatchFound",
+      "Value": "New List(Of String()) From {New String() {\u0022True\u0022,\u0022*\u0022,\u0022*\u0022,\u0022*\u0022,\u0022*\u0022,\u0022*\u0022,\u0022*\u0022},New String() {\u0022*\u0022,\u0022RG1\u0022,\u0022Compliant\u0022,\u0022*\u0022,\u0022*\u0022,\u0022*\u0022,\u0022*\u0022},New String() {\u0022*\u0022,\u0022RG1\u0022,\u0022\u0022,\u0022*\u0022,\u0022*\u0022,\u0022*\u0022,\u0022*\u0022},New String() {\u0022*\u0022,\u0022RG1\u0022,\u0022Non_Compliant\u0022,\u0022Verification_not_available\u0022,\u0022Yes\u0022,\u0022*\u0022,\u0022*\u0022},New String() {\u0022*\u0022,\u0022RG1\u0022,\u0022Non_Compliant\u0022,\u0022Special_case_without_certified_component\u0022,\u0022Yes\u0022,\u0022*\u0022,\u0022*\u0022},New String() {\u0022*\u0022,\u0022RG2\u0022,\u0022*\u0022,\u0022*\u0022,\u0022*\u0022,\u0022Y\u0022,\u0022Noticeable_irregularity\u0022},New String() {\u0022*\u0022,\u0022RG2\u0022,\u0022*\u0022,\u0022*\u0022,\u0022*\u0022,\u0022Y\u0022,\u0022\u0022},New String() {\u0022*\u0022,\u0022RG2\u0022,\u0022Compliant\u0022,\u0022*\u0022,\u0022*\u0022,\u0022N\u0022,\u0022*\u0022},New String() {\u0022*\u0022,\u0022RG2\u0022,\u0022\u0022,\u0022*\u0022,\u0022*\u0022,\u0022N\u0022,\u0022*\u0022},New String() {\u0022*\u0022,\u0022RG2\u0022,\u0022Non_Compliant\u0022,\u0022Verification_not_available\u0022,\u0022Yes\u0022,\u0022N\u0022,\u0022*\u0022},New String() {\u0022*\u0022,\u0022RG2\u0022,\u0022Non_Compliant\u0022,\u0022Special_case_without_certified_component\u0022,\u0022Yes\u0022,\u0022N\u0022,\u0022*\u0022}}.Any(Function(r) (r(0)=\u0022*\u0022 OrElse (r(0)=\u0022True\u0022 AndAlso v_SecondaryIndicator)) AndAlso (r(1)=\u0022*\u0022 OrElse (r(1)=\u0022RG1\u0022 AndAlso (v_CaseCategory=\u0022Event_A\u0022 OrElse v_CaseCategory=\u0022Event_B\u0022)) OrElse (r(1)=\u0022RG2\u0022 AndAlso (v_CaseCategory=\u0022Event_C\u0022 OrElse v_CaseCategory=\u0022Event_D\u0022))) AndAlso (r(2)=\u0022*\u0022 OrElse r(2)=v_ComplianceAssessment) AndAlso (r(3)=\u0022*\u0022 OrElse r(3)=v_Attribute_A) AndAlso (r(4)=\u0022*\u0022 OrElse (r(4)=\u0022Yes\u0022 AndAlso (v_Attribute_B=\u0022No_or_low_impact\u0022 OrElse v_Attribute_C=\u0022No_or_low_impact\u0022))) AndAlso (r(5)=\u0022*\u0022 OrElse r(5)=v_Indicator_X) AndAlso (r(6)=\u0022*\u0022 OrElse r(6)=v_Detail_X))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+      "NodeId": "30",
+      "DisplayName": "Set DecisionValue",
+      "XamlLine": 160,
+      "Target": "out_DecisionValue",
+      "Value": "If(v_MatchFound, \u0022Positive\u0022, \u0022Negative\u0022)"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+      "NodeId": "6",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_CaseCategory",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_CaseCategory\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+      "NodeId": "9",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_ComplianceAssessment",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_ComplianceAssessment\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+      "NodeId": "12",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Attribute_A",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_A\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+      "NodeId": "15",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Attribute_B",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_B\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+      "NodeId": "18",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Attribute_C",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_C\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+      "NodeId": "21",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Indicator_X",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Indicator_X\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+      "NodeId": "24",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Detail_X",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Detail_X\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+      "NodeId": "27",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_SecondaryIndicator",
+      "Value": "CBool(in_TransactionItem.SpecificContent(\u0022in_SecondaryIndicator\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+      "NodeId": "29",
+      "DisplayName": "Default: Negative",
+      "XamlLine": 151,
+      "Target": "out_DecisionValue",
+      "Value": "\u0022Negative\u0022"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+      "NodeId": "31",
+      "DisplayName": "Positive",
+      "XamlLine": 161,
+      "Target": "out_DecisionValue",
+      "Value": "\u0022Positive\u0022"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+      "NodeId": "33",
+      "DisplayName": "Positive",
+      "XamlLine": 161,
+      "Target": "out_DecisionValue",
+      "Value": "\u0022Positive\u0022"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "6",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_CaseCategory",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_CaseCategory\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "9",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_ComplianceAssessment",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_ComplianceAssessment\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "12",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Attribute_A",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_A\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "15",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Attribute_B",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_B\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "18",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Attribute_C",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_C\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "21",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Indicator_X",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Indicator_X\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "24",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Detail_X",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Detail_X\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "27",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_SecondaryIndicator",
+      "Value": "CBool(in_TransactionItem.SpecificContent(\u0022in_SecondaryIndicator\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "30",
+      "DisplayName": "Positive",
+      "XamlLine": 153,
+      "Target": "out_DecisionValue",
+      "Value": "\u0022Positive\u0022"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "33",
+      "DisplayName": "Positive",
+      "XamlLine": 153,
+      "Target": "out_DecisionValue",
+      "Value": "\u0022Positive\u0022"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "37",
+      "DisplayName": "Positive",
+      "XamlLine": 153,
+      "Target": "out_DecisionValue",
+      "Value": "\u0022Positive\u0022"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "38",
+      "DisplayName": "Negative",
+      "XamlLine": 193,
+      "Target": "out_DecisionValue",
+      "Value": "\u0022Negative\u0022"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "39",
+      "DisplayName": "Negative",
+      "XamlLine": 193,
+      "Target": "out_DecisionValue",
+      "Value": "\u0022Negative\u0022"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "40",
+      "DisplayName": "Negative",
+      "XamlLine": 193,
+      "Target": "out_DecisionValue",
+      "Value": "\u0022Negative\u0022"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "44",
+      "DisplayName": "Positive",
+      "XamlLine": 153,
+      "Target": "out_DecisionValue",
+      "Value": "\u0022Positive\u0022"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "45",
+      "DisplayName": "Negative",
+      "XamlLine": 193,
+      "Target": "out_DecisionValue",
+      "Value": "\u0022Negative\u0022"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "48",
+      "DisplayName": "Positive",
+      "XamlLine": 153,
+      "Target": "out_DecisionValue",
+      "Value": "\u0022Positive\u0022"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "52",
+      "DisplayName": "Positive",
+      "XamlLine": 153,
+      "Target": "out_DecisionValue",
+      "Value": "\u0022Positive\u0022"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "53",
+      "DisplayName": "Negative",
+      "XamlLine": 193,
+      "Target": "out_DecisionValue",
+      "Value": "\u0022Negative\u0022"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "54",
+      "DisplayName": "Negative",
+      "XamlLine": 193,
+      "Target": "out_DecisionValue",
+      "Value": "\u0022Negative\u0022"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "55",
+      "DisplayName": "Negative",
+      "XamlLine": 193,
+      "Target": "out_DecisionValue",
+      "Value": "\u0022Negative\u0022"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "56",
+      "DisplayName": "Negative",
+      "XamlLine": 193,
+      "Target": "out_DecisionValue",
+      "Value": "\u0022Negative\u0022"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+      "NodeId": "57",
+      "DisplayName": "Negative",
+      "XamlLine": 193,
+      "Target": "out_DecisionValue",
+      "Value": "\u0022Negative\u0022"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+      "NodeId": "6",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_CaseCategory",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_CaseCategory\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+      "NodeId": "9",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_ComplianceAssessment",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_ComplianceAssessment\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+      "NodeId": "12",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Attribute_A",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_A\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+      "NodeId": "15",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Attribute_B",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_B\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+      "NodeId": "18",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Attribute_C",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_C\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+      "NodeId": "21",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Indicator_X",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Indicator_X\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+      "NodeId": "24",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Detail_X",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Detail_X\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+      "NodeId": "27",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_SecondaryIndicator",
+      "Value": "CBool(in_TransactionItem.SpecificContent(\u0022in_SecondaryIndicator\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+      "NodeId": "32",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "b_Rule_Override",
+      "Value": "v_SecondaryIndicator"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+      "NodeId": "35",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "b_Rule_RG1_Compliant",
+      "Value": "(v_CaseCategory = \u0022Event_A\u0022 OrElse v_CaseCategory = \u0022Event_B\u0022) AndAlso (v_ComplianceAssessment = \u0022Compliant\u0022 OrElse String.IsNullOrEmpty(v_ComplianceAssessment))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+      "NodeId": "38",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "b_Rule_RG1_NonCompliant",
+      "Value": "(v_CaseCategory = \u0022Event_A\u0022 OrElse v_CaseCategory = \u0022Event_B\u0022) AndAlso v_ComplianceAssessment = \u0022Non_Compliant\u0022 AndAlso (v_Attribute_A = \u0022Verification_not_available\u0022 OrElse v_Attribute_A = \u0022Special_case_without_certified_component\u0022) AndAlso (v_Attribute_B = \u0022No_or_low_impact\u0022 OrElse v_Attribute_C = \u0022No_or_low_impact\u0022)"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+      "NodeId": "41",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "b_Rule_RG2_IX_Y",
+      "Value": "(v_CaseCategory = \u0022Event_C\u0022 OrElse v_CaseCategory = \u0022Event_D\u0022) AndAlso v_Indicator_X = \u0022Y\u0022 AndAlso (v_Detail_X = \u0022Noticeable_irregularity\u0022 OrElse String.IsNullOrEmpty(v_Detail_X))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+      "NodeId": "44",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "b_Rule_RG2_IX_N_Compliant",
+      "Value": "(v_CaseCategory = \u0022Event_C\u0022 OrElse v_CaseCategory = \u0022Event_D\u0022) AndAlso v_Indicator_X = \u0022N\u0022 AndAlso (v_ComplianceAssessment = \u0022Compliant\u0022 OrElse String.IsNullOrEmpty(v_ComplianceAssessment))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+      "NodeId": "47",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "b_Rule_RG2_IX_N_NonCompliant",
+      "Value": "(v_CaseCategory = \u0022Event_C\u0022 OrElse v_CaseCategory = \u0022Event_D\u0022) AndAlso v_Indicator_X = \u0022N\u0022 AndAlso v_ComplianceAssessment = \u0022Non_Compliant\u0022 AndAlso (v_Attribute_A = \u0022Verification_not_available\u0022 OrElse v_Attribute_A = \u0022Special_case_without_certified_component\u0022) AndAlso (v_Attribute_B = \u0022No_or_low_impact\u0022 OrElse v_Attribute_C = \u0022No_or_low_impact\u0022)"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+      "NodeId": "49",
+      "DisplayName": "Combine Rules: any Positive rule fires?",
+      "XamlLine": 211,
+      "Target": "out_DecisionValue",
+      "Value": "If(b_Rule_Override OrElse b_Rule_RG1_Compliant OrElse b_Rule_RG1_NonCompliant OrElse b_Rule_RG2_IX_Y OrElse b_Rule_RG2_IX_N_Compliant OrElse b_Rule_RG2_IX_N_NonCompliant, \u0022Positive\u0022, \u0022Negative\u0022)"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+      "NodeId": "9",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_CaseCategory",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_CaseCategory\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+      "NodeId": "12",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_ComplianceAssessment",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_ComplianceAssessment\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+      "NodeId": "15",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Attribute_A",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_A\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+      "NodeId": "18",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Attribute_B",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_B\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+      "NodeId": "21",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Attribute_C",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_C\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+      "NodeId": "24",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Indicator_X",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Indicator_X\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+      "NodeId": "27",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_Detail_X",
+      "Value": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Detail_X\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+      "NodeId": "30",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "v_SecondaryIndicator",
+      "Value": "CBool(in_TransactionItem.SpecificContent(\u0022in_SecondaryIndicator\u0022))"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+      "NodeId": "40",
+      "DisplayName": "Positive",
+      "XamlLine": 164,
+      "Target": "out_DecisionValue",
+      "Value": "\u0022Positive\u0022"
+    },
+    {
+      "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+      "NodeId": "43",
+      "DisplayName": "Negative",
+      "XamlLine": 193,
+      "Target": "out_DecisionValue",
+      "Value": "\u0022Negative\u0022"
+    },
+    {
+      "WorkflowPath": "Framework\\InitAllSettings.xaml",
+      "NodeId": "4",
+      "DisplayName": "Assing out_Config (initialization)",
+      "XamlLine": 105,
+      "Target": "out_Config",
+      "Value": "New Dictionary(of String, Object)"
+    },
+    {
+      "WorkflowPath": "Framework\\InitAllSettings.xaml",
+      "NodeId": "10",
+      "DisplayName": "Add Config key/value pair",
+      "XamlLine": 146,
+      "Target": "out_Config(Row(\u0022Name\u0022).ToString.Trim)",
+      "Value": "Row(\u0022Value\u0022)"
+    },
+    {
+      "WorkflowPath": "Framework\\InitAllSettings.xaml",
+      "NodeId": "17",
+      "DisplayName": "Get Orchestrator asset",
+      "XamlLine": 212,
+      "Target": "",
+      "Value": "AssetValue"
+    },
+    {
+      "WorkflowPath": "Framework\\InitAllSettings.xaml",
+      "NodeId": "18",
+      "DisplayName": "Assign asset value in Config",
+      "XamlLine": 220,
+      "Target": "out_Config(row(\u0022Name\u0022).ToString)",
+      "Value": "AssetValue"
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\DetermineChannel.xaml",
+      "NodeId": "4",
+      "DisplayName": "Assign Channel_A",
+      "XamlLine": 72,
+      "Target": "out_Channel",
+      "Value": "\u0022Channel_A\u0022"
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\DetermineChannel.xaml",
+      "NodeId": "5",
+      "DisplayName": "Assign Channel_B",
+      "XamlLine": 78,
+      "Target": "out_Channel",
+      "Value": "\u0022Channel_B\u0022"
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\IsPublicSectorRelevant.xaml",
+      "NodeId": "3",
+      "DisplayName": "IsPublicSector = RegistryId starts with PS-",
+      "XamlLine": 65,
+      "Target": "out_IsPublicSector",
+      "Value": "in_RegistryId.StartsWith(\u0022PS-\u0022)"
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\DetermineVatClassification.xaml",
+      "NodeId": "3",
+      "DisplayName": "NATIONAL if VatId starts with DOM- else INTERNATIONAL",
+      "XamlLine": 65,
+      "Target": "out_VatClassification",
+      "Value": "If(in_VatId.StartsWith(\u0022DOM-\u0022), \u0022NATIONAL\u0022, \u0022INTERNATIONAL\u0022)"
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\DetermineCustomerStatus.xaml",
+      "NodeId": "3",
+      "DisplayName": "EXISTING or NEW",
+      "XamlLine": 65,
+      "Target": "out_CustomerStatus",
+      "Value": "If(in_CustomerExists, \u0022EXISTING\u0022, \u0022NEW\u0022)"
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\IsSegment_P_Customer.xaml",
+      "NodeId": "3",
+      "DisplayName": "Pass through IsSegmentP flag",
+      "XamlLine": 65,
+      "Target": "out_IsSegmentP",
+      "Value": "in_IsSegmentP"
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\AggregateErrors.xaml",
+      "NodeId": "6",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "out_CustomerErrors",
+      "Value": "in_HasCustomerErrors"
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\AggregateErrors.xaml",
+      "NodeId": "9",
+      "DisplayName": "AssignOperation",
+      "XamlLine": null,
+      "Target": "out_InternalErrors",
+      "Value": "in_HasInternalErrors"
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\DetermineRouting.xaml",
+      "NodeId": "3",
+      "DisplayName": "Compute bitmask: CustomerErrors x1 \u002B InternalErrors x2",
+      "XamlLine": 69,
+      "Target": "v_Matrix",
+      "Value": "If(in_CustomerErrors,1,0) \u002B If(in_InternalErrors,2,0)"
+    },
+    {
+      "WorkflowPath": "RoutingPipeline\\DetermineRouting.xaml",
+      "NodeId": "4",
+      "DisplayName": "Lookup: 0=HAPPY_PATH 1=ROUTE_TO_CUSTOMER 2=ROUTE_TO_INTERNAL 3=OPEN",
+      "XamlLine": 73,
+      "Target": "out_RoutingDecision",
+      "Value": "If(v_Matrix=0,\u0022HAPPY_PATH\u0022,If(v_Matrix=1,\u0022ROUTE_TO_CUSTOMER\u0022,If(v_Matrix=2,\u0022ROUTE_TO_INTERNAL\u0022,\u0022OPEN\u0022)))"
+    }
+  ]
+}

@@ -1,0 +1,5324 @@
+[
+  {
+    "WorkflowPath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_IfElse.xaml",
+    "NodeId": "8",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "New UiPath.Core.QueueItem With {.SpecificContent = New Dictionary(Of String, Object) From {{\u0022in_CaseCategory\u0022, in_CaseCategory}, {\u0022in_ComplianceAssessment\u0022, in_ComplianceAssessment}, {\u0022in_Attribute_A\u0022, in_Attribute_A}, {\u0022in_Attribute_B\u0022, in_Attribute_B}, {\u0022in_Attribute_C\u0022, in_Attribute_C}, {\u0022in_Indicator_X\u0022, in_Indicator_X}, {\u0022in_Detail_X\u0022, in_Detail_X}, {\u0022in_SecondaryIndicator\u0022, Boolean.Parse(in_SecondaryIndicator)}}}",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "UiPath.Core.QueueItem",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_IfElse.xaml",
+    "NodeId": "8",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "TransactionItem",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "TransactionItem"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "TransactionItem"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_Expression.xaml",
+    "NodeId": "8",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "New UiPath.Core.QueueItem With {.SpecificContent = New Dictionary(Of String, Object) From {{\u0022in_CaseCategory\u0022, in_CaseCategory}, {\u0022in_ComplianceAssessment\u0022, in_ComplianceAssessment}, {\u0022in_Attribute_A\u0022, in_Attribute_A}, {\u0022in_Attribute_B\u0022, in_Attribute_B}, {\u0022in_Attribute_C\u0022, in_Attribute_C}, {\u0022in_Indicator_X\u0022, in_Indicator_X}, {\u0022in_Detail_X\u0022, in_Detail_X}, {\u0022in_SecondaryIndicator\u0022, Boolean.Parse(in_SecondaryIndicator)}}}",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "UiPath.Core.QueueItem",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_Expression.xaml",
+    "NodeId": "8",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "TransactionItem",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "TransactionItem"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "TransactionItem"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_DecisionTable.xaml",
+    "NodeId": "8",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "New UiPath.Core.QueueItem With {.SpecificContent = New Dictionary(Of String, Object) From {{\u0022in_CaseCategory\u0022, in_CaseCategory}, {\u0022in_ComplianceAssessment\u0022, in_ComplianceAssessment}, {\u0022in_Attribute_A\u0022, in_Attribute_A}, {\u0022in_Attribute_B\u0022, in_Attribute_B}, {\u0022in_Attribute_C\u0022, in_Attribute_C}, {\u0022in_Indicator_X\u0022, in_Indicator_X}, {\u0022in_Detail_X\u0022, in_Detail_X}, {\u0022in_SecondaryIndicator\u0022, Boolean.Parse(in_SecondaryIndicator)}}}",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "UiPath.Core.QueueItem",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_DecisionTable.xaml",
+    "NodeId": "8",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "TransactionItem",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "TransactionItem"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "TransactionItem"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_RuleBased.xaml",
+    "NodeId": "8",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "New UiPath.Core.QueueItem With {.SpecificContent = New Dictionary(Of String, Object) From {{\u0022in_CaseCategory\u0022, in_CaseCategory}, {\u0022in_ComplianceAssessment\u0022, in_ComplianceAssessment}, {\u0022in_Attribute_A\u0022, in_Attribute_A}, {\u0022in_Attribute_B\u0022, in_Attribute_B}, {\u0022in_Attribute_C\u0022, in_Attribute_C}, {\u0022in_Indicator_X\u0022, in_Indicator_X}, {\u0022in_Detail_X\u0022, in_Detail_X}, {\u0022in_SecondaryIndicator\u0022, Boolean.Parse(in_SecondaryIndicator)}}}",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "UiPath.Core.QueueItem",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_RuleBased.xaml",
+    "NodeId": "8",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "TransactionItem",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "TransactionItem"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "TransactionItem"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_StateMachine.xaml",
+    "NodeId": "8",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "New UiPath.Core.QueueItem With {.SpecificContent = New Dictionary(Of String, Object) From {{\u0022in_CaseCategory\u0022, in_CaseCategory}, {\u0022in_ComplianceAssessment\u0022, in_ComplianceAssessment}, {\u0022in_Attribute_A\u0022, in_Attribute_A}, {\u0022in_Attribute_B\u0022, in_Attribute_B}, {\u0022in_Attribute_C\u0022, in_Attribute_C}, {\u0022in_Indicator_X\u0022, in_Indicator_X}, {\u0022in_Detail_X\u0022, in_Detail_X}, {\u0022in_SecondaryIndicator\u0022, Boolean.Parse(in_SecondaryIndicator)}}}",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "UiPath.Core.QueueItem",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "Tests\\EligibilityDecision\\Workflow_EligibilityDecision_StateMachine.xaml",
+    "NodeId": "8",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "TransactionItem",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "TransactionItem"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "TransactionItem"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "Tests\\RoutingPipeline\\Workflow_RoutingPipeline_Pipeline.xaml",
+    "NodeId": "8",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "New UiPath.Core.QueueItem With {.SpecificContent = New Dictionary(Of String, Object) From {{\u0022in_HasRegistryId\u0022, Boolean.Parse(in_HasRegistryId)}, {\u0022in_RegistryParticipantExists\u0022, Boolean.Parse(in_RegistryParticipantExists)}, {\u0022in_DocumentTypesAccepted\u0022, Boolean.Parse(in_DocumentTypesAccepted)}, {\u0022in_RegistryId\u0022, in_RegistryId}, {\u0022in_VatId\u0022, in_VatId}, {\u0022in_CustomerExists\u0022, Boolean.Parse(in_CustomerExists)}, {\u0022in_IsSegmentP\u0022, Boolean.Parse(in_IsSegmentP)}, {\u0022in_HasCustomerErrors\u0022, Boolean.Parse(in_HasCustomerErrors)}, {\u0022in_HasInternalErrors\u0022, Boolean.Parse(in_HasInternalErrors)}}}",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "UiPath.Core.QueueItem",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "Tests\\RoutingPipeline\\Workflow_RoutingPipeline_Pipeline.xaml",
+    "NodeId": "8",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "TransactionItem",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "TransactionItem"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "TransactionItem"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+    "NodeId": "6",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "CBool(in_TransactionItem.SpecificContent(\u0022in_HasRegistryId\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "CBool(in_TransactionItem.SpecificContent(\u0022in_HasRegistryId\u0022))",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_HasRegistryId"
+    ],
+    "Diagnostics": [],
+    "InferredType": "Boolean",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+    "NodeId": "6",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_HasRegistryId",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_HasRegistryId"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_HasRegistryId"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+    "NodeId": "9",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "CBool(in_TransactionItem.SpecificContent(\u0022in_RegistryParticipantExists\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "CBool(in_TransactionItem.SpecificContent(\u0022in_RegistryParticipantExists\u0022))",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_RegistryParticipantExists"
+    ],
+    "Diagnostics": [],
+    "InferredType": "Boolean",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+    "NodeId": "9",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_RegistryParticipantExists",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_RegistryParticipantExists"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_RegistryParticipantExists"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+    "NodeId": "12",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "CBool(in_TransactionItem.SpecificContent(\u0022in_DocumentTypesAccepted\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "CBool(in_TransactionItem.SpecificContent(\u0022in_DocumentTypesAccepted\u0022))",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_DocumentTypesAccepted"
+    ],
+    "Diagnostics": [],
+    "InferredType": "Boolean",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+    "NodeId": "12",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_DocumentTypesAccepted",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_DocumentTypesAccepted"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_DocumentTypesAccepted"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+    "NodeId": "15",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "CStr(in_TransactionItem.SpecificContent(\u0022in_RegistryId\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "CStr(in_TransactionItem.SpecificContent(\u0022in_RegistryId\u0022))",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_RegistryId"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+    "NodeId": "15",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_RegistryId",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_RegistryId"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_RegistryId"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+    "NodeId": "18",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "CStr(in_TransactionItem.SpecificContent(\u0022in_VatId\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "CStr(in_TransactionItem.SpecificContent(\u0022in_VatId\u0022))",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_VatId"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+    "NodeId": "18",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_VatId",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_VatId"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_VatId"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+    "NodeId": "21",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "CBool(in_TransactionItem.SpecificContent(\u0022in_CustomerExists\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "CBool(in_TransactionItem.SpecificContent(\u0022in_CustomerExists\u0022))",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_CustomerExists"
+    ],
+    "Diagnostics": [],
+    "InferredType": "Boolean",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+    "NodeId": "21",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_CustomerExists",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_CustomerExists"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_CustomerExists"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+    "NodeId": "24",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "CBool(in_TransactionItem.SpecificContent(\u0022in_IsSegmentP\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "CBool(in_TransactionItem.SpecificContent(\u0022in_IsSegmentP\u0022))",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_IsSegmentP"
+    ],
+    "Diagnostics": [],
+    "InferredType": "Boolean",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+    "NodeId": "24",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_IsSegmentP",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_IsSegmentP"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_IsSegmentP"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+    "NodeId": "27",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "CBool(in_TransactionItem.SpecificContent(\u0022in_HasCustomerErrors\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "CBool(in_TransactionItem.SpecificContent(\u0022in_HasCustomerErrors\u0022))",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_HasCustomerErrors"
+    ],
+    "Diagnostics": [],
+    "InferredType": "Boolean",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+    "NodeId": "27",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_HasCustomerErrors",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_HasCustomerErrors"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_HasCustomerErrors"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+    "NodeId": "30",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "CBool(in_TransactionItem.SpecificContent(\u0022in_HasInternalErrors\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "CBool(in_TransactionItem.SpecificContent(\u0022in_HasInternalErrors\u0022))",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_HasInternalErrors"
+    ],
+    "Diagnostics": [],
+    "InferredType": "Boolean",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\Pipeline.xaml",
+    "NodeId": "30",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_HasInternalErrors",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_HasInternalErrors"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_HasInternalErrors"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+    "NodeId": "6",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_CaseCategory\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_CaseCategory"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+    "NodeId": "6",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_CaseCategory",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_CaseCategory"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_CaseCategory"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+    "NodeId": "9",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_ComplianceAssessment\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_ComplianceAssessment"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+    "NodeId": "9",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_ComplianceAssessment",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_ComplianceAssessment"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_ComplianceAssessment"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+    "NodeId": "12",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_A\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Attribute_A"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+    "NodeId": "12",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Attribute_A",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Attribute_A"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Attribute_A"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+    "NodeId": "15",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_B\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Attribute_B"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+    "NodeId": "15",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Attribute_B",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Attribute_B"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Attribute_B"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+    "NodeId": "18",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_C\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Attribute_C"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+    "NodeId": "18",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Attribute_C",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Attribute_C"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Attribute_C"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+    "NodeId": "21",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Indicator_X\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Indicator_X"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+    "NodeId": "21",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Indicator_X",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Indicator_X"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Indicator_X"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+    "NodeId": "24",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Detail_X\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Detail_X"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+    "NodeId": "24",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Detail_X",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Detail_X"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Detail_X"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+    "NodeId": "27",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "CBool(in_TransactionItem.SpecificContent(\u0022in_SecondaryIndicator\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "CBool(in_TransactionItem.SpecificContent(\u0022in_SecondaryIndicator\u0022))",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_SecondaryIndicator"
+    ],
+    "Diagnostics": [],
+    "InferredType": "Boolean",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+    "NodeId": "27",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_SecondaryIndicator",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_SecondaryIndicator"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_SecondaryIndicator"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+    "NodeId": "29",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Match: first Positive rule fires?",
+    "XamlLine": 152,
+    "ExpressionName": "Value",
+    "SourceText": "New List(Of String()) From {New String() {\u0022True\u0022,\u0022*\u0022,\u0022*\u0022,\u0022*\u0022,\u0022*\u0022,\u0022*\u0022,\u0022*\u0022},New String() {\u0022*\u0022,\u0022RG1\u0022,\u0022Compliant\u0022,\u0022*\u0022,\u0022*\u0022,\u0022*\u0022,\u0022*\u0022},New String() {\u0022*\u0022,\u0022RG1\u0022,\u0022\u0022,\u0022*\u0022,\u0022*\u0022,\u0022*\u0022,\u0022*\u0022},New String() {\u0022*\u0022,\u0022RG1\u0022,\u0022Non_Compliant\u0022,\u0022Verification_not_available\u0022,\u0022Yes\u0022,\u0022*\u0022,\u0022*\u0022},New String() {\u0022*\u0022,\u0022RG1\u0022,\u0022Non_Compliant\u0022,\u0022Special_case_without_certified_component\u0022,\u0022Yes\u0022,\u0022*\u0022,\u0022*\u0022},New String() {\u0022*\u0022,\u0022RG2\u0022,\u0022*\u0022,\u0022*\u0022,\u0022*\u0022,\u0022Y\u0022,\u0022Noticeable_irregularity\u0022},New String() {\u0022*\u0022,\u0022RG2\u0022,\u0022*\u0022,\u0022*\u0022,\u0022*\u0022,\u0022Y\u0022,\u0022\u0022},New String() {\u0022*\u0022,\u0022RG2\u0022,\u0022Compliant\u0022,\u0022*\u0022,\u0022*\u0022,\u0022N\u0022,\u0022*\u0022},New String() {\u0022*\u0022,\u0022RG2\u0022,\u0022\u0022,\u0022*\u0022,\u0022*\u0022,\u0022N\u0022,\u0022*\u0022},New String() {\u0022*\u0022,\u0022RG2\u0022,\u0022Non_Compliant\u0022,\u0022Verification_not_available\u0022,\u0022Yes\u0022,\u0022N\u0022,\u0022*\u0022},New String() {\u0022*\u0022,\u0022RG2\u0022,\u0022Non_Compliant\u0022,\u0022Special_case_without_certified_component\u0022,\u0022Yes\u0022,\u0022N\u0022,\u0022*\u0022}}.Any(Function(r) (r(0)=\u0022*\u0022 OrElse (r(0)=\u0022True\u0022 AndAlso v_SecondaryIndicator)) AndAlso (r(1)=\u0022*\u0022 OrElse (r(1)=\u0022RG1\u0022 AndAlso (v_CaseCategory=\u0022Event_A\u0022 OrElse v_CaseCategory=\u0022Event_B\u0022)) OrElse (r(1)=\u0022RG2\u0022 AndAlso (v_CaseCategory=\u0022Event_C\u0022 OrElse v_CaseCategory=\u0022Event_D\u0022))) AndAlso (r(2)=\u0022*\u0022 OrElse r(2)=v_ComplianceAssessment) AndAlso (r(3)=\u0022*\u0022 OrElse r(3)=v_Attribute_A) AndAlso (r(4)=\u0022*\u0022 OrElse (r(4)=\u0022Yes\u0022 AndAlso (v_Attribute_B=\u0022No_or_low_impact\u0022 OrElse v_Attribute_C=\u0022No_or_low_impact\u0022))) AndAlso (r(5)=\u0022*\u0022 OrElse r(5)=v_Indicator_X) AndAlso (r(6)=\u0022*\u0022 OrElse r(6)=v_Detail_X))",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+    "NodeId": "29",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Match: first Positive rule fires?",
+    "XamlLine": 152,
+    "ExpressionName": "To",
+    "SourceText": "v_MatchFound",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_MatchFound"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_MatchFound"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+    "NodeId": "30",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Set DecisionValue",
+    "XamlLine": 160,
+    "ExpressionName": "Value",
+    "SourceText": "If(v_MatchFound, \u0022Positive\u0022, \u0022Negative\u0022)",
+    "SyntaxKind": "TupleExpression",
+    "Identifiers": [
+      "v_MatchFound"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [
+      "Positive",
+      "Negative"
+    ],
+    "Diagnostics": [
+      "BC30081: \u0027If\u0027 must end with a matching \u0027End If\u0027."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\DecisionTable.xaml",
+    "NodeId": "30",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Set DecisionValue",
+    "XamlLine": 160,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "6",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_CaseCategory\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_CaseCategory"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "6",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_CaseCategory",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_CaseCategory"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_CaseCategory"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "9",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_ComplianceAssessment\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_ComplianceAssessment"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "9",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_ComplianceAssessment",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_ComplianceAssessment"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_ComplianceAssessment"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "12",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_A\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Attribute_A"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "12",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Attribute_A",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Attribute_A"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Attribute_A"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "15",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_B\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Attribute_B"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "15",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Attribute_B",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Attribute_B"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Attribute_B"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "18",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_C\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Attribute_C"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "18",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Attribute_C",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Attribute_C"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Attribute_C"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "21",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Indicator_X\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Indicator_X"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "21",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Indicator_X",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Indicator_X"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Indicator_X"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "24",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Detail_X\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Detail_X"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "24",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Detail_X",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Detail_X"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Detail_X"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "27",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "CBool(in_TransactionItem.SpecificContent(\u0022in_SecondaryIndicator\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "CBool(in_TransactionItem.SpecificContent(\u0022in_SecondaryIndicator\u0022))",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_SecondaryIndicator"
+    ],
+    "Diagnostics": [],
+    "InferredType": "Boolean",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "27",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_SecondaryIndicator",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_SecondaryIndicator"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_SecondaryIndicator"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "29",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Default: Negative",
+    "XamlLine": 151,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Negative\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "29",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Default: Negative",
+    "XamlLine": 151,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "30",
+    "NodeType": "If",
+    "NodeDisplayName": "Rule Group 1: Event_A or Event_B",
+    "XamlLine": 159,
+    "ExpressionName": "Condition",
+    "SourceText": "(v_CaseCategory = \u0022Event_A\u0022 OrElse v_CaseCategory = \u0022Event_B\u0022) AndAlso (v_SecondaryIndicator OrElse v_ComplianceAssessment = \u0022Compliant\u0022 OrElse String.IsNullOrEmpty(v_ComplianceAssessment) OrElse (v_ComplianceAssessment = \u0022Non_Compliant\u0022 AndAlso (v_Attribute_A = \u0022Verification_not_available\u0022 OrElse v_Attribute_A = \u0022Special_case_without_certified_component\u0022) AndAlso (v_Attribute_B = \u0022No_or_low_impact\u0022 OrElse v_Attribute_C = \u0022No_or_low_impact\u0022)))",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "31",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Positive",
+    "XamlLine": 161,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Positive\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "31",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Positive",
+    "XamlLine": 161,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "32",
+    "NodeType": "If",
+    "NodeDisplayName": "Rule Group 2: Event_C or Event_D",
+    "XamlLine": 171,
+    "ExpressionName": "Condition",
+    "SourceText": "(v_CaseCategory = \u0022Event_C\u0022 OrElse v_CaseCategory = \u0022Event_D\u0022) AndAlso (v_SecondaryIndicator OrElse (v_Indicator_X = \u0022Y\u0022 AndAlso (v_Detail_X = \u0022Noticeable_irregularity\u0022 OrElse String.IsNullOrEmpty(v_Detail_X))) OrElse (v_Indicator_X = \u0022N\u0022 AndAlso (v_ComplianceAssessment = \u0022Compliant\u0022 OrElse String.IsNullOrEmpty(v_ComplianceAssessment) OrElse (v_ComplianceAssessment = \u0022Non_Compliant\u0022 AndAlso (v_Attribute_A = \u0022Verification_not_available\u0022 OrElse v_Attribute_A = \u0022Special_case_without_certified_component\u0022) AndAlso (v_Attribute_B = \u0022No_or_low_impact\u0022 OrElse v_Attribute_C = \u0022No_or_low_impact\u0022)))))",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "33",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Positive",
+    "XamlLine": 161,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Positive\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\Expression.xaml",
+    "NodeId": "33",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Positive",
+    "XamlLine": 161,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "6",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_CaseCategory\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_CaseCategory"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "6",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_CaseCategory",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_CaseCategory"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_CaseCategory"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "9",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_ComplianceAssessment\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_ComplianceAssessment"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "9",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_ComplianceAssessment",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_ComplianceAssessment"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_ComplianceAssessment"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "12",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_A\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Attribute_A"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "12",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Attribute_A",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Attribute_A"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Attribute_A"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "15",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_B\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Attribute_B"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "15",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Attribute_B",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Attribute_B"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Attribute_B"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "18",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_C\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Attribute_C"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "18",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Attribute_C",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Attribute_C"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Attribute_C"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "21",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Indicator_X\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Indicator_X"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "21",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Indicator_X",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Indicator_X"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Indicator_X"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "24",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Detail_X\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Detail_X"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "24",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Detail_X",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Detail_X"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Detail_X"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "27",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "CBool(in_TransactionItem.SpecificContent(\u0022in_SecondaryIndicator\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "CBool(in_TransactionItem.SpecificContent(\u0022in_SecondaryIndicator\u0022))",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_SecondaryIndicator"
+    ],
+    "Diagnostics": [],
+    "InferredType": "Boolean",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "27",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_SecondaryIndicator",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_SecondaryIndicator"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_SecondaryIndicator"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "29",
+    "NodeType": "If",
+    "NodeDisplayName": "SecondaryIndicator = True?",
+    "XamlLine": 151,
+    "ExpressionName": "Condition",
+    "SourceText": "v_SecondaryIndicator",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_SecondaryIndicator"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_SecondaryIndicator"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "30",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Positive",
+    "XamlLine": 153,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Positive\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "30",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Positive",
+    "XamlLine": 153,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "31",
+    "NodeType": "If",
+    "NodeDisplayName": "CaseCategory = Event_A or Event_B?",
+    "XamlLine": 163,
+    "ExpressionName": "Condition",
+    "SourceText": "v_CaseCategory = \u0022Event_A\u0022 OrElse v_CaseCategory = \u0022Event_B\u0022",
+    "SyntaxKind": "IdentifierName",
+    "Identifiers": [
+      "v_CaseCategory"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [
+      "Event_A",
+      "Event_B"
+    ],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": {
+      "Kind": "compound-or",
+      "Variable": null,
+      "Operator": null,
+      "Literal": null,
+      "FuncName": null,
+      "Operands": [
+        {
+          "Kind": "equality",
+          "Variable": "v_CaseCategory",
+          "Operator": "=",
+          "Literal": "Event_A",
+          "FuncName": null,
+          "Operands": []
+        },
+        {
+          "Kind": "equality",
+          "Variable": "v_CaseCategory",
+          "Operator": "=",
+          "Literal": "Event_B",
+          "FuncName": null,
+          "Operands": []
+        }
+      ]
+    }
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "32",
+    "NodeType": "If",
+    "NodeDisplayName": "ComplianceAssessment = Compliant or empty?",
+    "XamlLine": 165,
+    "ExpressionName": "Condition",
+    "SourceText": "v_ComplianceAssessment = \u0022Compliant\u0022 OrElse String.IsNullOrEmpty(v_ComplianceAssessment)",
+    "SyntaxKind": "IdentifierName",
+    "Identifiers": [
+      "v_ComplianceAssessment",
+      "IsNullOrEmpty"
+    ],
+    "MemberAccesses": [
+      "String.IsNullOrEmpty"
+    ],
+    "Invocations": [
+      "String.IsNullOrEmpty"
+    ],
+    "Literals": [
+      "Compliant"
+    ],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": {
+      "Kind": "compound-or",
+      "Variable": null,
+      "Operator": null,
+      "Literal": null,
+      "FuncName": null,
+      "Operands": [
+        {
+          "Kind": "equality",
+          "Variable": "v_ComplianceAssessment",
+          "Operator": "=",
+          "Literal": "Compliant",
+          "FuncName": null,
+          "Operands": []
+        },
+        {
+          "Kind": "known-function",
+          "Variable": "v_ComplianceAssessment",
+          "Operator": null,
+          "Literal": null,
+          "FuncName": "String.IsNullOrEmpty",
+          "Operands": []
+        }
+      ]
+    }
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "33",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Positive",
+    "XamlLine": 153,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Positive\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "33",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Positive",
+    "XamlLine": 153,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "34",
+    "NodeType": "If",
+    "NodeDisplayName": "ComplianceAssessment = Non_Compliant?",
+    "XamlLine": 177,
+    "ExpressionName": "Condition",
+    "SourceText": "v_ComplianceAssessment = \u0022Non_Compliant\u0022",
+    "SyntaxKind": "IdentifierName",
+    "Identifiers": [
+      "v_ComplianceAssessment"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [
+      "Non_Compliant"
+    ],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": {
+      "Kind": "equality",
+      "Variable": "v_ComplianceAssessment",
+      "Operator": "=",
+      "Literal": "Non_Compliant",
+      "FuncName": null,
+      "Operands": []
+    }
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "35",
+    "NodeType": "If",
+    "NodeDisplayName": "Attribute_A = Verif_NA or Special_case?",
+    "XamlLine": 179,
+    "ExpressionName": "Condition",
+    "SourceText": "v_Attribute_A = \u0022Verification_not_available\u0022 OrElse v_Attribute_A = \u0022Special_case_without_certified_component\u0022",
+    "SyntaxKind": "IdentifierName",
+    "Identifiers": [
+      "v_Attribute_A"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [
+      "Verification_not_available",
+      "Special_case_without_certified_component"
+    ],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": {
+      "Kind": "compound-or",
+      "Variable": null,
+      "Operator": null,
+      "Literal": null,
+      "FuncName": null,
+      "Operands": [
+        {
+          "Kind": "equality",
+          "Variable": "v_Attribute_A",
+          "Operator": "=",
+          "Literal": "Verification_not_available",
+          "FuncName": null,
+          "Operands": []
+        },
+        {
+          "Kind": "equality",
+          "Variable": "v_Attribute_A",
+          "Operator": "=",
+          "Literal": "Special_case_without_certified_component",
+          "FuncName": null,
+          "Operands": []
+        }
+      ]
+    }
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "36",
+    "NodeType": "If",
+    "NodeDisplayName": "Attribute_B or Attribute_C = No_or_low_impact?",
+    "XamlLine": 181,
+    "ExpressionName": "Condition",
+    "SourceText": "v_Attribute_B = \u0022No_or_low_impact\u0022 OrElse v_Attribute_C = \u0022No_or_low_impact\u0022",
+    "SyntaxKind": "IdentifierName",
+    "Identifiers": [
+      "v_Attribute_B",
+      "v_Attribute_C"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [
+      "No_or_low_impact",
+      "No_or_low_impact"
+    ],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": {
+      "Kind": "compound-or",
+      "Variable": null,
+      "Operator": null,
+      "Literal": null,
+      "FuncName": null,
+      "Operands": [
+        {
+          "Kind": "equality",
+          "Variable": "v_Attribute_B",
+          "Operator": "=",
+          "Literal": "No_or_low_impact",
+          "FuncName": null,
+          "Operands": []
+        },
+        {
+          "Kind": "equality",
+          "Variable": "v_Attribute_C",
+          "Operator": "=",
+          "Literal": "No_or_low_impact",
+          "FuncName": null,
+          "Operands": []
+        }
+      ]
+    }
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "37",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Positive",
+    "XamlLine": 153,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Positive\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "37",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Positive",
+    "XamlLine": 153,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "38",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Negative",
+    "XamlLine": 193,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Negative\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "38",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Negative",
+    "XamlLine": 193,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "39",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Negative",
+    "XamlLine": 193,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Negative\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "39",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Negative",
+    "XamlLine": 193,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "40",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Negative",
+    "XamlLine": 193,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Negative\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "40",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Negative",
+    "XamlLine": 193,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "41",
+    "NodeType": "If",
+    "NodeDisplayName": "CaseCategory = Event_C or Event_D?",
+    "XamlLine": 231,
+    "ExpressionName": "Condition",
+    "SourceText": "v_CaseCategory = \u0022Event_C\u0022 OrElse v_CaseCategory = \u0022Event_D\u0022",
+    "SyntaxKind": "IdentifierName",
+    "Identifiers": [
+      "v_CaseCategory"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [
+      "Event_C",
+      "Event_D"
+    ],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": {
+      "Kind": "compound-or",
+      "Variable": null,
+      "Operator": null,
+      "Literal": null,
+      "FuncName": null,
+      "Operands": [
+        {
+          "Kind": "equality",
+          "Variable": "v_CaseCategory",
+          "Operator": "=",
+          "Literal": "Event_C",
+          "FuncName": null,
+          "Operands": []
+        },
+        {
+          "Kind": "equality",
+          "Variable": "v_CaseCategory",
+          "Operator": "=",
+          "Literal": "Event_D",
+          "FuncName": null,
+          "Operands": []
+        }
+      ]
+    }
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "42",
+    "NodeType": "If",
+    "NodeDisplayName": "Indicator_X = Y?",
+    "XamlLine": 233,
+    "ExpressionName": "Condition",
+    "SourceText": "v_Indicator_X = \u0022Y\u0022",
+    "SyntaxKind": "IdentifierName",
+    "Identifiers": [
+      "v_Indicator_X"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [
+      "Y"
+    ],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": {
+      "Kind": "equality",
+      "Variable": "v_Indicator_X",
+      "Operator": "=",
+      "Literal": "Y",
+      "FuncName": null,
+      "Operands": []
+    }
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "43",
+    "NodeType": "If",
+    "NodeDisplayName": "Detail_X = Noticeable_irregularity or empty?",
+    "XamlLine": 235,
+    "ExpressionName": "Condition",
+    "SourceText": "v_Detail_X = \u0022Noticeable_irregularity\u0022 OrElse String.IsNullOrEmpty(v_Detail_X)",
+    "SyntaxKind": "IdentifierName",
+    "Identifiers": [
+      "v_Detail_X",
+      "IsNullOrEmpty"
+    ],
+    "MemberAccesses": [
+      "String.IsNullOrEmpty"
+    ],
+    "Invocations": [
+      "String.IsNullOrEmpty"
+    ],
+    "Literals": [
+      "Noticeable_irregularity"
+    ],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": {
+      "Kind": "compound-or",
+      "Variable": null,
+      "Operator": null,
+      "Literal": null,
+      "FuncName": null,
+      "Operands": [
+        {
+          "Kind": "equality",
+          "Variable": "v_Detail_X",
+          "Operator": "=",
+          "Literal": "Noticeable_irregularity",
+          "FuncName": null,
+          "Operands": []
+        },
+        {
+          "Kind": "known-function",
+          "Variable": "v_Detail_X",
+          "Operator": null,
+          "Literal": null,
+          "FuncName": "String.IsNullOrEmpty",
+          "Operands": []
+        }
+      ]
+    }
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "44",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Positive",
+    "XamlLine": 153,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Positive\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "44",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Positive",
+    "XamlLine": 153,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "45",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Negative",
+    "XamlLine": 193,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Negative\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "45",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Negative",
+    "XamlLine": 193,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "46",
+    "NodeType": "If",
+    "NodeDisplayName": "Indicator_X = N?",
+    "XamlLine": 259,
+    "ExpressionName": "Condition",
+    "SourceText": "v_Indicator_X = \u0022N\u0022",
+    "SyntaxKind": "IdentifierName",
+    "Identifiers": [
+      "v_Indicator_X"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [
+      "N"
+    ],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": {
+      "Kind": "equality",
+      "Variable": "v_Indicator_X",
+      "Operator": "=",
+      "Literal": "N",
+      "FuncName": null,
+      "Operands": []
+    }
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "47",
+    "NodeType": "If",
+    "NodeDisplayName": "ComplianceAssessment = Compliant or empty?",
+    "XamlLine": 165,
+    "ExpressionName": "Condition",
+    "SourceText": "v_ComplianceAssessment = \u0022Compliant\u0022 OrElse String.IsNullOrEmpty(v_ComplianceAssessment)",
+    "SyntaxKind": "IdentifierName",
+    "Identifiers": [
+      "v_ComplianceAssessment",
+      "IsNullOrEmpty"
+    ],
+    "MemberAccesses": [
+      "String.IsNullOrEmpty"
+    ],
+    "Invocations": [
+      "String.IsNullOrEmpty"
+    ],
+    "Literals": [
+      "Compliant"
+    ],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": {
+      "Kind": "compound-or",
+      "Variable": null,
+      "Operator": null,
+      "Literal": null,
+      "FuncName": null,
+      "Operands": [
+        {
+          "Kind": "equality",
+          "Variable": "v_ComplianceAssessment",
+          "Operator": "=",
+          "Literal": "Compliant",
+          "FuncName": null,
+          "Operands": []
+        },
+        {
+          "Kind": "known-function",
+          "Variable": "v_ComplianceAssessment",
+          "Operator": null,
+          "Literal": null,
+          "FuncName": "String.IsNullOrEmpty",
+          "Operands": []
+        }
+      ]
+    }
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "48",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Positive",
+    "XamlLine": 153,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Positive\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "48",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Positive",
+    "XamlLine": 153,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "49",
+    "NodeType": "If",
+    "NodeDisplayName": "ComplianceAssessment = Non_Compliant?",
+    "XamlLine": 177,
+    "ExpressionName": "Condition",
+    "SourceText": "v_ComplianceAssessment = \u0022Non_Compliant\u0022",
+    "SyntaxKind": "IdentifierName",
+    "Identifiers": [
+      "v_ComplianceAssessment"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [
+      "Non_Compliant"
+    ],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": {
+      "Kind": "equality",
+      "Variable": "v_ComplianceAssessment",
+      "Operator": "=",
+      "Literal": "Non_Compliant",
+      "FuncName": null,
+      "Operands": []
+    }
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "50",
+    "NodeType": "If",
+    "NodeDisplayName": "Attribute_A = Verif_NA or Special_case?",
+    "XamlLine": 179,
+    "ExpressionName": "Condition",
+    "SourceText": "v_Attribute_A = \u0022Verification_not_available\u0022 OrElse v_Attribute_A = \u0022Special_case_without_certified_component\u0022",
+    "SyntaxKind": "IdentifierName",
+    "Identifiers": [
+      "v_Attribute_A"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [
+      "Verification_not_available",
+      "Special_case_without_certified_component"
+    ],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": {
+      "Kind": "compound-or",
+      "Variable": null,
+      "Operator": null,
+      "Literal": null,
+      "FuncName": null,
+      "Operands": [
+        {
+          "Kind": "equality",
+          "Variable": "v_Attribute_A",
+          "Operator": "=",
+          "Literal": "Verification_not_available",
+          "FuncName": null,
+          "Operands": []
+        },
+        {
+          "Kind": "equality",
+          "Variable": "v_Attribute_A",
+          "Operator": "=",
+          "Literal": "Special_case_without_certified_component",
+          "FuncName": null,
+          "Operands": []
+        }
+      ]
+    }
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "51",
+    "NodeType": "If",
+    "NodeDisplayName": "Attribute_B or Attribute_C = No_or_low_impact?",
+    "XamlLine": 181,
+    "ExpressionName": "Condition",
+    "SourceText": "v_Attribute_B = \u0022No_or_low_impact\u0022 OrElse v_Attribute_C = \u0022No_or_low_impact\u0022",
+    "SyntaxKind": "IdentifierName",
+    "Identifiers": [
+      "v_Attribute_B",
+      "v_Attribute_C"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [
+      "No_or_low_impact",
+      "No_or_low_impact"
+    ],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": {
+      "Kind": "compound-or",
+      "Variable": null,
+      "Operator": null,
+      "Literal": null,
+      "FuncName": null,
+      "Operands": [
+        {
+          "Kind": "equality",
+          "Variable": "v_Attribute_B",
+          "Operator": "=",
+          "Literal": "No_or_low_impact",
+          "FuncName": null,
+          "Operands": []
+        },
+        {
+          "Kind": "equality",
+          "Variable": "v_Attribute_C",
+          "Operator": "=",
+          "Literal": "No_or_low_impact",
+          "FuncName": null,
+          "Operands": []
+        }
+      ]
+    }
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "52",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Positive",
+    "XamlLine": 153,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Positive\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "52",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Positive",
+    "XamlLine": 153,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "53",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Negative",
+    "XamlLine": 193,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Negative\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "53",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Negative",
+    "XamlLine": 193,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "54",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Negative",
+    "XamlLine": 193,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Negative\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "54",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Negative",
+    "XamlLine": 193,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "55",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Negative",
+    "XamlLine": 193,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Negative\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "55",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Negative",
+    "XamlLine": 193,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "56",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Negative",
+    "XamlLine": 193,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Negative\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "56",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Negative",
+    "XamlLine": 193,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "57",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Negative",
+    "XamlLine": 193,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Negative\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\IfElse.xaml",
+    "NodeId": "57",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Negative",
+    "XamlLine": 193,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "6",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_CaseCategory\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_CaseCategory"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "6",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_CaseCategory",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_CaseCategory"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_CaseCategory"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "9",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_ComplianceAssessment\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_ComplianceAssessment"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "9",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_ComplianceAssessment",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_ComplianceAssessment"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_ComplianceAssessment"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "12",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_A\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Attribute_A"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "12",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Attribute_A",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Attribute_A"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Attribute_A"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "15",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_B\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Attribute_B"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "15",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Attribute_B",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Attribute_B"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Attribute_B"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "18",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_C\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Attribute_C"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "18",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Attribute_C",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Attribute_C"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Attribute_C"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "21",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Indicator_X\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Indicator_X"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "21",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Indicator_X",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Indicator_X"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Indicator_X"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "24",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Detail_X\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Detail_X"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "24",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Detail_X",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Detail_X"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Detail_X"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "27",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "CBool(in_TransactionItem.SpecificContent(\u0022in_SecondaryIndicator\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "CBool(in_TransactionItem.SpecificContent(\u0022in_SecondaryIndicator\u0022))",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_SecondaryIndicator"
+    ],
+    "Diagnostics": [],
+    "InferredType": "Boolean",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "27",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_SecondaryIndicator",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_SecondaryIndicator"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_SecondaryIndicator"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "32",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "v_SecondaryIndicator",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_SecondaryIndicator"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_SecondaryIndicator"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "32",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "b_Rule_Override",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "b_Rule_Override"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "b_Rule_Override"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "35",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "(v_CaseCategory = \u0022Event_A\u0022 OrElse v_CaseCategory = \u0022Event_B\u0022) AndAlso (v_ComplianceAssessment = \u0022Compliant\u0022 OrElse String.IsNullOrEmpty(v_ComplianceAssessment))",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "35",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "b_Rule_RG1_Compliant",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "b_Rule_RG1_Compliant"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "b_Rule_RG1_Compliant"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "38",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "(v_CaseCategory = \u0022Event_A\u0022 OrElse v_CaseCategory = \u0022Event_B\u0022) AndAlso v_ComplianceAssessment = \u0022Non_Compliant\u0022 AndAlso (v_Attribute_A = \u0022Verification_not_available\u0022 OrElse v_Attribute_A = \u0022Special_case_without_certified_component\u0022) AndAlso (v_Attribute_B = \u0022No_or_low_impact\u0022 OrElse v_Attribute_C = \u0022No_or_low_impact\u0022)",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "38",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "b_Rule_RG1_NonCompliant",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "b_Rule_RG1_NonCompliant"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "b_Rule_RG1_NonCompliant"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "41",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "(v_CaseCategory = \u0022Event_C\u0022 OrElse v_CaseCategory = \u0022Event_D\u0022) AndAlso v_Indicator_X = \u0022Y\u0022 AndAlso (v_Detail_X = \u0022Noticeable_irregularity\u0022 OrElse String.IsNullOrEmpty(v_Detail_X))",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "41",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "b_Rule_RG2_IX_Y",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "b_Rule_RG2_IX_Y"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "b_Rule_RG2_IX_Y"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "44",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "(v_CaseCategory = \u0022Event_C\u0022 OrElse v_CaseCategory = \u0022Event_D\u0022) AndAlso v_Indicator_X = \u0022N\u0022 AndAlso (v_ComplianceAssessment = \u0022Compliant\u0022 OrElse String.IsNullOrEmpty(v_ComplianceAssessment))",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "44",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "b_Rule_RG2_IX_N_Compliant",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "b_Rule_RG2_IX_N_Compliant"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "b_Rule_RG2_IX_N_Compliant"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "47",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "(v_CaseCategory = \u0022Event_C\u0022 OrElse v_CaseCategory = \u0022Event_D\u0022) AndAlso v_Indicator_X = \u0022N\u0022 AndAlso v_ComplianceAssessment = \u0022Non_Compliant\u0022 AndAlso (v_Attribute_A = \u0022Verification_not_available\u0022 OrElse v_Attribute_A = \u0022Special_case_without_certified_component\u0022) AndAlso (v_Attribute_B = \u0022No_or_low_impact\u0022 OrElse v_Attribute_C = \u0022No_or_low_impact\u0022)",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "47",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "b_Rule_RG2_IX_N_NonCompliant",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "b_Rule_RG2_IX_N_NonCompliant"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "b_Rule_RG2_IX_N_NonCompliant"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "49",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Combine Rules: any Positive rule fires?",
+    "XamlLine": 211,
+    "ExpressionName": "Value",
+    "SourceText": "If(b_Rule_Override OrElse b_Rule_RG1_Compliant OrElse b_Rule_RG1_NonCompliant OrElse b_Rule_RG2_IX_Y OrElse b_Rule_RG2_IX_N_Compliant OrElse b_Rule_RG2_IX_N_NonCompliant, \u0022Positive\u0022, \u0022Negative\u0022)",
+    "SyntaxKind": "TupleExpression",
+    "Identifiers": [
+      "b_Rule_Override",
+      "b_Rule_RG1_Compliant",
+      "b_Rule_RG1_NonCompliant",
+      "b_Rule_RG2_IX_Y",
+      "b_Rule_RG2_IX_N_Compliant",
+      "b_Rule_RG2_IX_N_NonCompliant"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [
+      "Positive",
+      "Negative"
+    ],
+    "Diagnostics": [
+      "BC30081: \u0027If\u0027 must end with a matching \u0027End If\u0027."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\RuleBased.xaml",
+    "NodeId": "49",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Combine Rules: any Positive rule fires?",
+    "XamlLine": 211,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+    "NodeId": "9",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_CaseCategory\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_CaseCategory"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+    "NodeId": "9",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_CaseCategory",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_CaseCategory"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_CaseCategory"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+    "NodeId": "12",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_ComplianceAssessment\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_ComplianceAssessment"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+    "NodeId": "12",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_ComplianceAssessment",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_ComplianceAssessment"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_ComplianceAssessment"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+    "NodeId": "15",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_A\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Attribute_A"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+    "NodeId": "15",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Attribute_A",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Attribute_A"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Attribute_A"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+    "NodeId": "18",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_B\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Attribute_B"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+    "NodeId": "18",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Attribute_B",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Attribute_B"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Attribute_B"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+    "NodeId": "21",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Attribute_C\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Attribute_C"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+    "NodeId": "21",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Attribute_C",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Attribute_C"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Attribute_C"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+    "NodeId": "24",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Indicator_X\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Indicator_X"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+    "NodeId": "24",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Indicator_X",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Indicator_X"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Indicator_X"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+    "NodeId": "27",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "Convert.ToString(in_TransactionItem.SpecificContent(\u0022in_Detail_X\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Convert",
+      "ToString",
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "Convert.ToString",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_Detail_X"
+    ],
+    "Diagnostics": [],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+    "NodeId": "27",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_Detail_X",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Detail_X"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Detail_X"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+    "NodeId": "30",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "CBool(in_TransactionItem.SpecificContent(\u0022in_SecondaryIndicator\u0022))",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "in_TransactionItem",
+      "SpecificContent"
+    ],
+    "MemberAccesses": [
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Invocations": [
+      "CBool(in_TransactionItem.SpecificContent(\u0022in_SecondaryIndicator\u0022))",
+      "in_TransactionItem.SpecificContent"
+    ],
+    "Literals": [
+      "in_SecondaryIndicator"
+    ],
+    "Diagnostics": [],
+    "InferredType": "Boolean",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+    "NodeId": "30",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "v_SecondaryIndicator",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_SecondaryIndicator"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_SecondaryIndicator"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+    "NodeId": "40",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Positive",
+    "XamlLine": 164,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Positive\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+    "NodeId": "40",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Positive",
+    "XamlLine": 164,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+    "NodeId": "43",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Negative",
+    "XamlLine": 193,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Negative\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "EligibilityDecision\\StateMachine.xaml",
+    "NodeId": "43",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Negative",
+    "XamlLine": 193,
+    "ExpressionName": "To",
+    "SourceText": "out_DecisionValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_DecisionValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_DecisionValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "Framework\\InitAllSettings.xaml",
+    "NodeId": "3",
+    "NodeType": "LogMessage",
+    "NodeDisplayName": "Log Message (Initialize All Settings)",
+    "XamlLine": 104,
+    "ExpressionName": "Message",
+    "SourceText": "\u0022Initializing settings...\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "Framework\\InitAllSettings.xaml",
+    "NodeId": "4",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Assing out_Config (initialization)",
+    "XamlLine": 105,
+    "ExpressionName": "Value",
+    "SourceText": "New Dictionary(of String, Object)",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "Dictionary",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "Framework\\InitAllSettings.xaml",
+    "NodeId": "4",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Assing out_Config (initialization)",
+    "XamlLine": 105,
+    "ExpressionName": "To",
+    "SourceText": "out_Config",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_Config"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_Config"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "Framework\\InitAllSettings.xaml",
+    "NodeId": "9",
+    "NodeType": "If",
+    "NodeDisplayName": "If configuration row is not empty",
+    "XamlLine": 137,
+    "ExpressionName": "Condition",
+    "SourceText": "Not String.IsNullOrWhiteSpace(row(\u0022Name\u0022).ToString.Trim)",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "Boolean",
+    "Predicate": {
+      "Kind": "negation",
+      "Variable": null,
+      "Operator": null,
+      "Literal": null,
+      "FuncName": null,
+      "Operands": [
+        {
+          "Kind": "known-function",
+          "Variable": "row(\u0022Name\u0022).ToString.Trim",
+          "Operator": null,
+          "Literal": null,
+          "FuncName": "String.IsNullOrWhiteSpace",
+          "Operands": []
+        }
+      ]
+    }
+  },
+  {
+    "WorkflowPath": "Framework\\InitAllSettings.xaml",
+    "NodeId": "10",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Add Config key/value pair",
+    "XamlLine": 146,
+    "ExpressionName": "Value",
+    "SourceText": "Row(\u0022Value\u0022)",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "Row"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "Row"
+    ],
+    "Literals": [
+      "Value"
+    ],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "Framework\\InitAllSettings.xaml",
+    "NodeId": "10",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Add Config key/value pair",
+    "XamlLine": 146,
+    "ExpressionName": "To",
+    "SourceText": "out_Config(Row(\u0022Name\u0022).ToString.Trim)",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_Config",
+      "Row",
+      "ToString",
+      "Trim"
+    ],
+    "MemberAccesses": [
+      "Row(\u0022Name\u0022).ToString.Trim",
+      "Row(\u0022Name\u0022).ToString"
+    ],
+    "Invocations": [
+      "out_Config",
+      "Row"
+    ],
+    "Literals": [
+      "Name"
+    ],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "Framework\\InitAllSettings.xaml",
+    "NodeId": "17",
+    "NodeType": "GetRobotAsset",
+    "NodeDisplayName": "Get Orchestrator asset",
+    "XamlLine": 212,
+    "ExpressionName": "Value",
+    "SourceText": "AssetValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "AssetValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "AssetValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "Framework\\InitAllSettings.xaml",
+    "NodeId": "18",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Assign asset value in Config",
+    "XamlLine": 220,
+    "ExpressionName": "Value",
+    "SourceText": "AssetValue",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "AssetValue"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "AssetValue"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "Framework\\InitAllSettings.xaml",
+    "NodeId": "18",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Assign asset value in Config",
+    "XamlLine": 220,
+    "ExpressionName": "To",
+    "SourceText": "out_Config(row(\u0022Name\u0022).ToString)",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_Config",
+      "row",
+      "ToString"
+    ],
+    "MemberAccesses": [
+      "row(\u0022Name\u0022).ToString"
+    ],
+    "Invocations": [
+      "out_Config",
+      "row"
+    ],
+    "Literals": [
+      "Name"
+    ],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "Framework\\InitAllSettings.xaml",
+    "NodeId": "19",
+    "NodeType": "If",
+    "NodeDisplayName": "If asset name is specified, but it cannot be retrieved",
+    "XamlLine": 242,
+    "ExpressionName": "Condition",
+    "SourceText": "Not String.IsNullOrWhiteSpace(Row(\u0022Name\u0022).ToString.Trim)",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "Boolean",
+    "Predicate": {
+      "Kind": "negation",
+      "Variable": null,
+      "Operator": null,
+      "Literal": null,
+      "FuncName": null,
+      "Operands": [
+        {
+          "Kind": "known-function",
+          "Variable": "Row(\u0022Name\u0022).ToString.Trim",
+          "Operator": null,
+          "Literal": null,
+          "FuncName": "String.IsNullOrWhiteSpace",
+          "Operands": []
+        }
+      ]
+    }
+  },
+  {
+    "WorkflowPath": "Utils\\LogDictionary.xaml",
+    "NodeId": "3",
+    "NodeType": "LogMessage",
+    "NodeDisplayName": "Log Dictionary",
+    "XamlLine": 70,
+    "ExpressionName": "Message",
+    "SourceText": "If(String.IsNullOrEmpty(in_Label), \u0022Dictionary\u0022, in_Label) \u0026 \u0022 (\u0022 \u0026 in_Dictionary.Count.ToString() \u0026 \u0022 entries):\u0022 \u0026 Environment.NewLine \u0026 String.Join(Environment.NewLine, in_Dictionary.[Select](Function(kvp) \u0022  \u0022 \u0026 kvp.Key \u0026 \u0022 (\u0022 \u0026 If(kvp.Value Is Nothing, \u0022Nothing\u0022, kvp.Value.GetType().Name) \u0026 \u0022) = \u0022 \u0026 If(kvp.Value Is Nothing, \u0022(Nothing)\u0022, If(TypeOf kvp.Value Is Dictionary(Of String, Object), \u0022{\u0022 \u0026 String.Join(\u0022, \u0022, CType(kvp.Value, Dictionary(Of String, Object)).[Select](Function(y) y.Key \u0026 \u0022: \u0022 \u0026 Convert.ToString(y.Value).Replace(Environment.NewLine, \u0022 \u0022))) \u0026 \u0022}\u0022, If(TypeOf kvp.Value Is DataTable, \u0022\u003CDataTable\u003E\u0022, Convert.ToString(kvp.Value).Replace(Environment.NewLine, \u0022 \u0022))))))",
+    "SyntaxKind": "ConcatenateExpression",
+    "Identifiers": [
+      "IsNullOrEmpty",
+      "in_Label",
+      "in_Dictionary",
+      "Count",
+      "ToString",
+      "Environment",
+      "NewLine",
+      "Join",
+      "Select",
+      "kvp",
+      "Key",
+      "Value",
+      "GetType",
+      "Name",
+      "y",
+      "Convert",
+      "Replace",
+      "DataTable"
+    ],
+    "MemberAccesses": [
+      "String.IsNullOrEmpty",
+      "in_Dictionary.Count.ToString",
+      "in_Dictionary.Count",
+      "Environment.NewLine",
+      "String.Join",
+      "in_Dictionary.[Select]",
+      "kvp.Key",
+      "kvp.Value",
+      "kvp.Value.GetType().Name",
+      "kvp.Value.GetType",
+      "CType(kvp.Value, Dictionary(Of String, Object)).[Select]",
+      "y.Key",
+      "Convert.ToString(y.Value).Replace",
+      "Convert.ToString",
+      "y.Value",
+      "Convert.ToString(kvp.Value).Replace"
+    ],
+    "Invocations": [
+      "String.IsNullOrEmpty",
+      "in_Dictionary.Count.ToString",
+      "String.Join",
+      "in_Dictionary.[Select]",
+      "kvp.Value.GetType",
+      "CType(kvp.Value, Dictionary(Of String, Object)).[Select]",
+      "Convert.ToString(y.Value).Replace",
+      "Convert.ToString",
+      "Convert.ToString(kvp.Value).Replace"
+    ],
+    "Literals": [
+      "Dictionary",
+      " (",
+      " entries):",
+      "  ",
+      " (",
+      "Nothing",
+      "Nothing",
+      ") = ",
+      "Nothing",
+      "(Nothing)",
+      "{",
+      ", ",
+      ": ",
+      " ",
+      "}",
+      "\u003CDataTable\u003E",
+      " "
+    ],
+    "Diagnostics": [
+      "BC30081: \u0027If\u0027 must end with a matching \u0027End If\u0027."
+    ],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\DetermineChannel.xaml",
+    "NodeId": "3",
+    "NodeType": "If",
+    "NodeDisplayName": "Channel_A if all conditions met else Channel_B",
+    "XamlLine": 67,
+    "ExpressionName": "Condition",
+    "SourceText": "in_HasRegistryId AndAlso in_RegistryParticipantExists AndAlso in_DocumentTypesAccepted",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "in_HasRegistryId",
+      "",
+      "in_RegistryParticipantExists",
+      "in_DocumentTypesAccepted"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "in_HasRegistryId"
+    ],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30800: Method arguments must be enclosed in parentheses.",
+      "BC30201: Expression expected."
+    ],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\DetermineChannel.xaml",
+    "NodeId": "4",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Assign Channel_A",
+    "XamlLine": 72,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Channel_A\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\DetermineChannel.xaml",
+    "NodeId": "4",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Assign Channel_A",
+    "XamlLine": 72,
+    "ExpressionName": "To",
+    "SourceText": "out_Channel",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_Channel"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_Channel"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\DetermineChannel.xaml",
+    "NodeId": "5",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Assign Channel_B",
+    "XamlLine": 78,
+    "ExpressionName": "Value",
+    "SourceText": "\u0022Channel_B\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\DetermineChannel.xaml",
+    "NodeId": "5",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Assign Channel_B",
+    "XamlLine": 78,
+    "ExpressionName": "To",
+    "SourceText": "out_Channel",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_Channel"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_Channel"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\IsPublicSectorRelevant.xaml",
+    "NodeId": "3",
+    "NodeType": "Assign",
+    "NodeDisplayName": "IsPublicSector = RegistryId starts with PS-",
+    "XamlLine": 65,
+    "ExpressionName": "Value",
+    "SourceText": "in_RegistryId.StartsWith(\u0022PS-\u0022)",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "in_RegistryId",
+      "StartsWith"
+    ],
+    "MemberAccesses": [
+      "in_RegistryId.StartsWith"
+    ],
+    "Invocations": [
+      "in_RegistryId.StartsWith"
+    ],
+    "Literals": [
+      "PS-"
+    ],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\IsPublicSectorRelevant.xaml",
+    "NodeId": "3",
+    "NodeType": "Assign",
+    "NodeDisplayName": "IsPublicSector = RegistryId starts with PS-",
+    "XamlLine": 65,
+    "ExpressionName": "To",
+    "SourceText": "out_IsPublicSector",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_IsPublicSector"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_IsPublicSector"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\DetermineVatClassification.xaml",
+    "NodeId": "3",
+    "NodeType": "Assign",
+    "NodeDisplayName": "NATIONAL if VatId starts with DOM- else INTERNATIONAL",
+    "XamlLine": 65,
+    "ExpressionName": "Value",
+    "SourceText": "If(in_VatId.StartsWith(\u0022DOM-\u0022), \u0022NATIONAL\u0022, \u0022INTERNATIONAL\u0022)",
+    "SyntaxKind": "TupleExpression",
+    "Identifiers": [
+      "in_VatId",
+      "StartsWith"
+    ],
+    "MemberAccesses": [
+      "in_VatId.StartsWith"
+    ],
+    "Invocations": [
+      "in_VatId.StartsWith"
+    ],
+    "Literals": [
+      "DOM-",
+      "NATIONAL",
+      "INTERNATIONAL"
+    ],
+    "Diagnostics": [
+      "BC30081: \u0027If\u0027 must end with a matching \u0027End If\u0027."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\DetermineVatClassification.xaml",
+    "NodeId": "3",
+    "NodeType": "Assign",
+    "NodeDisplayName": "NATIONAL if VatId starts with DOM- else INTERNATIONAL",
+    "XamlLine": 65,
+    "ExpressionName": "To",
+    "SourceText": "out_VatClassification",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_VatClassification"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_VatClassification"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\DetermineCustomerStatus.xaml",
+    "NodeId": "3",
+    "NodeType": "Assign",
+    "NodeDisplayName": "EXISTING or NEW",
+    "XamlLine": 65,
+    "ExpressionName": "Value",
+    "SourceText": "If(in_CustomerExists, \u0022EXISTING\u0022, \u0022NEW\u0022)",
+    "SyntaxKind": "TupleExpression",
+    "Identifiers": [
+      "in_CustomerExists"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [
+      "EXISTING",
+      "NEW"
+    ],
+    "Diagnostics": [
+      "BC30081: \u0027If\u0027 must end with a matching \u0027End If\u0027."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\DetermineCustomerStatus.xaml",
+    "NodeId": "3",
+    "NodeType": "Assign",
+    "NodeDisplayName": "EXISTING or NEW",
+    "XamlLine": 65,
+    "ExpressionName": "To",
+    "SourceText": "out_CustomerStatus",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_CustomerStatus"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_CustomerStatus"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\IsSegment_P_Customer.xaml",
+    "NodeId": "3",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Pass through IsSegmentP flag",
+    "XamlLine": 65,
+    "ExpressionName": "Value",
+    "SourceText": "in_IsSegmentP",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "in_IsSegmentP"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "in_IsSegmentP"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\IsSegment_P_Customer.xaml",
+    "NodeId": "3",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Pass through IsSegmentP flag",
+    "XamlLine": 65,
+    "ExpressionName": "To",
+    "SourceText": "out_IsSegmentP",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_IsSegmentP"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_IsSegmentP"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\IsSegment_P_Customer.xaml",
+    "NodeId": "4",
+    "NodeType": "If",
+    "NodeDisplayName": "Fire-and-continue: notify if Segment_P",
+    "XamlLine": 69,
+    "ExpressionName": "Condition",
+    "SourceText": "in_IsSegmentP",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "in_IsSegmentP"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "in_IsSegmentP"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\IsSegment_P_Customer.xaml",
+    "NodeId": "5",
+    "NodeType": "LogMessage",
+    "NodeDisplayName": "NotifySegment_P_Case",
+    "XamlLine": 74,
+    "ExpressionName": "Message",
+    "SourceText": "\u0022Segment_P notification fired (fire-and-continue)\u0022",
+    "SyntaxKind": "CompilationUnit",
+    "Identifiers": [],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [],
+    "Diagnostics": [
+      "BC30035: Syntax error."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\AggregateErrors.xaml",
+    "NodeId": "6",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "in_HasCustomerErrors",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "in_HasCustomerErrors"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "in_HasCustomerErrors"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\AggregateErrors.xaml",
+    "NodeId": "6",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "out_CustomerErrors",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_CustomerErrors"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_CustomerErrors"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\AggregateErrors.xaml",
+    "NodeId": "9",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "Value",
+    "SourceText": "in_HasInternalErrors",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "in_HasInternalErrors"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "in_HasInternalErrors"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\AggregateErrors.xaml",
+    "NodeId": "9",
+    "NodeType": "AssignOperation",
+    "NodeDisplayName": "AssignOperation",
+    "XamlLine": null,
+    "ExpressionName": "To",
+    "SourceText": "out_InternalErrors",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_InternalErrors"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_InternalErrors"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\DetermineRouting.xaml",
+    "NodeId": "3",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Compute bitmask: CustomerErrors x1 \u002B InternalErrors x2",
+    "XamlLine": 69,
+    "ExpressionName": "Value",
+    "SourceText": "If(in_CustomerErrors,1,0) \u002B If(in_InternalErrors,2,0)",
+    "SyntaxKind": "AddExpression",
+    "Identifiers": [
+      "in_CustomerErrors",
+      "in_InternalErrors"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [
+      "1",
+      "0",
+      "2",
+      "0"
+    ],
+    "Diagnostics": [
+      "BC30081: \u0027If\u0027 must end with a matching \u0027End If\u0027."
+    ],
+    "InferredType": "Integer",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\DetermineRouting.xaml",
+    "NodeId": "3",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Compute bitmask: CustomerErrors x1 \u002B InternalErrors x2",
+    "XamlLine": 69,
+    "ExpressionName": "To",
+    "SourceText": "v_Matrix",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "v_Matrix"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "v_Matrix"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\DetermineRouting.xaml",
+    "NodeId": "4",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Lookup: 0=HAPPY_PATH 1=ROUTE_TO_CUSTOMER 2=ROUTE_TO_INTERNAL 3=OPEN",
+    "XamlLine": 73,
+    "ExpressionName": "Value",
+    "SourceText": "If(v_Matrix=0,\u0022HAPPY_PATH\u0022,If(v_Matrix=1,\u0022ROUTE_TO_CUSTOMER\u0022,If(v_Matrix=2,\u0022ROUTE_TO_INTERNAL\u0022,\u0022OPEN\u0022)))",
+    "SyntaxKind": "TupleExpression",
+    "Identifiers": [
+      "v_Matrix"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [],
+    "Literals": [
+      "0",
+      "HAPPY_PATH",
+      "1",
+      "ROUTE_TO_CUSTOMER",
+      "2",
+      "ROUTE_TO_INTERNAL",
+      "OPEN"
+    ],
+    "Diagnostics": [
+      "BC30081: \u0027If\u0027 must end with a matching \u0027End If\u0027."
+    ],
+    "InferredType": "String",
+    "Predicate": null
+  },
+  {
+    "WorkflowPath": "RoutingPipeline\\DetermineRouting.xaml",
+    "NodeId": "4",
+    "NodeType": "Assign",
+    "NodeDisplayName": "Lookup: 0=HAPPY_PATH 1=ROUTE_TO_CUSTOMER 2=ROUTE_TO_INTERNAL 3=OPEN",
+    "XamlLine": 73,
+    "ExpressionName": "To",
+    "SourceText": "out_RoutingDecision",
+    "SyntaxKind": "InvocationExpression",
+    "Identifiers": [
+      "out_RoutingDecision"
+    ],
+    "MemberAccesses": [],
+    "Invocations": [
+      "out_RoutingDecision"
+    ],
+    "Literals": [],
+    "Diagnostics": [],
+    "InferredType": "?",
+    "Predicate": null
+  }
+]
